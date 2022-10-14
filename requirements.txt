@@ -1,0 +1,4 @@
+ansible >= 6.4.0, <7.0.0
+ansible-navigator >=2.2.0, <3.0.0
+jmespath
+openshift

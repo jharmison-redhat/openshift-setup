@@ -10,3 +10,5 @@ vars/*
 .vscode
 .cache
 *.swp
+venv/
+.venv/

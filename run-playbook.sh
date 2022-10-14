@@ -102,7 +102,7 @@ if [ -z "$CLUSTER_VARS_NAME" ]; then
     echo -e "Error: You must specify a cluster.\n$usage" >&2
     exit 2
 elif [ ! -d "vars/$CLUSTER_VARS_NAME" ]; then
-    echo -e "Error: You must create a subdirectory in $PWD/vars named $CLUSTER_VARS_NAME with the necessary variable files in it (as needed by your playbooks) to pass into the container.\n$usage" >&2
+    echo -e "Error: You must create a subdirectory in $PWD/vars/$CLUSTER_VARS_NAME with the necessary variable files in it (as needed by your playbooks) to pass into the container.\n$usage" >&2
     exit 3
 fi
 
@@ -126,6 +126,9 @@ if [ -z "${playbooks[*]}" ]; then
     fi
 fi
 
+# Bring our aws config/credentials directory in
+[ -d $HOME/.aws ] && cp -na $HOME/.aws vars/$CLUSTER_VARS_NAME/
+
 run_args=()
 # Run as our user
 run_args+=(--privileged --security-opt=label=disable)
@@ -133,8 +136,6 @@ run_args+=(--privileged --security-opt=label=disable)
 run_args+=(-v "$PWD/tmp:/app/tmp")
 # Bring the cluster vars directory in
 run_args+=(-v "$PWD/vars/$CLUSTER_VARS_NAME:/app/vars:ro")
-# Bring our aws config/credentials directory in
-run_args+=(-v "$HOME/.aws:/root/.aws")
 # Forward all AWS variables into the container
 run_args+=(-e 'AWS_*')
 # Identify our container runtime
@@ -209,7 +210,7 @@ for playbook in "${playbooks[@]}"; do
     # This is the name of the container image we built above
     # <everything else>
     # These are passed as args to ansible-playbook inside the container.
-    $runtime run -it --rm --privileged \
+    $runtime run -it --rm \
         "${run_args[@]}" "openshift-setup-$CLUSTER_VARS_NAME" \
         ${args} "${extra[@]}" "$playbook" || exit $?
 done
