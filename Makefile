@@ -1,17 +1,21 @@
-export CLUSTER_NAME ?= cluster
-export BASE_DOMAIN ?= demo.jharmison.dev
-export CONTROL_PLANE_TYPE ?= m6i.2xlarge
-export CONTROL_PLANE_COUNT ?= 1
-export WORKER_TYPE ?= m6i.2xlarge
-export WORKER_COUNT ?= 2
-export ARGO_GIT_URL ?= git@github.com:jharmison-redhat/openshift-setup.git
-export ARGO_GIT_REVISION ?= HEAD
-export BOOTSTRAP_APPLICATIONS ?= config oauth cert-manager
+-include .env
+
+CLUSTER_NAME ?= cluster
+BASE_DOMAIN ?= demo.jharmison.dev
+CONTROL_PLANE_TYPE ?= m6i.2xlarge
+CONTROL_PLANE_COUNT ?= 1
+WORKER_TYPE ?= m6i.2xlarge
+WORKER_COUNT ?= 2
+ARGO_GIT_URL ?= git@github.com:jharmison-redhat/openshift-setup.git
+ARGO_GIT_REVISION ?= HEAD
+BOOTSTRAP_APPLICATIONS ?= config oauth cert-manager
 CLUSTER_VERSION := 4.15.22
 
-export CLUSTER_URL := $(CLUSTER_NAME).$(BASE_DOMAIN)
-export CLUSTER_DIR := clusters/$(CLUSTER_URL)
-export INSTALL_DIR := install/$(CLUSTER_URL)
+CLUSTER_URL := $(CLUSTER_NAME).$(BASE_DOMAIN)
+CLUSTER_DIR := clusters/$(CLUSTER_URL)
+INSTALL_DIR := install/$(CLUSTER_URL)
+
+export
 
 .PHONY: all
 all: bootstrap
