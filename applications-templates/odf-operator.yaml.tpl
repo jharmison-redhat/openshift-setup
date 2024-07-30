@@ -2,18 +2,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crunchydata-postgres-operator
+  name: odf-operator
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
     name: in-cluster
-    namespace: openshift-operators
+    namespace: openshift-storage
   project: default
   source:
-    path: charts/crunchydata-postgres-operator
+    path: charts/odf-operator
     repoURL: ${ARGO_GIT_URL}
     targetRevision: ${ARGO_GIT_REVISION}
     helm:
@@ -22,3 +22,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+        openshift.io/cluster-monitoring: "true"

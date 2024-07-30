@@ -4,7 +4,6 @@ metadata:
   labels:
     machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
   name: {{ .Values.cluster.infraID }}-gpu-worker-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
-  namespace: openshift-machine-api
 spec:
   {{- if and (.Values.desiredReplicas) (not .Values.autoscaling.enabled) }}
   replicas: {{ .Values.desiredReplicas }}

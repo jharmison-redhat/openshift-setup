@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: config
+  name: lvm-storage
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -10,10 +10,10 @@ metadata:
 spec:
   destination:
     name: in-cluster
-    namespace: default
+    namespace: openshift-storage
   project: default
   source:
-    path: charts/config
+    path: charts/lvm-storage
     repoURL: ${ARGO_GIT_URL}
     targetRevision: ${ARGO_GIT_REVISION}
     helm:
@@ -23,4 +23,11 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - RespectIgnoreDifferences=true
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+        openshift.io/cluster-monitoring: "true"
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: privileged
+        pod-security.kubernetes.io/warn: privileged

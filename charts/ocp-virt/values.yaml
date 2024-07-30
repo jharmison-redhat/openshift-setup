@@ -10,7 +10,7 @@ hyperconverged:
       duration: 24h0m0s
       renewBefore: 12h0m0s
   featureGates:
-    deployTektonTaskResources: false
+    deployTektonTaskResources: true
     disableMDevConfiguration: false
     enableCommonBootImageImport: true
     nonRoot: true

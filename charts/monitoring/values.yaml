@@ -1,4 +1,4 @@
 ---
-cluster: {}
+clusterMonitoringConfig: {}
 #  prometheusK8s:
 #    collectionProfile: ""

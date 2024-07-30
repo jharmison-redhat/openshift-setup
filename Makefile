@@ -55,6 +55,9 @@ $(CLUSTER_DIR)/cluster.yaml: $(INSTALL_DIR)/auth/kubeconfig-orig
 .PHONY: update-applications
 update-applications: $(CLUSTER_DIR)/cluster.yaml
 	@hack/update-applications.sh
+	@echo "*********************************************************"
+	@echo "* Reminder to commit and push your application changes! *"
+	@echo "*********************************************************"
 
 .PHONY: bootstrap
 bootstrap: $(INSTALL_DIR)/oc update-applications

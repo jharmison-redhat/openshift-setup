@@ -2,18 +2,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crunchydata-postgres-operator
+  name: registry-local-storage
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   destination:
     name: in-cluster
-    namespace: openshift-operators
+    namespace: openshift-image-registry
   project: default
   source:
-    path: charts/crunchydata-postgres-operator
+    path: charts/registry-local-storage
     repoURL: ${ARGO_GIT_URL}
     targetRevision: ${ARGO_GIT_REVISION}
     helm:

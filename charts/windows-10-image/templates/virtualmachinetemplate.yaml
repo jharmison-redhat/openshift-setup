@@ -9,7 +9,7 @@ metadata:
     iconClass: icon-windows
     name.os.template.kubevirt.io/win10: {{ .Release.Name | replace "-" " " | title }}
     openshift.io/display-name: {{ .Release.Name | replace "-" " " | title }}
-    openshift.io/provider-display-name: Red Hat and Deloitte
+    openshift.io/provider-display-name: Red Hat
     openshift.kubevirt.io/pronounceable-suffix-for-name-expression: "true"
     tags: kubevirt,virtualmachine,windows
     template.kubevirt.io/editable: |
@@ -18,7 +18,7 @@ metadata:
       /objects[0].spec.template.spec.domain.devices.disks
       /objects[0].spec.template.spec.volumes
       /objects[0].spec.template.spec.networks
-    template.kubevirt.io/provider: Red Hat and Deloitte
+    template.kubevirt.io/provider: Red Hat
     template.kubevirt.io/provider-support-level: Full
     template.kubevirt.io/provider-url: https://www.redhat.com
     template.kubevirt.io/version: v1alpha1

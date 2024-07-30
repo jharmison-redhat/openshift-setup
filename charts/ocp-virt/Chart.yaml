@@ -1,6 +1,6 @@
 ---
 apiVersion: v2
-name: kubevirt
+name: ocp-virt
 description: >
   A helm chart to install OpenShift Virtualization
 type: application

@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nvidia-dcgm-exporter-dashboard
+  namespace: openshift-config-managed
+data:
+  nvidia-dcgm-dashboard-cm.json: |
+    {{- $.Files.Get "files/dcgm-exporter-dashboard.json" | nindent 4 }}

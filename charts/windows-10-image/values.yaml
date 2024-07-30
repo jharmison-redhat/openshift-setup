@@ -8,6 +8,7 @@ buildTimeout: 2h0m0s
 winTenIsoDownloadUrl: ""
 # winTenIsoDownloadUrl: https://s3.yourdomain.com/yourbucket/yourwin10.iso
 postInstallPowershell: ""
+sysprep: false
 template:
   cpuCores: 1
   memory: 4Gi

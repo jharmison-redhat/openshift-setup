@@ -1,4 +1,4 @@
-{{- with .Values.cluster }}
+{{- with .Values.clusterMonitoringConfig }}
 ---
 apiVersion: v1
 kind: ConfigMap

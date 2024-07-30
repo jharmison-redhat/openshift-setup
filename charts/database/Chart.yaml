@@ -1,0 +1,7 @@
+---
+apiVersion: v2
+name: database
+description: A helm chart to provide a database, via the CrunchyData Postgres Operator
+type: application
+version: 0.1.0
+appVersion: "15"

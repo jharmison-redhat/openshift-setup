@@ -1,0 +1,7 @@
+---
+apiVersion: v2
+name: crunchydata-postgres-operator
+description: A helm chart to deploy CrunchyData's PostgreSQL Operator
+type: application
+version: 0.1.0
+appVersion: 0.1.0

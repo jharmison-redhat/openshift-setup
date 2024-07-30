@@ -37,3 +37,7 @@ certificates:
     managed: true
   nlbRouter:
     managed: false
+
+cluster:
+  name: cluster
+  baseDomain: domain.com

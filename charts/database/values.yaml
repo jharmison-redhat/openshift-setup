@@ -1,0 +1,23 @@
+---
+replicas: 2
+size: 10Gi
+instanceResources:
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 150Mi
+backrestRepoResources:
+  limits:
+    cpu: 200m
+    memory: 200Mi
+  requests:
+    cpu: 50m
+    memory: 50Mi
+# You can specify users in the PostgresCluster
+# See: https://access.crunchydata.com/documentation/postgres-operator/latest/tutorials/basic-setup/user-management#creating-a-new-user
+# users: []
+
+# You can specify init SQL to run when creating a new database
+# initSQL: ""

@@ -1,0 +1,10 @@
+{{- with .Values.initSQL -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $.Release.Name | printf "%s-%s" $.Chart.Name }}-sql-init
+data:
+  init.sql: |-
+    {{- . | nindent 4 }}
+{{- end }}

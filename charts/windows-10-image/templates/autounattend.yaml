@@ -198,16 +198,18 @@ data:
     Write-Host "Performing custom setup"
     {{- tpl .Values.postInstallPowershell $ | nindent 4 }}
     {{ end }}
-    #####################################
-    # Finalize installation via sysprep #
-    #####################################
+    #########################
+    # Finalize installation #
+    #########################
 
     Write-Host "Finalizaing"
     # Prevent picking up old autounattend.xml
     mv C:\Windows\Panther\unattend.xml C:\Windows\Panther\unattend.install.xml
     # Eject disk to prevent additional sysprep pickup
     (New-Object -COM Shell.Application).NameSpace(17).ParseName('F:').InvokeVerb('Eject')
+    {{- if .Values.sysprep }}
     # Perform full sysprep
-    # C:\Windows\System32\Sysprep\sysprep.exe /generalize /oobe /shutdown /mode:vm
+    C:\Windows\System32\Sysprep\sysprep.exe /generalize /oobe /shutdown /mode:vm
+    {{- end }}
     # Just shut down
     Start-Process shutdown -ArgumentList '/s /f /t 5'

@@ -23,10 +23,17 @@ while read -rd $'\0' values; do
 	fi
 done < <(find clusters -path '*/values/*' -type f \( -name values.yaml -o -name secrets.enc.yaml -o -name secrets.yaml \) -print0)
 
+# Save notes from apps
+declare -A notes
+
 # Template the apps, update the values references
 for app in "${!applications[@]}"; do
+	app_yaml="${CLUSTER_DIR}/applications/${app}.yaml"
 	mkdir -p "${CLUSTER_DIR}/applications"
-	envsubst "$vars" <"applications-templates/${app}.yaml.tpl" >"${CLUSTER_DIR}/applications/${app}.yaml"
+	envsubst "$vars" <"applications-templates/${app}.yaml.tpl" >"$app_yaml"
+	if grep -q '^# NOTE:' "$app_yaml"; then
+		notes["$app"]="$(grep '^# NOTE:' "$app_yaml" | cut -d' ' -f3-)"
+	fi
 	add_vars=()
 	# Always add cluster.yaml if available
 	if [ -e "${CLUSTER_DIR}/cluster.yaml" ]; then
@@ -41,6 +48,10 @@ for app in "${!applications[@]}"; do
 		add_vars+=("secrets+age-import:///helm-secrets-private-keys/argo.txt?../../${CLUSTER_DIR}/values/${app}/secrets.enc.yaml")
 	fi
 	for vars_file in "${add_vars[@]}"; do
-		hack/yq -i e '.spec.source.helm.valueFiles |= . + ["'"$vars_file"'"]' "${CLUSTER_DIR}/applications/${app}.yaml"
+		hack/yq -i e '.spec.source.helm.valueFiles |= . + ["'"$vars_file"'"]' "$app_yaml"
 	done
+done
+for app in "${!notes[@]}"; do
+	echo "$app notes:"
+	echo "${notes[$app]}"
 done
