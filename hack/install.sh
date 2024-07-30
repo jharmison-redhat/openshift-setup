@@ -3,6 +3,11 @@
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
 
+if metadata_validate; then
+	echo "Skipping install" >&2
+	exit 0
+fi
+
 pull_secret_validate
 aws_validate
 
