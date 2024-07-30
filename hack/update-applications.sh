@@ -30,6 +30,7 @@ declare -A notes
 for app in "${!applications[@]}"; do
 	app_yaml="${CLUSTER_DIR}/applications/${app}.yaml"
 	mkdir -p "${CLUSTER_DIR}/applications"
+	echo "Creating/updating $app_yaml" >&2
 	envsubst "$vars" <"applications-templates/${app}.yaml.tpl" >"$app_yaml"
 	if grep -q '^# NOTE:' "$app_yaml"; then
 		notes["$app"]="$(grep '^# NOTE:' "$app_yaml" | cut -d' ' -f3-)"
