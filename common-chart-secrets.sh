@@ -1,6 +1,6 @@
 # If you want to be able to decrypt secrets, generate your own age key and place it in this array
 public_keys=(
-	age1px4xaxcy73xdqdrxadc8yecqksf4le3n0l2l9h0xj2m5eneljvwq3asw2h # argocd
+	age10526a2k4pcuzgydp995ggh96pv0xy80chg3v7j20k2t580gnqy2sy9x3tn # cluster.demo.jharmison.dev
 	age1ky5amdnkwzj03gwal0cnk7ue7vsd0n64pxm50nxgycssp7vgpqvq9s7lyw # james
 )
 keystring="$(

@@ -34,7 +34,11 @@ $(INSTALL_DIR)/argo_ed25519:
 	mkdir -p $(@D)
 	if [ ! -e $@ ]; then ssh-keygen -t ed25519 -b 512 -f $@ -C argocd@$(CLUSTER_URL) -N ''; else touch $@; fi
 
-$(INSTALL_DIR)/bootstrap/kustomization.yaml: $(INSTALL_DIR)/argo_ed25519
+$(INSTALL_DIR)/argo.txt:
+	mkdir -p $(@D)
+	if [ ! -e $@ ]; then pub=$$(age-keygen -o $@ 2>&1 | awk '{print $$NF}') && sed -i '/public_keys=/a\	'"$$pub # $(CLUSTER_URL)" common-chart-secrets.sh; else touch $@; fi
+
+$(INSTALL_DIR)/bootstrap/kustomization.yaml: $(INSTALL_DIR)/argo_ed25519 $(INSTALL_DIR)/argo.txt
 	@hack/gen-bootstrap.sh
 
 $(INSTALL_DIR)/auth/kubeconfig: $(INSTALL_DIR)/id_ed25519 $(INSTALL_DIR)/bootstrap/kustomization.yaml $(INSTALL_DIR)/openshift-install
