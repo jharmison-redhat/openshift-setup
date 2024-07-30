@@ -8,10 +8,10 @@ autoscaling:
   maxReplicas: 1
   scaleDown:
     enabled: true
-    delayAfterAdd: 5m
-    delayAfterDelete: 1m
+    delayAfterAdd: 10m
+    delayAfterDelete: 5m
     delayAfterFailure: 30s
-    unneededTime: 5m
+    unneededTime: 30m
     utilizationThreshold: "0.7"
 
 cluster: # This needs updated based on your existing cluster name
