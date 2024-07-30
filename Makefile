@@ -1,3 +1,5 @@
+-include .env
+
 CLUSTER_NAME ?= cluster
 BASE_DOMAIN ?= demo.jharmison.dev
 CONTROL_PLANE_TYPE ?= m6i.2xlarge
@@ -12,6 +14,8 @@ CLUSTER_VERSION := 4.15.22
 CLUSTER_URL := $(CLUSTER_NAME).$(BASE_DOMAIN)
 CLUSTER_DIR := clusters/$(CLUSTER_URL)
 INSTALL_DIR := install/$(CLUSTER_URL)
+
+-include $(INSTALL_DIR)/.env
 
 export
 
