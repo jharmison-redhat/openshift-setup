@@ -11,7 +11,7 @@ vars=$(concat_with_comma "${templated_variables[@]}")
 
 # Start with our Makefile-provided apps
 declare -A applications
-for app in $BOOTSTRAP_APPLICATIONS; do
+for app in $ARGO_APPLICATIONS; do
 	applications["$app"]=""
 done
 

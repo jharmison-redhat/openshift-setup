@@ -6,7 +6,7 @@ WORKER_TYPE ?= m6i.2xlarge
 WORKER_COUNT ?= 2
 ARGO_GIT_URL ?= git@github.com:jharmison-redhat/openshift-setup.git
 ARGO_GIT_REVISION ?= HEAD
-BOOTSTRAP_APPLICATIONS ?= config oauth cert-manager
+ARGO_APPLICATIONS ?= config oauth cert-manager
 CLUSTER_VERSION := 4.15.22
 
 CLUSTER_URL := $(CLUSTER_NAME).$(BASE_DOMAIN)
