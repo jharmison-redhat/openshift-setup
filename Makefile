@@ -1,5 +1,3 @@
--include .env
-
 CLUSTER_NAME ?= cluster
 BASE_DOMAIN ?= demo.jharmison.dev
 CONTROL_PLANE_TYPE ?= m6i.2xlarge
