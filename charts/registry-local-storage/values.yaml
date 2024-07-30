@@ -1,0 +1,4 @@
+---
+size: 100Gi
+mode: ReadWriteOnce
+storageClassName: lvms-vg1

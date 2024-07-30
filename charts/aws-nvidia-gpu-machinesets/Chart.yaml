@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: aws-nvidia-gpu-machinesets
+description: >
+  A helm chart to manage MachineSets of Nvidia GPU instances on AWS
+type: application
+version: 0.1.0
+appVersion: 0.1.0

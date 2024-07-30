@@ -1,0 +1,5 @@
+---
+channel: stable-4.15
+enableCephTools: true
+storageDeviceSets: []
+disks: []

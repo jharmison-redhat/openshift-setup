@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: registry-local-storage
+description: >
+  A helm chart to configure the OpenShift Image Registry with local storage
+type: application
+version: 0.1.0
+appVersion: 0.1.0

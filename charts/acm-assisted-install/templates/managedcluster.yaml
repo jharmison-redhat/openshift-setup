@@ -1,0 +1,11 @@
+---
+apiVersion: cluster.open-cluster-management.io/v1
+kind: ManagedCluster
+metadata:
+  name: {{ .Values.cluster.name }}
+  labels:
+    cluster.open-cluster-management.io/clusterset: {{ .Values.cluster.env }}
+    cloud: auto-detect
+    vendor: auto-detect
+spec:
+  hubAcceptsClient: true

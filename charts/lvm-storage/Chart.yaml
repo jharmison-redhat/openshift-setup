@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: lvm-storage
+description: >
+  A helm chart to deploy the OpenShift LVM Storage Operator
+type: application
+version: 0.1.0
+appVersion: 0.1.0

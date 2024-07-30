@@ -1,0 +1,11 @@
+apiVersion: metal3.io/v1alpha1
+kind: Provisioning
+metadata:
+  name: provisioning-configuration
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  preProvisioningOSDownloadURLs: {}
+  provisioningNetwork: Disabled
+  watchAllNamespaces: true

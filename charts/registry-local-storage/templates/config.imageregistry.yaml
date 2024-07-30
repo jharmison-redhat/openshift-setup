@@ -1,0 +1,17 @@
+---
+apiVersion: imageregistry.operator.openshift.io/v1
+kind: Config
+metadata:
+  name: cluster
+spec:
+  managementState: Managed
+  {{- if eq .Values.mode "ReadWriteOnce" }}
+  replicas: 1
+  rolloutStrategy: Recreate
+  {{- else }}
+  replicas: 2
+  rolloutStrategy: RollingUpdate
+  {{- end }}
+  storage:
+    pvc:
+      claim: image-registry-storage

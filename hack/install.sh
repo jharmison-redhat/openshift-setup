@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cd "$(dirname "$(realpath "$0")")/.." || exit 1
+source hack/common.sh
+
+pull_secret_validate
+aws_validate
+
+SSH_KEY="$(cat "${INSTALL_DIR}/id_ed25519.pub")"
+export SSH_KEY
+
+templated_variables=(
+	\$PULL_SECRET
+	\$AWS_ACCESS_KEY_ID
+	\$AWS_SECRET_ACCESS_KEY
+	\$CLUSTER_NAME
+	\$BASE_DOMAIN
+	\$SSH_KEY
+	\$WORKER_TYPE
+	\$WORKER_COUNT
+	\$CONTROL_PLANE_TYPE
+	\$CONTROL_PLANE_COUNT
+)
+vars=$(concat_with_comma "${templated_variables[@]}")
+
+envsubst "$vars" <install-config.yaml.tpl >"${INSTALL_DIR}/install-config.yaml"
+
+set -x
+
+"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" create cluster

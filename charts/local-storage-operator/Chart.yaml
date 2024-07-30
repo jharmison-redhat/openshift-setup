@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: local-storage-operator
+description: >
+  A helm chart to deploy the Local Storage Operator
+type: application
+version: 0.1.0
+appVersion: 0.1.0

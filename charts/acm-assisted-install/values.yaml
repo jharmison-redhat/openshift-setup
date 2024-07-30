@@ -1,0 +1,23 @@
+---
+pullSecret: <your actual pull secret>
+sshKey: <an SSH public key>
+
+cluster:
+  name: example-cluster
+  baseDomain: jharmison.dev
+  env: harmison-house
+  version: 4.15.22
+  controlPlaneNodes: 3
+  workerNodes: 3
+  platformType: None
+  networking:
+    clusterNetwork:
+      - cidr: 10.128.0.0/14
+        hostPrefix: 23
+    serviceNetwork:
+      - 172.30.0.0/16
+    networkType: OVNKubernetes
+
+nodes: []
+
+openshiftToolsImage: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:96f217fd794eed50ee2c075d44ec56b7f8cfed4370662df59dc06c70ac2d67c0

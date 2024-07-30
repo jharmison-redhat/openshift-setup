@@ -1,0 +1,7 @@
+---
+pullSecret: <your actual pull secret>
+sshKey: <your actual SSH public key here>
+
+environments:
+  - name: harmison-house
+    location: Georgia

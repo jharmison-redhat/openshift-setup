@@ -1,0 +1,9 @@
+---
+apiVersion: v2
+name: acm
+description: >
+  A helm chart to deploy a basic ACM hub, without defining much
+  in the way of configuration
+type: application
+version: 0.1.0
+appVersion: 0.1.0

@@ -1,0 +1,16 @@
+---
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+    - name: github
+      mappingMethod: {{ .Values.mappingMethod }}
+      type: GitHub
+      github:
+        clientID: {{ .Values.github.clientId }}
+        clientSecret:
+          name: github-oauth-app
+        organizations:
+          {{- toYaml .Values.github.organizations | nindent 10 }}

@@ -1,0 +1,7 @@
+{{- range $env := .Values.environments }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $env.name }}
+{{- end -}}

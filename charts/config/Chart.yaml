@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: config
+description: >
+  A helm chart to configure basic cluster settings
+type: application
+version: 0.1.0
+appVersion: 0.1.0

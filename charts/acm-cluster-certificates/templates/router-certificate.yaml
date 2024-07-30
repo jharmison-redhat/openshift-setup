@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.cluster.name }}-router-default
+spec:
+  dnsNames:
+    - apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    - "*.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}"
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: {{ .Values.clusterIssuer }}
+  secretName: {{ .Values.cluster.name }}-router-cert

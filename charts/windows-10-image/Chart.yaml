@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: windows-10-image
+description: >
+  A helm chart to define a Windows 10 Virtual Machine disk image
+type: application
+version: 0.1.0
+appVersion: 0.1.0

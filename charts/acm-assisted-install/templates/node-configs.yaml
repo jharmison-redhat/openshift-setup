@@ -1,0 +1,12 @@
+{{- with .Values.nodes -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-configs
+data:
+  {{- range $node, $config := . }}
+  {{ $node }}: >-
+    {{- $config | toJson | nindent 4 }}
+  {{- end }}
+{{- end }}

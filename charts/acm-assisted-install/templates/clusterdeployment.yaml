@@ -1,0 +1,22 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: {{ .Values.cluster.name }}
+spec:
+  baseDomain: {{ .Values.cluster.baseDomain }}
+  clusterInstallRef:
+    group: extensions.hive.openshift.io
+    kind: AgentClusterInstall
+    name: {{ .Values.cluster.name }}
+    version: v1beta1
+  clusterName: {{ .Values.cluster.name }}
+  controlPlaneConfig:
+    servingCertificates: {}
+  platform:
+    agentBareMetal:
+      agentSelector:
+        matchLabels:
+          infraenvs.agent-install.openshift.io: {{ .Values.cluster.env }}
+  pullSecretRef:
+    name: pullsecret

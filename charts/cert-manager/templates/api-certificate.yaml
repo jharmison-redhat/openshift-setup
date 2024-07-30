@@ -1,0 +1,41 @@
+{{- if .Values.certificates.api.managed -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: openshift-api
+  namespace: openshift-config
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  dnsNames:
+    {{- if .Values.certificates.api.dnsNames }}
+    {{- toYaml .Values.certificates.api.dnsNames | nindent 4 }}
+    {{- else }}
+    - api.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    {{- end }}
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: {{ .Values.certificates.clusterIssuer }}
+  secretName: openshift-api
+---
+apiVersion: config.openshift.io/v1
+kind: APIServer
+metadata:
+  name: cluster
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  servingCerts:
+    namedCertificates:
+      - names:
+          {{- if .Values.certificates.api.dnsNames }}
+          {{- toYaml .Values.certificates.api.dnsNames | nindent 10 }}
+          {{- else }}
+          - api.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+          {{- end }}
+        servingCertificate:
+          name: openshift-api
+{{- end }}

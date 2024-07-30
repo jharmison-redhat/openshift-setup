@@ -1,0 +1,10 @@
+---
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: registry-bucket
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  generateBucketName: registry
+  storageClassName: {{ .Values.bucketClass }}

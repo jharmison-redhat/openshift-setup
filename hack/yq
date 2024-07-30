@@ -1,0 +1,4 @@
+#!/bin/bash
+
+RUNTIME=${RUNTIME:-podman}
+$RUNTIME run --rm --interactive --security-opt label=disable --user root --volume "${PWD}:/workdir" --workdir /workdir docker.io/mikefarah/yq:latest "${@}"

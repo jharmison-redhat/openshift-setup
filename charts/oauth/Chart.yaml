@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: oauth
+description: >
+  A helm chart to configure GitHub as an OAuth provider for OpenShift
+type: application
+version: 0.1.0
+appVersion: 0.1.0

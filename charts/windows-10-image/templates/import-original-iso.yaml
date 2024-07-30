@@ -1,0 +1,18 @@
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: windows-10-iso
+  annotations:
+    "cdi.kubevirt.io/storage.bind.immediate.requested": "true"
+spec:
+  pvc:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 7Gi
+    volumeMode: Block
+  source:
+    http:
+      url: {{ quote .Values.winTenIsoDownloadURL }}

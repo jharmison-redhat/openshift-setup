@@ -1,0 +1,39 @@
+{{- range $name, $acme := .Values.acme -}}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ $name }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  acme:
+    email: {{ $acme.email }}
+    {{- with $acme.preferredChain }}
+    preferredChain: {{ toYaml . }}
+    {{- end }}
+    privateKeySecretRef:
+      name: acme-{{ $name }}-privatekey
+    server: {{ $acme.server }}
+    {{- with $acme.externalAccountBinding }}
+    externalAccountBinding:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    solvers:
+    {{- range $solver := $acme.solvers -}}
+      {{- if eq $solver.type "dns" }}
+      - dns01:
+          {{- toYaml $solver.dnsConfig | nindent 10 }}
+        {{- with $solver.dnsZones }}
+        selector:
+          dnsZones:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
+      {{- else if eq $solver.type "http" }}
+      - http01:
+          ingress:
+            ingressClassName: {{ $solver.ingressClassName }}
+      {{- end }}
+    {{- end }}
+{{- end }}

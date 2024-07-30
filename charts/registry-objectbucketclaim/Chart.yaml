@@ -1,0 +1,9 @@
+---
+apiVersion: v2
+name: registry-objectbucketclaim
+description: >
+  A helm chart to configure the OpenShift Image Registry with an
+  ObjectBucketClaim
+type: application
+version: 0.1.0
+appVersion: 0.1.0

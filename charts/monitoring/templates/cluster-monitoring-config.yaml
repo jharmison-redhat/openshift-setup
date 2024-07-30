@@ -1,0 +1,10 @@
+{{- with .Values.cluster }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-monitoring-config
+data:
+  config.yaml: |
+    {{- toYaml . | nindent 4 }}
+{{- end }}

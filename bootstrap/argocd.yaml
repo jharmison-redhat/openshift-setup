@@ -1,0 +1,198 @@
+---
+apiVersion: argoproj.io/v1beta1
+kind: ArgoCD
+metadata:
+  name: openshift-gitops
+  namespace: openshift-gitops
+spec:
+  resourceTrackingMethod: annotation
+  resourceExclusions: |
+    - apiGroups:
+      - tekton.dev
+      kinds:
+      - PipelineRun
+      - TaskRun
+      clusters: ["*"]
+    - apiGroups:
+      - operators.coreos.com
+      kinds:
+      - InstallPlan
+      - ClusterServiceVersion
+      clusters: ["*"]
+  resourceHealthChecks:
+    - group: operators.coreos.com
+      kind: Subscription
+      check: |
+        hs = {}
+        if obj.status ~= nil then
+          if obj.status.state ~= nil then
+            hs.status = "Healthy"
+            hs.message = obj.status.state
+            return hs
+          elseif obj.status.installplan ~= nil then
+            hs.status = "Progressing"
+            hs.message = "InstallPlan: " .. obj.status.installplan.name
+            return hs
+          end
+        end
+        hs.status = "Degraded"
+        hs.message = "Not at latest version, no known InstallPlan"
+        return hs
+  controller:
+    processors: {}
+    resources:
+      limits:
+        cpu: "2"
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 1Gi
+    sharding: {}
+  grafana:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  ha:
+    enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  initialSSHKnownHosts:
+    excludedefaulthosts: false
+  monitoring:
+    enabled: true
+  notifications:
+    enabled: false
+  prometheus:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  redis:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  repo:
+    volumes:
+      - name: custom-tools
+        emptyDir: {}
+      - name: helm-secrets-private-keys
+        secret:
+          secretName: helm-secrets-private-keys
+    env:
+      - name: HELM_PLUGINS
+        value: /custom-tools/helm-plugins/
+      - name: HELM_SECRETS_CURL_PATH
+        value: /custom-tools/curl
+      - name: HELM_SECRETS_SOPS_PATH
+        value: /custom-tools/sops
+      - name: HELM_SECRETS_KUBECTL_PATH
+        value: /custom-tools/kubectl
+      - name: HELM_SECRETS_BACKEND
+        value: sops
+      - name: HELM_SECRETS_VALUES_ALLOW_SYMLINKS
+        value: "true"
+      - name: HELM_SECRETS_VALUES_ALLOW_ABSOLUTE_PATH
+        value: "true"
+      - name: HELM_SECRETS_VALUES_ALLOW_PATH_TRAVERSAL
+        value: "true"
+      - name: HELM_SECRETS_WRAPPER_ENABLED
+        value: "true"
+      - name: HELM_SECRETS_HELM_PATH
+        value: /usr/local/bin/helm
+    initContainers:
+      - name: download-tools
+        image: registry.access.redhat.com/ubi9/ubi:latest
+        command: [sh, -c]
+        env:
+          - name: HELM_SECRETS_VERSION
+            value: 4.6.0
+          - name: SOPS_VERSION
+            value: 3.9.0
+          - name: KUBECTL_VERSION
+            value: 1.28.11
+        args:
+          - |
+            mkdir -p /custom-tools/helm-plugins
+            curl -Lo - https://github.com/jkroepke/helm-secrets/releases/download/v${HELM_SECRETS_VERSION}/helm-secrets.tar.gz | tar -C /custom-tools/helm-plugins -xzf- ;
+            curl -Lo /custom-tools/curl https://github.com/moparisthebest/static-curl/releases/latest/download/curl-amd64
+            curl -Lo /custom-tools/sops https://github.com/mozilla/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.amd64
+            curl -Lo /custom-tools/kubectl https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+            cp /custom-tools/helm-plugins/helm-secrets/scripts/wrapper/helm.sh /custom-tools/helm
+            chmod +x /custom-tools/*
+        volumeMounts:
+          - mountPath: /custom-tools
+            name: custom-tools
+    volumeMounts:
+      - mountPath: /custom-tools
+        name: custom-tools
+      - mountPath: /usr/local/sbin/helm
+        subPath: helm
+        name: custom-tools
+      - mountPath: /helm-secrets-private-keys
+        name: helm-secrets-private-keys
+    resources:
+      limits:
+        cpu: "2"
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 1Gi
+  extraConfig:
+    helm.valuesFileSchemes: >-
+      secrets+gpg-import, secrets+gpg-import-kubernetes,
+      secrets+age-import, secrets+age-import-kubernetes,
+      secrets,secrets+literal,
+      https
+  server:
+    autoscale:
+      enabled: false
+    grpc:
+      ingress:
+        enabled: false
+    ingress:
+      enabled: false
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 125m
+        memory: 128Mi
+    route:
+      enabled: true
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: reencrypt
+    service:
+      type: ""
+  applicationSet:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 125m
+        memory: 128Mi
+  tls:
+    ca: {}
+  sso:
+    provider: dex
+    dex:
+      openShiftOAuth: true
+  rbac:
+    defaultPolicy: role:readonly
+    policy: |
+      g, sso-cluster-admins, role:admin
+    scopes: "[groups]"

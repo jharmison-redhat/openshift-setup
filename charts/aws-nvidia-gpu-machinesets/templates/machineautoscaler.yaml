@@ -1,0 +1,14 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: autoscaling.openshift.io/v1beta1
+kind: MachineAutoscaler
+metadata:
+  name: {{ .Values.cluster.infraID }}-gpu-worker-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+  namespace: openshift-machine-api
+spec:
+  minReplicas: {{ .Values.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
+  scaleTargetRef:
+    apiVersion: machine.openshift.io/v1beta1
+    kind: MachineSet
+    name: {{ .Values.cluster.infraID }}-gpu-worker-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+{{- end }}

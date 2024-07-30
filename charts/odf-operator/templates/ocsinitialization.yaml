@@ -1,0 +1,9 @@
+---
+apiVersion: ocs.openshift.io/v1
+kind: OCSInitialization
+metadata:
+  name: ocsinit
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  enableCephTools: {{ .Values.enableCephTools }}

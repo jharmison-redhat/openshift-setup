@@ -1,0 +1,18 @@
+{{- range $env := .Values.environments }}
+---
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSet
+metadata:
+  name: {{ $env.name }}
+spec:
+  clusterSelector:
+    selectorType: ExclusiveClusterSetLabel
+---
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSetBinding
+metadata:
+  name: {{ $env.name }}
+  namespace: {{ $env.name }}
+spec:
+  clusterSet: {{ $env.name }}
+{{- end }}

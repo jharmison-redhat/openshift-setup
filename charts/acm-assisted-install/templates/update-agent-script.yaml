@@ -1,0 +1,10 @@
+{{- if .Values.nodes -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: update-agents-{{ .Values.cluster.name }}
+  namespace: {{ .Values.cluster.env }}
+data:
+{{ (.Files.Glob "files/update-agents*").AsConfig | indent 2 }}
+{{- end }}

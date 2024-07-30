@@ -1,0 +1,9 @@
+---
+apiVersion: v2
+name: cert-manager
+description: >
+  A helm chart to deploy cert-manager, manage ClusterIssuers, and manage
+  certificates for cluster services like the Router
+type: application
+version: 0.1.0
+appVersion: 0.1.0

@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: cluster-certificates
+description: >
+  A helm chart to manage certificates for managed clusters with centralized cert-manager
+type: application
+version: 0.1.0
+appVersion: 0.1.0

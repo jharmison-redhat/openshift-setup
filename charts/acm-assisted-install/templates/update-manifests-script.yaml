@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: update-manifests
+data:
+{{ regexReplaceAll "OPENSHIFT_TOOLS_IMAGE" (.Files.Glob "files/update-manifests*").AsConfig .Values.openshiftToolsImage | indent 2 }}

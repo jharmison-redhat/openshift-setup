@@ -1,0 +1,37 @@
+{{- with .Values.nlbDomain }}
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: ingress-controller-with-nlb
+  namespace: openshift-ingress-operator
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  domain: {{ . }}
+  defaultCertificate:
+    name: router-nlb-cert
+  routeSelector:
+    matchLabels:
+      router-type: nlb
+  tuningOptions:
+    reloadInterval: 0s
+  clientTLS:
+    clientCA:
+      name: ""
+    clientCertificatePolicy: ""
+  unsupportedConfigOverrides: null
+  httpErrorCodePages:
+    name: ""
+  httpEmptyRequestsPolicy: Respond
+  endpointPublishingStrategy:
+    loadBalancer:
+      dnsManagementPolicy: Managed
+      providerParameters:
+        aws:
+          type: NLB
+        type: AWS
+      scope: External
+    type: LoadBalancerService
+  httpCompression: {}
+{{- end }}

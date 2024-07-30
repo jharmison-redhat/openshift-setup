@@ -1,0 +1,59 @@
+{{- if .Values.certificates.router.managed -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: router-default
+  namespace: openshift-ingress
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  dnsNames:
+    {{- if .Values.certificates.router.dnsNames }}
+    {{- toYaml .Values.certificates.router.dnsNames | nindent 4 }}
+    {{- else }}
+    - apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    - *.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    {{- end }}
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: {{ .Values.certificates.clusterIssuer }}
+  secretName: router-cert
+---
+apiVersion: operator.openshift.io/v1
+kind: IngressController
+metadata:
+  name: default
+  namespace: openshift-ingress-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  defaultCertificate:
+    name: router-cert
+{{- end }}
+{{ if .Values.certificates.nlbRouter.managed -}}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: router-nlb
+  namespace: openshift-ingress
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  dnsNames:
+    {{- if .Values.certificates.nlbRouter.dnsNames }}
+    {{- toYaml .Values.certificates.nlbRouter.dnsNames | nindent 4 }}
+    {{- else }}
+    - nlb-apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    - *.nlb-apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    {{- end }}
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: {{ .Values.certificates.clusterIssuer }}
+  secretName: router-nlb-cert
+{{- end }}

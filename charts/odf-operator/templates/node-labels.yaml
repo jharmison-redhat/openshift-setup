@@ -1,0 +1,11 @@
+{{- range .Values.disks }}
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: {{ .node }}
+  labels:
+    cluster.ocs.openshift.io/openshift-storage: ""
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+{{- end }}

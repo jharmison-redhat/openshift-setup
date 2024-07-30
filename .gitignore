@@ -1,0 +1,11 @@
+# Makefile uses/generates these
+.env
+install/*
+
+# Never commit unencrypted secrets
+clusters/*/values/*/secrets.yml
+clusters/*/values/*/secrets.yaml
+
+# Helm stuff should not be committed
+Chart.lock
+charts/*/charts/*

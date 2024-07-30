@@ -1,0 +1,15 @@
+{{- range $pool, $config := .Values.kubelet }}
+{{- if $config }}
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: {{ $pool }}-config
+spec:
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/{{ $pool }}: ''
+  kubeletConfig:
+    {{- toYaml $config | nindent 4}}
+{{- end }}
+{{- end }}

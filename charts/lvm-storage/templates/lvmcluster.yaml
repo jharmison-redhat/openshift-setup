@@ -1,0 +1,26 @@
+---
+apiVersion: lvm.topolvm.io/v1alpha1
+kind: LVMCluster
+metadata:
+  name: lvmcluster
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  storage:
+    deviceClasses:
+      - name: vg1
+        default: true
+        {{- with .Values.deviceSelector }}
+        deviceSelector:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        thinPoolConfig:
+          name: thin-pool-1
+          sizePercent: 90
+          overprovisionRatio: 10
+        {{- with .Values.nodeSelector }}
+        nodeSelector:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        fstype: {{ .Values.fstype }}

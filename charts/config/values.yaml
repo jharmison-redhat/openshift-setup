@@ -1,0 +1,8 @@
+---
+kubelet:
+  master: {}
+  worker: {}
+
+desiredUpdate: {}
+
+techPreview: false

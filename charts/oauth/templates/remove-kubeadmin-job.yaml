@@ -1,0 +1,51 @@
+{{- if and .Values.removeKubeAdmin (gt (len .Values.admins) 0) -}}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: remove-kubeadmin
+  namespace: kube-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: remove-kubeadmin
+  namespace: kube-system
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  name: remove-kubeadmin
+  namespace: kube-system
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: remove-kubeadmin-
+  namespace: kube-system
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccount: remove-kubeadmin
+      serviceAccountName: remove-kubeadmin
+      restartPolicy: Never
+      containers:
+      - name: remove-kubeadmin
+        image: {{ .Values.openshiftToolsImage }}
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -xc
+        - |-
+          oc delete secret kubeadmin ||:
+{{- end }}

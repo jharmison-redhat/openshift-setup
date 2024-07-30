@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: alertmanager-main
+data:
+  alertmanager.yaml: {{ tpl ($.Files.Get "files/alertmanager.yaml") $ | b64enc }}

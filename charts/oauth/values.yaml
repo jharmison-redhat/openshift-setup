@@ -1,0 +1,16 @@
+---
+github:
+  # https://docs.openshift.com/container-platform/4.13/authentication/identity_providers/configuring-github-identity-provider.html#identity-provider-registering-github_configuring-github-identity-provider
+  organizations:
+    - jharmison-redhat-org
+  clientId: <your client ID goes here>
+  clientSecret: <your client secret goes here>
+
+admins:
+  - jharmison-redhat
+
+mappingMethod: claim
+
+removeKubeAdmin: true
+
+openshiftToolsImage: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:96f217fd794eed50ee2c075d44ec56b7f8cfed4370662df59dc06c70ac2d67c0

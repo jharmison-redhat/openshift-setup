@@ -1,0 +1,30 @@
+---
+apiVersion: extensions.hive.openshift.io/v1beta1
+kind: AgentClusterInstall
+metadata:
+  name: {{ .Values.cluster.name }}
+spec:
+  platformType: {{ .Values.cluster.platformType }}
+  clusterDeploymentRef:
+    name: {{ .Values.cluster.name }}
+  imageSetRef:
+    name: img{{ .Values.cluster.version }}-multi-appsub
+  networking:
+    {{- toYaml .Values.cluster.networking | nindent 4 }}
+  provisionRequirements:
+    controlPlaneAgents: {{ .Values.cluster.controlPlaneNodes }}
+    {{- with .Values.cluster.workerNodes }}
+    workerAgents: {{ . }}
+    {{- end }}
+  sshPublicKey: {{ .Values.sshKey }}
+  mastersSchedulable: {{ if lt (int .Values.cluster.workerNodes) 2 }}true{{ else }}false{{ end }}
+  {{- with .Values.cluster.apiVIP }}
+  apiVIP: {{ . }}
+  apiVIPs:
+  - {{ . }}
+  {{- end }}
+  {{- with .Values.cluster.ingressVIP }}
+  ingressVIP: {{ . }}
+  ingressVIPs:
+  - {{ . }}
+  {{- end }}

@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: kubevirt
+description: >
+  A helm chart to install OpenShift Virtualization
+type: application
+version: 0.1.0
+appVersion: 0.1.0

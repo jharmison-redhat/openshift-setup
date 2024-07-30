@@ -1,0 +1,27 @@
+---
+# https://aws.amazon.com/ec2/instance-types/#Accelerated_Computing
+instanceType: g6.2xlarge
+desiredReplicas: 1
+autoscaling:
+  enabled: false
+  minReplicas: 0
+  maxReplicas: 1
+  scaleDown:
+    enabled: true
+    delayAfterAdd: 5m
+    delayAfterDelete: 1m
+    delayAfterFailure: 30s
+    unneededTime: 5m
+    utilizationThreshold: "0.7"
+
+cluster: # This needs updated based on your existing cluster name
+  infraID: cluster-9w6jz
+aws:
+  region: us-east-2
+  az: null
+  azs:
+    - us-east-2a
+    - us-east-2b
+    - us-east-2c
+    - us-east-2d
+  ami: ami-049d8fda91038a0fd # This should be updated, though it'll just bounce if not
