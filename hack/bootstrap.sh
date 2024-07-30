@@ -30,3 +30,6 @@ while true; do
 done
 echo
 sed -i '/certificate-authority-data/d' "${INSTALL_DIR}/auth/kubeconfig"
+
+echo "Deleting hanging installer pods that remain in failed state"
+oc delete pod --selector=app=installer --field-selector=status.phase=Failed --all-namespaces
