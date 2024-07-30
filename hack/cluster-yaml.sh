@@ -25,4 +25,6 @@ aws:
   region: $region
   azs: $azs
   ami: $ami
+desiredUpdate:
+  version: $CLUSTER_VERSION
 EOF
