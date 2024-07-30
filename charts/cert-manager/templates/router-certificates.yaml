@@ -14,7 +14,7 @@ spec:
     {{- toYaml .Values.certificates.router.dnsNames | nindent 4 }}
     {{- else }}
     - apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
-    - *.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    - "*.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}"
     {{- end }}
   issuerRef:
     group: cert-manager.io
