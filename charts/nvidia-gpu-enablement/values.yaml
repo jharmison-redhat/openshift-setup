@@ -15,6 +15,7 @@ nfd:
 
 gpuOperator:
   channel: v24.3
+  timeSlices: 1
   policy:
     operator:
       defaultRuntime: crio
@@ -72,7 +73,7 @@ gpuOperator:
     devicePlugin:
       enabled: true
       config:
-        name: ""
+        name: "{{ if gt .Values.gpuOperator.timeSlices 1 }}device-plugin-config{{ end }}"
         default: ""
       mps:
         root: "/run/nvidia/mps"

@@ -6,4 +6,4 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  {{- toYaml .Values.gpuOperator.policy | nindent 2 }}
+  {{- tpl (toYaml .Values.gpuOperator.policy) $ | nindent 2 }}
