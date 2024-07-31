@@ -18,13 +18,19 @@ spec:
     targetRevision: ${ARGO_GIT_REVISION}
     helm:
       valueFiles: []
-  ignoreDifferences:
-    - kind: Secret
-      jsonPointers:
-        - /metadata/labels
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
     syncOptions:
       - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - kind: Secret
+      jsonPointers:
+        - /metadata/labels

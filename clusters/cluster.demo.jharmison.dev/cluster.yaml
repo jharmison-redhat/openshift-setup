@@ -7,7 +7,7 @@ cluster:
   workerNodes: 2
 aws:
   region: us-west-2
-  azs: ["us-west-2a", "us-west-2b", "us-west-2c", "us-west-2d"]
+  azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
   ami: ami-07b0ebe683783d6fc
 desiredUpdate:
   version: 4.15.22

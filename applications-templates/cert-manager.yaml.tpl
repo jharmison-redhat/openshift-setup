@@ -29,7 +29,6 @@ spec:
         factor: 3
         maxDuration: 30m
     syncOptions:
-      - RespectIgnoreDifferences=true
       - CreateNamespace=true
     managedNamespaceMetadata:
       labels:

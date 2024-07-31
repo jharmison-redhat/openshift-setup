@@ -18,14 +18,20 @@ spec:
     targetRevision: ${ARGO_GIT_REVISION}
     helm:
       valueFiles: []
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
+    syncOptions:
+      - RespectIgnoreDifferences=true
   ignoreDifferences:
     - group: machine.openshift.io
       kind: MachineSet
       jsonPointers:
         - /spec/replicas
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - RespectIgnoreDifferences=true
