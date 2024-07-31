@@ -73,7 +73,7 @@ gpuOperator:
     devicePlugin:
       enabled: true
       config:
-        name: "{{ if gt .Values.gpuOperator.timeSlices 1 }}device-plugin-config{{ end }}"
+        name: "{{ if gt (int .Values.gpuOperator.timeSlices) 1 }}device-plugin-config{{ end }}"
         default: ""
       mps:
         root: "/run/nvidia/mps"
