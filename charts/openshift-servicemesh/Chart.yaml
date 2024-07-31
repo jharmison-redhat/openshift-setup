@@ -1,0 +1,7 @@
+---
+apiVersion: v2
+name: openshift-servicemesh
+description: A helm chart to deploy OpenShift Service Mesh
+type: application
+version: 0.1.0
+appVersion: 0.1.0
