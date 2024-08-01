@@ -31,7 +31,7 @@ networking:
     - 172.30.0.0/16
 platform:
   aws:
-    region: us-west-2
+    region: ${AWS_REGION}
 publish: External
 additionalTrustBundlePolicy: Proxyonly
 pullSecret: '${PULL_SECRET}'
