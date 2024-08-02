@@ -1,6 +1,8 @@
 ---
 channel: fast
 
+enableUserTelemetry: false
+
 dataScienceClusterComponents:
   codeflare:
     managementState: Removed
@@ -59,6 +61,9 @@ dashboardConfig:
 
 defaultWorkbenchPvcSize: 20Gi
 showJupyterInEnabledApplications: true
+notebookIdleCulling:
+  enabled: true
+  timeoutInMinutes: 240
 
 modelServerSizes:
   - name: Small

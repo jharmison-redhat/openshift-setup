@@ -1,0 +1,14 @@
+{{/*
+Segment.io is a User Tracking framework
+*/}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/part-of: segment-io
+    app.opendatahub.io/segment-io: "true"
+  name: odh-segment-key-config
+  namespace: redhat-ods-applications
+data:
+  segmentKeyEnabled: "{{ .Values.enableUserTelemetry }}"
