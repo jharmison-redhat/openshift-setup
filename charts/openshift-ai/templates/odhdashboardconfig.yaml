@@ -26,6 +26,6 @@ spec:
     {{- toYaml . | nindent 4 }}
     {{- end }}
   notebookController:
-    enabled: true
+    enabled: {{ .Values.showJupyterInEnabledApplications }}
     notebookNamespace: rhods-notebooks
     pvcSize: {{ .Values.defaultWorkbenchPvcSize }}

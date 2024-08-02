@@ -58,6 +58,7 @@ dashboardConfig:
   enablement: true
 
 defaultWorkbenchPvcSize: 20Gi
+showJupyterInEnabledApplications: true
 
 modelServerSizes:
   - name: Small
