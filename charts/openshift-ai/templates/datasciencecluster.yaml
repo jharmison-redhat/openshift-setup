@@ -1,0 +1,8 @@
+---
+apiVersion: datasciencecluster.opendatahub.io/v1
+kind: DataScienceCluster
+metadata:
+  name: default-dsc
+spec:
+  components:
+    {{- toYaml .Values.dataScienceClusterComponents | nindent 4 }}
