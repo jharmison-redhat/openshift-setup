@@ -1,0 +1,9 @@
+{{- with .Values.admins }}
+---
+apiVersion: user.openshift.io/v1
+kind: Group
+metadata:
+  name: rhods-admins
+users:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
