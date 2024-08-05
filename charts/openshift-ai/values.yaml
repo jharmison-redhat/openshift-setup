@@ -5,7 +5,7 @@ enableUserTelemetry: false
 
 dataScienceClusterComponents:
   codeflare:
-    managementState: Removed
+    managementState: Managed
   dashboard:
     managementState: Managed
   datasciencepipelines:
@@ -19,13 +19,13 @@ dataScienceClusterComponents:
       managementState: Managed
       name: knative-serving
   kueue:
-    managementState: Removed
+    managementState: Managed
   modelmeshserving:
     managementState: Removed
   ray:
-    managementState: Removed
+    managementState: Managed
   trainingoperator:
-    managementState: Removed
+    managementState: Managed
   trustyai:
     managementState: Removed
   workbenches:
