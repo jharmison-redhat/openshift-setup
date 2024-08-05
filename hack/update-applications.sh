@@ -49,7 +49,7 @@ for app in "${!applications[@]}"; do
 		add_vars+=("secrets+age-import:///helm-secrets-private-keys/argo.txt?../../${CLUSTER_DIR}/values/${app}/secrets.enc.yaml")
 	fi
 	for vars_file in "${add_vars[@]}"; do
-		hack/yq -i e '.spec.source.helm.valueFiles |= . + ["'"$vars_file"'"]' "$app_yaml"
+		yq -i e '.spec.source.helm.valueFiles |= . + ["'"$vars_file"'"]' "$app_yaml"
 	done
 done
 for app in "${!notes[@]}"; do

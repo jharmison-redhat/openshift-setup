@@ -28,3 +28,10 @@ function concat_with_comma {
 	local IFS=,
 	echo "$*"
 }
+
+function yq {
+	${RUNTIME:-podman} run --rm --interactive \
+		--security-opt label=disable --user root \
+		--volume "${PWD}:/workdir" --workdir /workdir \
+		docker.io/mikefarah/yq:latest "${@}"
+}
