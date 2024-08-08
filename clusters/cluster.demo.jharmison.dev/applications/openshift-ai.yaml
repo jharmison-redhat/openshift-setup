@@ -19,6 +19,7 @@ spec:
     helm:
       valueFiles:
         - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
+        - ../../clusters/cluster.demo.jharmison.dev/values/openshift-ai/values.yaml
   syncPolicy:
     automated:
       prune: true

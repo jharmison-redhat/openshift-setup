@@ -12,6 +12,7 @@ vars=$(concat_with_comma "${templated_variables[@]}")
 # Start with our Makefile-provided apps
 declare -A applications
 for app in $ARGO_APPLICATIONS; do
+	echo "Found $app in ARGO_APPLICATIONS"
 	applications["$app"]=""
 done
 
@@ -19,9 +20,10 @@ done
 while read -rd $'\0' values; do
 	app="$(basename "$(dirname "$values")")"
 	if [[ ! -v applications["$app"] ]]; then
+		echo "Found $app in values from $values"
 		applications["$app"]=''
 	fi
-done < <(find clusters -path '*/values/*' -type f \( -name values.yaml -o -name secrets.enc.yaml -o -name secrets.yaml \) -print0)
+done < <(find ${CLUSTER_DIR} -path '*/values/*' -type f \( -name values.yaml -o -name secrets.enc.yaml -o -name secrets.yaml \) -print0)
 
 # Save notes from apps
 declare -A notes
