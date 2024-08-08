@@ -11,3 +11,5 @@ metadata_validate
 set -x
 
 "${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" destroy cluster
+
+rm -rf "${CLUSTER_DIR}"
