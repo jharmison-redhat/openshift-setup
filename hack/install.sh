@@ -16,6 +16,7 @@ export SSH_KEY
 
 templated_variables=(
 	\$PULL_SECRET
+	\$AWS_REGION
 	\$AWS_ACCESS_KEY_ID
 	\$AWS_SECRET_ACCESS_KEY
 	\$CLUSTER_NAME

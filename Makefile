@@ -43,6 +43,10 @@ $(INSTALL_DIR)/argo.txt:
 	mkdir -p $(@D)
 	if [ ! -e $@ ]; then pub=$$(age-keygen -o $@ 2>&1 | awk '{print $$NF}') && sed -i '/public_keys=/a\	'"$$pub # $(CLUSTER_URL)" common-chart-secrets.sh; else touch $@; fi
 
+.PHONY: secrets
+secrets: $(INSTALL_DIR)/argo.txt
+	./encrypt-chart-secrets.sh
+
 $(INSTALL_DIR)/bootstrap/kustomization.yaml: $(INSTALL_DIR)/argo_ed25519 $(INSTALL_DIR)/argo.txt
 	@hack/gen-bootstrap.sh
 
