@@ -72,6 +72,15 @@ update-applications: $(CLUSTER_DIR)/cluster.yaml
 bootstrap: $(INSTALL_DIR)/oc update-applications
 	@hack/bootstrap.sh
 
+.PHONY: use-kubeconfig
+use-kubeconfig: $(INSTALL_DIR)/auth/kubeconfig-orig
+	@KUBECONFIG=$${PWD}/$< PATH=$${PWD}/$(INSTALL_DIR):"$$PATH" bash --init-file \
+		<(echo 'source /etc/profile; source $$HOME/.bashrc; if [ "$$PROMPT_COMMAND" ]; then export PROMPT_COMMAND="echo -n \($(CLUSTER_URL)\)\ ; $${PROMPT_COMMAND}"; else export PS1="\($(CLUSTER_URL)\) $$PS1"; fi; alias oc="oc --insecure-skip-tls-verify=true"')
+
+.PHONY: watch-cluster-operators
+watch-cluster-operators: $(INSTALL_DIR)/auth/kubeconfig-orig
+	KUBECONFIG=$< $(INSTALL_DIR)/oc --insecure-skip-tls-verify=true get co -w
+
 .PHONY: destroy
 destroy:
 	@hack/destroy.sh
