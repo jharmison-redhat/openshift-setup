@@ -1,11 +1,7 @@
 #!/bin/bash
 
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
-set -e
-
-function oc {
-	KUBECONFIG="${INSTALL_DIR}/auth/kubeconfig-orig" "${INSTALL_DIR}/oc" --insecure-skip-tls-verify=true "${@}"
-}
+source hack/common.sh
 
 cluster_yaml="${CLUSTER_DIR}/cluster.yaml"
 if [ -e "$cluster_yaml" ] && (! git ls-files --error-unmatch "$cluster_yaml"); then

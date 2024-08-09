@@ -85,6 +85,14 @@ watch-cluster-operators: $(INSTALL_DIR)/auth/kubeconfig-orig
 destroy:
 	@hack/destroy.sh
 
+.PHONY: start
+start:
+	@hack/start.sh
+
+.PHONY: stop
+stop:
+	@hack/stop.sh
+
 .PHONY: clean
 clean: destroy
 	rm -rf bin

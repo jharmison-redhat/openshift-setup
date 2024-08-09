@@ -31,6 +31,9 @@ vars=$(concat_with_comma "${templated_variables[@]}")
 
 envsubst "$vars" <install-config.yaml.tpl >"${INSTALL_DIR}/install-config.yaml"
 
+echo "install-config.yaml:"
+sed 's/^/  /' "${INSTALL_DIR}/install-config.yaml"
+
 set -x
 
 "${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" create cluster
