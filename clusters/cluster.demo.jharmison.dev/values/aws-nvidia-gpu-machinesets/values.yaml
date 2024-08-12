@@ -1,5 +1,0 @@
----
-desiredReplicas: 0
-
-autoscaling:
-  enabled: true
