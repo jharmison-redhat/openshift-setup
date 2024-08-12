@@ -1,3 +1,5 @@
+#!/bin/bash
+
 set -e
 
 COMMON_PUBLIC_KEYS=(
@@ -7,6 +9,15 @@ COMMON_PUBLIC_KEYS=(
 for envfile in .env "${INSTALL_DIR}/.env"; do
 	if [ -f "$envfile" ]; then source "$envfile"; fi
 done
+
+if ! command -v yq | grep -q '^/'; then
+	function yq {
+		${RUNTIME:-podman} run --rm --interactive \
+			--security-opt label=disable --user root \
+			--volume "${PWD}:/workdir" --workdir /workdir \
+			docker.io/mikefarah/yq:latest "${@}"
+	}
+fi
 
 function pull_secret_validate {
 	if [ -z "$PULL_SECRET" ]; then
@@ -37,7 +48,7 @@ function metadata_validate {
 }
 
 function argo_ssh_validate {
-	{ ssh -i "${INSTALL_DIR}/argo_ed25519" -o IdentityAgent=none -o IdentitiesOnly=yes git@github.com 2>&1 || :; } | grep -qF 'successfully authenticated'
+	{ ssh -i "${INSTALL_DIR}/argo_ed25519" -o IdentityAgent=none -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null git@github.com 2>&1 || :; } | grep -qF 'successfully authenticated'
 }
 
 function cluster_file_pushed {
@@ -67,13 +78,6 @@ function cluster_files_updated {
 function concat_with_comma {
 	local IFS=,
 	echo "$*"
-}
-
-function yq {
-	${RUNTIME:-podman} run --rm --interactive \
-		--security-opt label=disable --user root \
-		--volume "${PWD}:/workdir" --workdir /workdir \
-		docker.io/mikefarah/yq:latest "${@}"
 }
 
 function oc {
@@ -121,9 +125,9 @@ function ct_needs_update {
 	# If the plaintext is modified more recently, we need to check if it's the same
 	if [ "$pt" -nt "$ct" ]; then
 		pt_content="$(sops --decrypt "$ct" | yq e)"
-		sha256sum="$(echo "$pt_content" | "${shacmd[@]}" | cut -d' ' -f1)"
+		sha256sum="$(echo "$pt_content" | sha256sum | cut -d' ' -f1)"
 		# If we need to update the plaintext, return the content
-		if ! echo "$sha256sum  $pt" | "${shacmd[@]}" -c - >/dev/null 2>&1; then
+		if ! echo "$sha256sum  $pt" | sha256sum -c - >/dev/null 2>&1; then
 			sops --encrypt --age "$keystring" "$pt" | yq e
 			return 0
 		fi
@@ -167,9 +171,9 @@ function pt_needs_update {
 	# If the ciphertext is modified more recently, we need to check if we have to update the content
 	if [ "$ct" -nt "$pt" ]; then
 		content="$(sops --decrypt "$ct" | yq e)"
-		sha256sum="$(echo "$content" | "${shacmd[@]}" | cut -d' ' -f1)"
+		sha256sum="$(echo "$content" | sha256sum | cut -d' ' -f1)"
 		# If we need to update the plaintext, return the content
-		if ! echo "$sha256sum  $pt" | "${shacmd[@]}" -c - >/dev/null 2>&1; then
+		if ! echo "$sha256sum  $pt" | sha256sum -c - >/dev/null 2>&1; then
 			echo "$content"
 			return 0
 		fi
@@ -200,6 +204,5 @@ function rekey {
 		decrypt "$ct"
 		echo "Rekeying $ct" >&2
 		sops --encrypt --age "$keystring" "$pt" | yq e >"$ct"
-		git add "$ct"
 	fi
 }

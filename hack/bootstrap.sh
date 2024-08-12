@@ -17,6 +17,7 @@ fi
 
 if ! argo_ssh_validate; then
 	echo "Unable to authenticate to github.com with your ArgoCD key - did you configure the deploy key?" >&2
+	cat "${INSTALL_DIR}/argo_ed25519.pub"
 	exit 1
 fi
 

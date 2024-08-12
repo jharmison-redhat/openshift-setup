@@ -16,6 +16,10 @@ CLUSTER_URL := $(CLUSTER_NAME).$(BASE_DOMAIN)
 CLUSTER_DIR := clusters/$(CLUSTER_URL)
 INSTALL_DIR := install/$(CLUSTER_URL)
 
+RUNTIME ?= podman
+IMAGE ?= registry.jharmison.com/library/openshift-setup:latest
+CONTAINER_MAKE_ARGS :=
+
 -include $(INSTALL_DIR)/.env
 
 export
@@ -72,7 +76,7 @@ bootstrap: $(INSTALL_DIR)/oc update-applications
 .PHONY: use-kubeconfig
 use-kubeconfig: $(INSTALL_DIR)/auth/kubeconfig-orig
 	@KUBECONFIG=$${PWD}/$< PATH=$${PWD}/$(INSTALL_DIR):"$$PATH" bash --init-file \
-		<(echo 'source /etc/profile; source $$HOME/.bashrc; if [ "$$PROMPT_COMMAND" ]; then export PROMPT_COMMAND="echo -n \($(CLUSTER_URL)\)\ ; $${PROMPT_COMMAND}"; else export PS1="\($(CLUSTER_URL)\) $$PS1"; fi; alias oc="oc --insecure-skip-tls-verify=true"')
+		<(echo 'source /etc/profile; source $$HOME/.bashrc; if [ "$$PROMPT_COMMAND" ]; then export PROMPT_COMMAND="echo -n \($(CLUSTER_URL)\)\ ; $${PROMPT_COMMAND}"; else export PS1="($(CLUSTER_URL)) $$PS1"; fi; alias oc="oc --insecure-skip-tls-verify=true"')
 
 .PHONY: watch-cluster-operators
 watch-cluster-operators: $(INSTALL_DIR)/auth/kubeconfig-orig
@@ -97,6 +101,15 @@ start:
 .PHONY: stop
 stop:
 	@hack/stop.sh
+
+.PHONY: image
+image:
+	$(RUNTIME) build . -t $(IMAGE)
+	$(RUNTIME) push $(IMAGE)
+
+.PHONY: container
+container:
+	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host $(IMAGE) $(CONTAINER_MAKE_ARGS)
 
 .PHONY: clean
 clean: destroy
