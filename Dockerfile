@@ -15,6 +15,7 @@ RUN dnf -y install \
       openssh-clients \
       age \
       make \
+      bind-utils \
       https://github.com/getsops/sops/releases/download/v3.9.0/sops-3.9.0-1.x86_64.rpm \
  && dnf -y clean all
 

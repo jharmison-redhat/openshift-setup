@@ -90,10 +90,6 @@ encrypt:
 decrypt:
 	@hack/decrypt.sh
 
-.PHONY: destroy
-destroy:
-	@hack/destroy.sh
-
 .PHONY: start
 start:
 	@hack/start.sh
@@ -101,6 +97,10 @@ start:
 .PHONY: stop
 stop:
 	@hack/stop.sh
+
+.PHONY: hosted-zone-setup
+hosted-zone-setup:
+	@hack/hosted-zone.sh
 
 .PHONY: image
 image:
@@ -110,6 +110,10 @@ image:
 .PHONY: container
 container:
 	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host $(IMAGE) $(CONTAINER_MAKE_ARGS)
+
+.PHONY: destroy
+destroy:
+	@hack/destroy.sh
 
 .PHONY: clean
 clean: destroy
