@@ -14,10 +14,18 @@ function pull_secret_validate {
 		return 1
 	fi
 }
+
 function aws_validate {
 	if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
 		echo "Please export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY to be able to create a cluster on AWS" >&2
 		return 1
+	fi
+}
+
+function aws_validate_functional {
+	if ! aws sts get-caller-identity >/dev/null 2>&1; then
+		echo "AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY appear not be valid" >&2
+		return 2
 	fi
 }
 

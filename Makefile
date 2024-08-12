@@ -100,9 +100,4 @@ stop:
 
 .PHONY: clean
 clean: destroy
-	rm -rf bin
-
-.PHONY: realclean
-realclean: clean
-	rm -rf install
-	rm -rf bootstrap/ssh-keys.yaml
+	rm -rf "${INSTALL_DIR}"

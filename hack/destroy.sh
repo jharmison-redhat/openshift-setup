@@ -8,8 +8,12 @@ rm -rf "${CLUSTER_DIR}"
 aws_validate
 metadata_validate
 
-set -x
+if aws_validate_functional; then
+	set -x
+	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" destroy cluster
+else
+	set -x
+fi
 
-"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" destroy cluster
-
+rm -rf "${INSTALL_DIR}"
 rm -rf "${CLUSTER_DIR}"
