@@ -28,6 +28,10 @@ function metadata_validate {
 	fi
 }
 
+function argo_ssh_validate {
+	{ ssh -i "${INSTALL_DIR}/argo_ed25519" -o IdentityAgent=none -o IdentitiesOnly=yes git@github.com 2>&1 || :; } | grep -qF 'successfully authenticated'
+}
+
 function cluster_file_pushed {
 	git diff --quiet "@{u}...HEAD" -- "${@}" || return 1
 }

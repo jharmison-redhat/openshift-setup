@@ -15,6 +15,11 @@ if ! cluster_files_updated; then
 	exit 1
 fi
 
+if ! argo_ssh_validate; then
+	echo "Unable to authenticate to github.com with your ArgoCD key - did you configure the deploy key?" >&2
+	exit 1
+fi
+
 timeout=1800
 step=5
 duration=0
