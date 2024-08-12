@@ -41,7 +41,7 @@ $(INSTALL_DIR)/argo_ed25519:
 
 $(INSTALL_DIR)/argo.txt:
 	mkdir -p $(@D)
-	if [ ! -e $@ ]; then pub=$$(age-keygen -o $@ 2>&1 | awk '{print $$NF}') && sed -i '/public_keys=/a\	'"$$pub # $(CLUSTER_URL)" common-chart-secrets.sh; else touch $@; fi
+	if [ ! -e $@ ]; then age-keygen -o $@ 2>/dev/null; else touch $@; fi
 
 .PHONY: secrets
 secrets: $(INSTALL_DIR)/argo.txt
@@ -64,9 +64,6 @@ $(CLUSTER_DIR)/cluster.yaml: $(INSTALL_DIR)/auth/kubeconfig-orig
 .PHONY: update-applications
 update-applications: $(CLUSTER_DIR)/cluster.yaml
 	@hack/update-applications.sh
-	@echo "*********************************************************"
-	@echo "* Reminder to commit and push your application changes! *"
-	@echo "*********************************************************"
 
 .PHONY: bootstrap
 bootstrap: $(INSTALL_DIR)/oc update-applications
@@ -80,6 +77,14 @@ use-kubeconfig: $(INSTALL_DIR)/auth/kubeconfig-orig
 .PHONY: watch-cluster-operators
 watch-cluster-operators: $(INSTALL_DIR)/auth/kubeconfig-orig
 	KUBECONFIG=$< $(INSTALL_DIR)/oc --insecure-skip-tls-verify=true get co -w
+
+.PHONY: encrypt
+encrypt:
+	@hack/encrypt.sh
+
+.PHONY: decrypt
+decrypt:
+	@hack/decrypt.sh
 
 .PHONY: destroy
 destroy:

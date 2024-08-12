@@ -3,9 +3,15 @@
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
 
-cluster_yaml="${CLUSTER_DIR}/cluster.yaml"
-if [ -e "$cluster_yaml" ] && (! git ls-files --error-unmatch "$cluster_yaml"); then
-	echo "Please commit changes for $CLUSTER_URL before applying bootstrap" >&2
+if ! cluster_files_updated; then
+	mapfile -t uncommitted < <(git status -su "${CLUSTER_DIR}" | awk '{print $NF}')
+	mapfile -t unpushed < <(git diff --name-only "@{u}...HEAD" -- "${CLUSTER_DIR}")
+	declare -A needs_update
+	for file in "${uncommitted[@]}" "${unpushed[@]}"; do
+		needs_update["$file"]=""
+	done
+	echo "The following files need to be committed or pushed for bootstrap:" >&2
+	printf '  %s\n' "${!needs_update[@]}" >&2
 	exit 1
 fi
 

@@ -1,11 +1,11 @@
 ---
 cluster:
-  infraID: cluster-vpvd6
+  infraID: cluster-tmbbs
   name: cluster
-  baseDomain: demo.jharmison.dev
+  baseDomain: rtx.jharmison.dev
   controlPlaneNodes: 1
   workerNodes: 2
-  agePublicKey: age10526a2k4pcuzgydp995ggh96pv0xy80chg3v7j20k2t580gnqy2sy9x3tn
+  agePublicKey: age165rgjhwn9jkruu3fx6tc0xry02qzkd2q4mqsffsardgq2kpq74jsuzvd85
 aws:
   region: us-west-2
   azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
