@@ -11,6 +11,8 @@ fi
 pull_secret_validate
 aws_validate
 
+hack/hosted-zone.sh
+
 SSH_KEY="$(cat "${INSTALL_DIR}/id_ed25519.pub")"
 export SSH_KEY
 

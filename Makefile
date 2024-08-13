@@ -66,7 +66,7 @@ $(CLUSTER_DIR)/cluster.yaml: $(INSTALL_DIR)/auth/kubeconfig-orig
 	@hack/cluster-yaml.sh
 
 .PHONY: update-applications
-update-applications: $(CLUSTER_DIR)/cluster.yaml
+update-applications: $(CLUSTER_DIR)/cluster.yaml $(wildcard $(CLUSTER_DIR)/values/*/*.yaml) $(wildcard $(CLUSTER_DIR)/values/*/*.yml)
 	@hack/update-applications.sh
 
 .PHONY: bootstrap

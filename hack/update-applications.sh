@@ -26,7 +26,7 @@ while read -rd $'\0' values; do
 		echo "Found $app in values from $values" >&2
 		applications["$app"]=''
 	fi
-done < <(find ${CLUSTER_DIR} -path '*/values/*' -type f \( -name values.yaml -o -name secrets.enc.yaml -o -name secrets.yaml \) -print0)
+done < <(find "${CLUSTER_DIR}" -path '*/values/*' -type f \( -name values.yaml -o -name values.yml -o -name secrets.enc.yaml -o -name secrets.enc.yml \) -print0)
 
 # Save notes from apps
 declare -A notes

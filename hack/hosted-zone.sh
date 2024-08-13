@@ -125,6 +125,7 @@ EOF
 	else
 		echo "Records are configured correctly for ${hosted_zone}"
 	fi
+	public_dns_validation
 else
 	public_dns_validation
 fi
