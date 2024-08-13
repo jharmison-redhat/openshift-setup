@@ -111,6 +111,10 @@ image:
 container:
 	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host $(IMAGE) $(CONTAINER_MAKE_ARGS)
 
+.PHONY: shell
+shell:
+	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host --entrypoint /bin/bash $(IMAGE) -li
+
 .PHONY: destroy
 destroy:
 	@hack/destroy.sh
