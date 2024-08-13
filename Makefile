@@ -104,7 +104,7 @@ hosted-zone-setup:
 
 .PHONY: image
 image:
-	$(RUNTIME) build . -t $(IMAGE)
+	$(RUNTIME) build . --pull=newer -t $(IMAGE)
 	$(RUNTIME) push $(IMAGE)
 
 .PHONY: container
