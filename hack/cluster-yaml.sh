@@ -29,4 +29,13 @@ aws:
   ami: $ami
 desiredUpdate:
   version: $CLUSTER_VERSION
+acme:
+  letsencrypt:
+    email: ${ACME_EMAIL:-jharmison@redhat.com}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    disableAccountKeyGeneration: ${ACME_DISABLE_ACCOUNT_KEY_GENERATION:-true}
+    privateKeySecretRef:
+      name: letsencrypt-private-key
+certificates:
+  clusterIssuer: letsencrypt
 EOF
