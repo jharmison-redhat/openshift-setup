@@ -1,0 +1,14 @@
+---
+cluster:
+  infraID: nvidia-vnl4m
+  name: nvidia
+  baseDomain: rtx.jharmison.dev
+  controlPlaneNodes: 1
+  workerNodes: 2
+  agePublicKey: age1vfk3dau8wg9rp4lnhm536gg8g23e9mkd66hyn2z37ur8707wyghsnclpdl
+aws:
+  region: us-west-2
+  azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
+  ami: ami-07b0ebe683783d6fc
+desiredUpdate:
+  version: 4.15.22
