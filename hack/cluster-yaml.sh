@@ -36,11 +36,20 @@ certificates:
   clusterIssuer: letsencrypt
 acme:
   letsencrypt:
-    email: ${ACME_EMAIL:-jharmison@redhat.com}
     server: https://acme-v02.api.letsencrypt.org/directory
     disableAccountKeyGeneration: ${ACME_DISABLE_ACCOUNT_KEY_GENERATION:-true}
     privateKeySecretRef:
       name: letsencrypt-private-key
+EOF
+cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/secrets.yaml"
+---
+acme:
+  letsencrypt:
+    email: ${ACME_EMAIL}
+    secrets:
+      - name: route53-creds
+        stringData:
+          secret-access-key: ${AWS_SECRET_ACCESS_KEY}
     solvers:
       - type: dns
         dnsConfig:
@@ -53,13 +62,4 @@ acme:
               name: acme-letsencrypt-route53-creds
         dnsZones:
           - ${BASE_DOMAIN}
-EOF
-cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/secrets.yaml"
----
-acme:
-  letsencrypt:
-    secrets:
-      - name: route53-creds
-        stringData:
-          secret-access-key: ${AWS_SECRET_ACCESS_KEY}
 EOF
