@@ -123,7 +123,7 @@ container:
 
 .PHONY: shell
 shell:
-	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host --entrypoint /bin/bash $(IMAGE) -li
+	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host --env HOME=/root --entrypoint /bin/bash $(IMAGE) -c 'make use-kubeconfig'
 
 .PHONY: destroy
 destroy:
