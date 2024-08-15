@@ -17,6 +17,7 @@ RUN dnf -y install \
       make \
       bind-utils \
       helm \
+      bash-completion \
       https://github.com/getsops/sops/releases/download/v3.9.0/sops-3.9.0-1.x86_64.rpm \
  && dnf -y clean all
 
