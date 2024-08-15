@@ -88,7 +88,7 @@ bootstrap: $(INSTALL_DIR)/oc update-applications
 .PHONY: use-kubeconfig
 use-kubeconfig: $(INSTALL_DIR)/auth/kubeconfig-orig
 	@KUBECONFIG=$${PWD}/$< PATH=$${PWD}/$(INSTALL_DIR):"$$PATH" bash --init-file \
-		<(echo 'source /etc/profile; source $$HOME/.bashrc; if [ "$$PROMPT_COMMAND" ]; then export PROMPT_COMMAND="echo -n \($(CLUSTER_URL)\)\ ; $${PROMPT_COMMAND}"; else export PS1="($(CLUSTER_URL)) $$PS1"; fi; alias oc="oc --insecure-skip-tls-verify=true"')
+		<(echo 'source /etc/profile; source $$HOME/.bashrc; if [ "$$PROMPT_COMMAND" ]; then export PROMPT_COMMAND="echo -n \($(CLUSTER_URL)\)\ ; $${PROMPT_COMMAND}"; else export PS1="($(CLUSTER_URL)) $$PS1"; fi; alias oc="oc --insecure-skip-tls-verify=true"; alias k9s="k9s --insecure-skip-tls-verify"')
 
 .PHONY: watch-cluster-operators
 watch-cluster-operators: $(INSTALL_DIR)/auth/kubeconfig-orig
