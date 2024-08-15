@@ -21,6 +21,8 @@ if ! argo_ssh_validate; then
 	exit 1
 fi
 
+# TODO: Enable checking for GitHub OAuth Application
+
 timeout=1800
 step=5
 duration=0
