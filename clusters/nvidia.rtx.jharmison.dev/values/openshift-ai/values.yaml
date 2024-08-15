@@ -6,12 +6,12 @@ dataScienceClusterComponents:
   datasciencepipelines:
     managementState: Removed
   kserve:
-    managementState: Removed
+    managementState: Managed
     serving:
       ingressGateway:
         certificate:
           type: OpenshiftDefaultIngress
-      managementState: Removed
+      managementState: Managed
       name: knative-serving
   kueue:
     managementState: Removed
