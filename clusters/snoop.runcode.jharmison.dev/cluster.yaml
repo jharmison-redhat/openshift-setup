@@ -8,7 +8,7 @@ cluster:
   agePublicKey: age19rvqnma8kv2q4vcv52fw3mfdj2trtzg2lhtr93k9dhf7qxfrqspqsznfka
 aws:
   region: us-west-2
-  azs: ["us-west-2a", "us-west-2b", "us-west-2c", "us-west-2d"]
+  azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
   ami: ami-07b0ebe683783d6fc
 desiredUpdate:
   version: 4.15.22
