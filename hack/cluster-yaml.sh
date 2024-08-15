@@ -55,7 +55,7 @@ acme:
         dnsConfig:
           route53:
             accessKeyID: ${AWS_ACCESS_KEY_ID}
-            hostedZoneId: $(aws_hosted_zone_id)
+            hostedZoneID: $(aws_hosted_zone_id)
             region: ${AWS_REGION}
             secretAccessKeySecretRef:
               key: secret-access-key
