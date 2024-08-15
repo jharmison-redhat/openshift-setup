@@ -58,10 +58,10 @@ $(INSTALL_DIR)/bootstrap/kustomization.yaml: $(INSTALL_DIR)/argo_ed25519 $(INSTA
 	@hack/gen-bootstrap.sh
 
 .PHONY: arg
-.ARG~%: arg
-	@if [[ $$(cat .ARG~$($*) 2>&1) != '$($*)' ]]; then echo -n $($*) >.ARG~$*; fi
+.ARG~%~$(CLUSTER_URL): arg
+	@if [[ $$(cat $@ 2>&1) != '$($*)' ]]; then echo -n $($*) >$@; fi
 
-$(INSTALL_DIR)/auth/kubeconfig: $(INSTALL_DIR)/id_ed25519 $(INSTALL_DIR)/bootstrap/kustomization.yaml $(INSTALL_DIR)/openshift-install .ARG~RECOVER_INSTALL
+$(INSTALL_DIR)/auth/kubeconfig: $(INSTALL_DIR)/id_ed25519 $(INSTALL_DIR)/bootstrap/kustomization.yaml $(INSTALL_DIR)/openshift-install .ARG~RECOVER_INSTALL~$(CLUSTER_URL)
 	@hack/install.sh
 
 $(INSTALL_DIR)/auth/kubeconfig-orig: $(INSTALL_DIR)/auth/kubeconfig
