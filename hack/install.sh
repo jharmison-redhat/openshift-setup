@@ -3,7 +3,7 @@
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
 
-if metadata_validate; then
+if metadata_validate && ! ${RECOVER_INSTALL}; then
 	echo "Skipping install" >&2
 	exit 0
 fi
@@ -38,4 +38,10 @@ sed 's/^/  /' "${INSTALL_DIR}/install-config.yaml"
 
 set -x
 
-"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" create cluster
+if ${RECOVER_INSTALL}; then
+	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" wait-for bootstrap-complete || :
+	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" destroy bootstrap || :
+	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" wait-for install-complete
+else
+	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" create cluster
+fi

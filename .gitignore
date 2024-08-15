@@ -1,5 +1,6 @@
 # Makefile uses/generates these
 .env
+.ARG~*
 install/*
 
 # Never commit unencrypted secrets

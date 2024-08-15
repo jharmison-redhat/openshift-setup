@@ -31,7 +31,7 @@ if ! $found; then
 fi
 
 echo -n 'Retrieving HostedZone configuration'
-hosted_zone_id=$(aws route53 list-hosted-zones --output text --query "HostedZones[?Name == '${hosted_zone}'].Id | [0]" | cut -d/ -f3)
+hosted_zone_id=$(aws_hosted_zone_id)
 echo -n .
 
 # shellcheck disable=SC2207

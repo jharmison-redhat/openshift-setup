@@ -14,6 +14,7 @@ CLUSTER_VERSION ?= 4.15.22
 ACME_EMAIL ?=
 ACME_DISABLE_ACCOUNT_KEY_GENERATION ?=
 
+RECOVER_INSTALL := false
 CLUSTER_URL := $(CLUSTER_NAME).$(BASE_DOMAIN)
 CLUSTER_DIR := clusters/$(CLUSTER_URL)
 INSTALL_DIR := install/$(CLUSTER_URL)
@@ -56,7 +57,11 @@ secrets: $(INSTALL_DIR)/argo.txt
 $(INSTALL_DIR)/bootstrap/kustomization.yaml: $(INSTALL_DIR)/argo_ed25519 $(INSTALL_DIR)/argo.txt
 	@hack/gen-bootstrap.sh
 
-$(INSTALL_DIR)/auth/kubeconfig: $(INSTALL_DIR)/id_ed25519 $(INSTALL_DIR)/bootstrap/kustomization.yaml $(INSTALL_DIR)/openshift-install
+.PHONY: arg
+.ARG~%: arg
+	@if [[ $$(cat .ARG~$($*) 2>&1) != '$($*)' ]]; then echo -n $($*) >.ARG~$*; fi
+
+$(INSTALL_DIR)/auth/kubeconfig: $(INSTALL_DIR)/id_ed25519 $(INSTALL_DIR)/bootstrap/kustomization.yaml $(INSTALL_DIR)/openshift-install .ARG~RECOVER_INSTALL
 	@hack/install.sh
 
 $(INSTALL_DIR)/auth/kubeconfig-orig: $(INSTALL_DIR)/auth/kubeconfig

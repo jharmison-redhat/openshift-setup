@@ -5,8 +5,7 @@ source hack/common.sh
 
 metadata_validate
 
-cluster_dir="clusters/${CLUSTER_URL}"
-mkdir -p "$cluster_dir/applications"
+mkdir -p "${CLUSTER_DIR}/applications"
 
 infraID="$(jq -r '.infraID' "${INSTALL_DIR}/metadata.json")"
 region="$(jq -r '.aws.region' "${INSTALL_DIR}/metadata.json")"
@@ -14,7 +13,7 @@ azs="$(jq -c '.aws_worker_availability_zones' "${INSTALL_DIR}/terraform.platform
 ami="$(jq -r '.aws_ami' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
 age_public_key="$(awk '/public key:/{print $NF}' "${INSTALL_DIR}/argo.txt")"
 
-cat <<EOF >"$cluster_dir/cluster.yaml"
+cat <<EOF >"${CLUSTER_DIR}/cluster.yaml"
 ---
 cluster:
   infraID: $infraID
@@ -29,6 +28,12 @@ aws:
   ami: $ami
 desiredUpdate:
   version: $CLUSTER_VERSION
+EOF
+
+mkdir -p "${CLUSTER_DIR}/values/cert-manager"
+cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/values.yaml"
+certificates:
+  clusterIssuer: letsencrypt
 acme:
   letsencrypt:
     email: ${ACME_EMAIL:-jharmison@redhat.com}
@@ -36,6 +41,25 @@ acme:
     disableAccountKeyGeneration: ${ACME_DISABLE_ACCOUNT_KEY_GENERATION:-true}
     privateKeySecretRef:
       name: letsencrypt-private-key
-certificates:
-  clusterIssuer: letsencrypt
+    solvers:
+      - type: dns
+        dnsConfig:
+          route53:
+            accessKeyId: ${AWS_ACCESS_KEY_ID}
+            hostedZoneId: $(aws_hosted_zone_id)
+            region: ${AWS_REGION}
+            secretAccessKeySecretRef:
+              key: secret-access-key
+              name: acme-letsencrypt-route53-creds
+        dnsZones:
+          - ${BASE_DOMAIN}
+EOF
+cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/secrets.yaml"
+---
+acme:
+  letsencrypt:
+    secrets:
+      - name: route53-creds
+        stringData:
+          secret-access-key: ${AWS_SECRET_ACCESS_KEY}
 EOF

@@ -40,6 +40,10 @@ function aws_validate_functional {
 	fi
 }
 
+function aws_hosted_zone_id {
+	aws route53 list-hosted-zones --output text --query "HostedZones[?Name == '${BASE_DOMAIN}.'].Id | [0]" | cut -d/ -f3
+}
+
 function metadata_validate {
 	if ! [ -e "${INSTALL_DIR}/metadata.json" ]; then
 		echo "No cluster metadata.json, indicating that you probably haven't installed a cluster" >&2
