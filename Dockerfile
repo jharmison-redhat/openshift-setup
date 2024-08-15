@@ -23,7 +23,8 @@ RUN dnf -y install \
       https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_linux_amd64.rpm \
  && dnf -y clean all
 
-RUN echo 'export PS1='\''[openshift-setup \w]$ '\' > /root/.bashrc
+RUN echo 'export PS1='\''[openshift-setup \w]$ '\' > /root/.bashrc \
+ && echo 'source <(oc completion bash)' >> /root/.bashrc
 WORKDIR /workdir
 
 ENTRYPOINT ["make"]
