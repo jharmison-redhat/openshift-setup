@@ -9,8 +9,9 @@ dataScienceClusterComponents:
     managementState: Managed
     serving:
       ingressGateway:
-        certificate:
-          type: OpenshiftDefaultIngress
+         certificate:
+           secretName: knative-serving-cert
+           type: SelfSigned
       managementState: Managed
       name: knative-serving
   kueue:
