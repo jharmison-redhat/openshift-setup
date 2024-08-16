@@ -85,15 +85,6 @@ update-applications: $(CLUSTER_DIR)/cluster.yaml $(wildcard $(CLUSTER_DIR)/value
 bootstrap: $(INSTALL_DIR)/oc update-applications
 	@hack/bootstrap.sh
 
-.PHONY: use-kubeconfig
-use-kubeconfig: $(INSTALL_DIR)/auth/kubeconfig-orig
-	@KUBECONFIG=$${PWD}/$< PATH=$${PWD}/$(INSTALL_DIR):"$$PATH" bash --init-file \
-		<(echo 'source /etc/profile; source $$HOME/.bashrc; if [ "$$PROMPT_COMMAND" ]; then export PROMPT_COMMAND="echo -n \($(CLUSTER_URL)\)\ ; $${PROMPT_COMMAND}"; else export PS1="($(CLUSTER_URL)) $$PS1"; fi; alias oc="oc --insecure-skip-tls-verify=true"; alias k9s="k9s --insecure-skip-tls-verify"')
-
-.PHONY: watch-cluster-operators
-watch-cluster-operators: $(INSTALL_DIR)/auth/kubeconfig-orig
-	KUBECONFIG=$< $(INSTALL_DIR)/oc --insecure-skip-tls-verify=true get co -w
-
 .PHONY: encrypt
 encrypt:
 	@hack/encrypt.sh
@@ -123,8 +114,13 @@ image:
 container:
 	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host $(IMAGE) $(CONTAINER_MAKE_ARGS)
 
+.PHONY: use-kubeconfig
+use-kubeconfig:
+	@KUBECONFIG=$${PWD}/$< PATH=$${PWD}/$(INSTALL_DIR):"$$PATH" bash --init-file \
+		<(echo 'source /etc/profile; source $$HOME/.bashrc; if [ "$$PROMPT_COMMAND" ]; then export PROMPT_COMMAND="echo -n \($(CLUSTER_URL)\)\ ; $${PROMPT_COMMAND}"; else export PS1="($(CLUSTER_URL)) $$PS1"; fi; alias oc="oc --insecure-skip-tls-verify=true"; alias k9s="k9s --insecure-skip-tls-verify"')
+
 .PHONY: shell
-shell:
+shell: $(INSTALL_DIR)/oc
 	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host --env HOME=/root --env EDITOR=vi --entrypoint /bin/bash $(IMAGE) -c 'make use-kubeconfig'
 
 .PHONY: destroy
