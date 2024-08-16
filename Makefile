@@ -52,7 +52,7 @@ $(INSTALL_DIR)/argo.txt:
 
 .PHONY: secrets
 secrets: $(INSTALL_DIR)/argo.txt
-	./encrypt-chart-secrets.sh
+	@hack/encrypt.sh
 
 $(INSTALL_DIR)/bootstrap/kustomization.yaml: $(INSTALL_DIR)/argo_ed25519 $(INSTALL_DIR)/argo.txt
 	@hack/gen-bootstrap.sh
