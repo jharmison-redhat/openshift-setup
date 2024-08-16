@@ -9,7 +9,19 @@ if metadata_validate && ! ${RECOVER_INSTALL}; then
 fi
 
 pull_secret_validate
-aws_validate
+
+if ! aws_validate; then
+	read -rsp "Enter your AWS_ACCESS_KEY_ID for ${CLUSTER_URL}: " AWS_ACCESS_KEY_ID
+	echo
+	read -rsp "Enter your AWS_SECRET_ACCESS_KEY for ${CLUSTER_URL}: " AWS_SECRET_ACCESS_KEY
+	echo
+	export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+	aws_validate
+	cat <<EOF >>"${INSTALL_DIR}/.env"
+export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
+export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"
+EOF
+fi
 
 hack/hosted-zone.sh
 
