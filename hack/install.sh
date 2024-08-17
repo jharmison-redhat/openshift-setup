@@ -9,7 +9,24 @@ if metadata_validate && ! ${RECOVER_INSTALL}; then
 	exit 0
 fi
 
-pull_secret_validate
+if ! pull_secret_validate; then
+	echo "Copy your pull secret from: https://console.redhat.com/openshift/install/pull-secret"
+	echo -n "Paste it here: "
+	unset PULL_SECRET
+	while IFS= read -r -s -n1 pass; do
+		if [[ -z $pass ]]; then
+			echo
+			break
+		else
+			echo -n '*'
+			PULL_SECRET+="$pass"
+		fi
+	done
+	echo
+	cat <<EOF >>".env"
+export PULL_SECRET='${PULL_SECRET}'
+EOF
+fi
 
 if ! aws_validate; then
 	read -rsp "Enter your AWS_ACCESS_KEY_ID for ${CLUSTER_URL}: " AWS_ACCESS_KEY_ID
