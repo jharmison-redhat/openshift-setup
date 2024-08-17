@@ -113,7 +113,7 @@ image:
 
 .PHONY: container
 container:
-	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --pull=newer $(IMAGE) $(CONTAINER_MAKE_ARGS)
+	@$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --pull=newer $(IMAGE) $(CONTAINER_MAKE_ARGS)
 
 .PHONY: use-kubeconfig
 use-kubeconfig:
@@ -122,7 +122,7 @@ use-kubeconfig:
 
 .PHONY: shell
 shell: $(INSTALL_DIR)/oc
-	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --entrypoint /bin/bash --pull=newer $(IMAGE) -c 'make use-kubeconfig'
+	@$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --entrypoint /bin/bash --pull=newer $(IMAGE) -c 'make use-kubeconfig'
 
 .PHONY: destroy
 destroy:
