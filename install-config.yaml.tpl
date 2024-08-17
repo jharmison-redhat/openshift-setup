@@ -34,5 +34,5 @@ platform:
     region: ${AWS_REGION}
 publish: External
 additionalTrustBundlePolicy: Proxyonly
-pullSecret: '${PULL_SECRET}'
-sshKey: '${SSH_KEY}'
+pullSecret: ${PULL_SECRET}
+sshKey: ${SSH_KEY}
