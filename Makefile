@@ -122,7 +122,7 @@ use-kubeconfig:
 
 .PHONY: shell
 shell: $(INSTALL_DIR)/oc
-	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" --env-host --env HOME=/root --env EDITOR=vi --entrypoint /bin/bash $(IMAGE) -c 'make use-kubeconfig'
+	$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --entrypoint /bin/bash $(IMAGE) -c 'make use-kubeconfig'
 
 .PHONY: destroy
 destroy:
