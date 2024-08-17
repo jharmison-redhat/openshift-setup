@@ -5,6 +5,7 @@ source hack/common.sh
 
 if metadata_validate && ! ${RECOVER_INSTALL}; then
 	echo "Skipping install" >&2
+	touch "${INSTALL_DIR}/auth/kubeconfig"
 	exit 0
 fi
 
