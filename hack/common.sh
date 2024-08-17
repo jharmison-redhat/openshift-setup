@@ -60,6 +60,11 @@ function gh_validate {
 	gh repo deploy-key list >/dev/null 2>&1 || return 2
 }
 
+function genpasswd {
+	tr </dev/urandom -dc _A-Z-a-z-0-9 | head -c"${1:-32}"
+	echo
+}
+
 function cluster_file_pushed {
 	git diff --quiet "@{u}...HEAD" -- "${@}" || return 1
 }

@@ -63,3 +63,54 @@ acme:
         dnsZones:
           - ${BASE_DOMAIN}
 EOF
+
+mkdir -p "${CLUSTER_DIR}/values/oauth"
+if [ ! -f "${CLUSTER_DIR}/values/oauth/secrets.yaml" ]; then
+	read -n1 -rp "Do you want to configure a GitHub OAuth application (y/N)? " make_oauth
+	echo
+	if [ "${make_oauth^^}" = "Y" ]; then
+		echo "Set the name to:"
+		echo "  ${CLUSTER_URL}"
+		echo "Set the homepage to:"
+		echo "  https://console-openshift-console.apps.${CLUSTER_URL}"
+		echo "Set the callback-url to:"
+		echo "  https://oauth-openshift.apps.${CLUSTER_URL}/oauth2callback/github"
+		echo
+		read -rp "Enter your OAuth App organization: " org
+		read -rp "Enter your OAuth App Client ID: " client_id
+		read -srp "Enter your OAuth App Client Secret: " client_secret
+		echo
+		read -rp "Enter your GitHub user accounts for administrator access, separated by spaces: " admins
+		cat <<EOF >"${CLUSTER_DIR}/values/oauth/values.yaml"
+---
+providers:
+  htpasswd: null
+  github:
+    organizations:
+      - ${org}
+
+admins:
+$(for admin in $admins; do echo "  - $admin"; done)
+EOF
+		cat <<EOF >"${CLUSTER_DIR}/values/oauth/secrets.yaml"
+---
+providers:
+  github:
+    clientId: $client_id
+    clientSecret: $client_secret
+EOF
+	else
+		admin_pw=$(genpasswd)
+		developer_pw=$(genpasswd)
+		cat <<EOF >"${CLUSTER_DIR}/values/oauth/secrets.yaml"
+---
+providers:
+  htpasswd:
+    admin: "${admin_pw}"
+    developer: "${developer_pw}"
+EOF
+		echo "Your generated passwords are:"
+		echo "  admin: ${admin_pw}"
+		echo "  developer: ${developer_pw}"
+	fi
+fi
