@@ -30,8 +30,10 @@ desiredUpdate:
   version: $CLUSTER_VERSION
 EOF
 
-mkdir -p "${CLUSTER_DIR}/values/cert-manager"
-cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/values.yaml"
+if [ -n "$ACME_EMAIL" ]; then
+	mkdir -p "${CLUSTER_DIR}/values/cert-manager"
+	cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/values.yaml"
+---
 certificates:
   clusterIssuer: letsencrypt
 acme:
@@ -41,7 +43,7 @@ acme:
     privateKeySecretRef:
       name: letsencrypt-private-key
 EOF
-cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/secrets.yaml"
+	cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/secrets.yaml"
 ---
 acme:
   letsencrypt:
@@ -63,6 +65,7 @@ acme:
         dnsZones:
           - ${BASE_DOMAIN}
 EOF
+fi
 
 mkdir -p "${CLUSTER_DIR}/values/oauth"
 if [ ! -f "${CLUSTER_DIR}/values/oauth/secrets.yaml" ]; then
