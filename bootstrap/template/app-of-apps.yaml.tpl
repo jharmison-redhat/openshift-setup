@@ -30,3 +30,4 @@ spec:
       kind: Application
       jsonPointers:
         - /spec/syncPolicy/automated
+        - /spec/syncPolicy/ignoreDifferences
