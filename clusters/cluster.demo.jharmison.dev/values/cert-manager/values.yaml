@@ -1,3 +1,4 @@
+---
 certificates:
   clusterIssuer: letsencrypt
 acme:
