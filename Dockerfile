@@ -19,6 +19,9 @@ RUN dnf -y install \
   helm \
   bash-completion \
   procps-ng \
+  ripgrep \
+  httpd-tools \
+  python3-pyyaml \
   https://github.com/getsops/sops/releases/download/v3.9.0/sops-3.9.0-1.x86_64.rpm \
   https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_linux_amd64.rpm \
   && dnf -y clean all

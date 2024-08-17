@@ -13,6 +13,7 @@ ARGO_APPLICATIONS ?= config oauth cert-manager
 CLUSTER_VERSION ?= 4.15.22
 ACME_EMAIL ?=
 ACME_DISABLE_ACCOUNT_KEY_GENERATION ?=
+GH_REPO := $(word 1,$(subst ., ,$(word 2,$(subst :, ,$(ARGO_GIT_URL)))))
 
 RECOVER_INSTALL := false
 CLUSTER_URL := $(CLUSTER_NAME).$(BASE_DOMAIN)

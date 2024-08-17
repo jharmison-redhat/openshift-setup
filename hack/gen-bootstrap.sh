@@ -33,5 +33,3 @@ vars=$(concat_with_comma "${templated_variables[@]}")
 for bootstrap_template in age-secret ssh-keys app-of-apps kustomization; do
 	envsubst "$vars" <"bootstrap/template/${bootstrap_template}.yaml.tpl" >"${bootstrap_dir}/${bootstrap_template}.yaml"
 done
-
-echo "Ensure that '$ARGO_SSH_PUBKEY' is configured as a deployment key for $ARGO_GIT_URL in order to be able to pull the repository!"

@@ -55,6 +55,11 @@ function argo_ssh_validate {
 	{ ssh -i "${INSTALL_DIR}/argo_ed25519" -o IdentityAgent=none -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null git@github.com 2>&1 || :; } | grep -qF 'successfully authenticated'
 }
 
+function gh_validate {
+	[ -n "$GH_TOKEN" ] || return 1
+	gh repo deploy-key list >/dev/null 2>&1 || return 2
+}
+
 function cluster_file_pushed {
 	git diff --quiet "@{u}...HEAD" -- "${@}" || return 1
 }

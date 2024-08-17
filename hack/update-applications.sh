@@ -2,12 +2,6 @@
 
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
-templated_variables=(
-	\$CLUSTER_URL
-	\$ARGO_GIT_URL
-	\$ARGO_GIT_REVISION
-)
-vars=$(concat_with_comma "${templated_variables[@]}")
 
 # Preemptively encrypt any secrets
 hack/encrypt.sh
@@ -30,6 +24,14 @@ done < <(find "${CLUSTER_DIR}" -path '*/values/*' -type f \( -name values.yaml -
 
 # Save notes from apps
 declare -A notes
+
+# Set vars for app templates
+templated_variables=(
+	\$CLUSTER_URL
+	\$ARGO_GIT_URL
+	\$ARGO_GIT_REVISION
+)
+vars=$(concat_with_comma "${templated_variables[@]}")
 
 mkdir -p "${CLUSTER_DIR}/applications"
 # Template the apps, update the values references

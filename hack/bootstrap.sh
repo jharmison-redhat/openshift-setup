@@ -3,6 +3,20 @@
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
 
+if ! argo_ssh_validate; then
+	if gh_validate; then
+		for old_key in $(gh repo deploy-key list --json title,id -q '.[] | select(.title == "'"${CLUSTER_URL}"'") | .id'); do
+			gh repo deploy-key delete "$old_key"
+		done
+		gh repo deploy-key add "${INSTALL_DIR}/argo_ed25519.pub" -t "${CLUSTER_URL}"
+	else
+		echo "Unable to authenticate to github.com with your ArgoCD key - did you configure the deploy key?" >&2
+		echo -n '  '
+		cat "${INSTALL_DIR}/argo_ed25519.pub"
+		exit 1
+	fi
+fi
+
 if ! cluster_files_updated; then
 	mapfile -t uncommitted < <(git status -su "${CLUSTER_DIR}" | awk '{print $NF}')
 	mapfile -t unpushed < <(git diff --name-only "@{u}...HEAD" -- "${CLUSTER_DIR}")
@@ -14,14 +28,6 @@ if ! cluster_files_updated; then
 	printf '  %s\n' "${!needs_update[@]}" >&2
 	exit 1
 fi
-
-if ! argo_ssh_validate; then
-	echo "Unable to authenticate to github.com with your ArgoCD key - did you configure the deploy key?" >&2
-	cat "${INSTALL_DIR}/argo_ed25519.pub"
-	exit 1
-fi
-
-# TODO: Enable checking for GitHub OAuth Application
 
 timeout=1800
 step=5
