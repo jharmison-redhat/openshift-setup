@@ -113,7 +113,7 @@ image:
 
 .PHONY: container
 container:
-	@$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --pull=newer $(IMAGE) $(CONTAINER_MAKE_ARGS)
+	@if [ -f /run/.containerenv ]; then $(MAKE) bootstrap; else $(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --pull=newer $(IMAGE) $(CONTAINER_MAKE_ARGS); fi
 
 .PHONY: use-kubeconfig
 use-kubeconfig:
