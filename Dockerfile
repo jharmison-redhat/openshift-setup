@@ -30,4 +30,4 @@ COPY .bashrc-container /root/.bashrc
 WORKDIR /workdir
 
 ENTRYPOINT ["make"]
-CMD []
+CMD ["bootstrap"]
