@@ -5,12 +5,23 @@ metadata:
   name: cluster
 spec:
   identityProviders:
-    - name: github
-      mappingMethod: {{ .Values.mappingMethod }}
+    {{- range $provider, $config := .Values.providers }}
+    {{- if $config }}
+    - name: {{ $provider }}
+      mappingMethod: {{ $config.mappingMethod | default $.Values.mappingMethod }}
+      {{- if eq $provider "github" }}
       type: GitHub
       github:
-        clientID: {{ .Values.github.clientId }}
+        clientID: {{ $config.clientId }}
         clientSecret:
           name: github-oauth-app
         organizations:
-          {{- toYaml .Values.github.organizations | nindent 10 }}
+          {{- toYaml $config.organizations | nindent 10 }}
+      {{- else if eq $provider "htpasswd" }}
+      type: HTPasswd
+      htpasswd:
+        fileData:
+          name: htpass-secret
+      {{- end }}
+    {{- end }}
+    {{- end }}

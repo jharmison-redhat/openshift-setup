@@ -1,13 +1,20 @@
 ---
-github:
-  # https://docs.openshift.com/container-platform/4.13/authentication/identity_providers/configuring-github-identity-provider.html#identity-provider-registering-github_configuring-github-identity-provider
-  organizations:
-    - jharmison-redhat-org
-  clientId: <your client ID goes here>
-  clientSecret: <your client secret goes here>
-
+providers:
+  htpasswd:
+    ## You can just put username/password here, they will generate once and never update
+    admin: openshift
+    developer: openshift
+    ## If you put htpasswd in this array, all other fields are ignored
+#   htpasswd: |-
+#     admin:$2a$10$WFVlLRXkUTKAZNfqM68DSO8trAopkE9.qwJSzoOOcYj25dXyDFTbC
+## Alternatively, you can set `htpasswd` to `null` and use github
+# github:
+#   organizations:
+#     - <your GH org name goes here>
+#   clientId: <your client ID goes here>
+#   clientSecret: <your client secret goes here>
 admins:
-  - jharmison-redhat
+  - admin
 
 mappingMethod: claim
 

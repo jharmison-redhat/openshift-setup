@@ -22,3 +22,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+      - RespectIgnoreDifferences=true
+    ignoreDifferences:
+      - kind: Secret
+        jsonPointers:
+          - /data/htpasswd
