@@ -72,6 +72,7 @@ if ${RECOVER_INSTALL}; then
 	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" wait-for bootstrap-complete || :
 	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" destroy bootstrap || :
 	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" wait-for install-complete
+	touch "${INSTALL_DIR}/auth/kubeconfig"
 else
 	"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" create cluster
 fi
