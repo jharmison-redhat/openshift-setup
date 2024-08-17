@@ -13,22 +13,6 @@ azs="$(jq -c '.aws_worker_availability_zones' "${INSTALL_DIR}/terraform.platform
 ami="$(jq -r '.aws_ami' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
 age_public_key="$(awk '/public key:/{print $NF}' "${INSTALL_DIR}/argo.txt")"
 
-cat <<EOF >"${CLUSTER_DIR}/cluster.yaml"
-cluster:
-  infraID: $infraID
-  name: $CLUSTER_NAME
-  baseDomain: $BASE_DOMAIN
-  controlPlaneNodes: $CONTROL_PLANE_COUNT
-  workerNodes: $WORKER_COUNT
-  agePublicKey: $age_public_key
-aws:
-  region: $region
-  azs: $azs
-  ami: $ami
-desiredUpdate:
-  version: $CLUSTER_VERSION
-EOF
-
 if [ -n "$ACME_EMAIL" ]; then
 	mkdir -p "${CLUSTER_DIR}/values/cert-manager"
 	cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/values.yaml"
@@ -115,3 +99,19 @@ EOF
 		echo "  developer: ${developer_pw}"
 	fi
 fi
+
+cat <<EOF >"${CLUSTER_DIR}/cluster.yaml"
+cluster:
+  infraID: $infraID
+  name: $CLUSTER_NAME
+  baseDomain: $BASE_DOMAIN
+  controlPlaneNodes: $CONTROL_PLANE_COUNT
+  workerNodes: $WORKER_COUNT
+  agePublicKey: $age_public_key
+aws:
+  region: $region
+  azs: $azs
+  ami: $ami
+desiredUpdate:
+  version: $CLUSTER_VERSION
+EOF
