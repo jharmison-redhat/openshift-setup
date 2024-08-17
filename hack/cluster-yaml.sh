@@ -14,7 +14,6 @@ ami="$(jq -r '.aws_ami' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
 age_public_key="$(awk '/public key:/{print $NF}' "${INSTALL_DIR}/argo.txt")"
 
 cat <<EOF >"${CLUSTER_DIR}/cluster.yaml"
----
 cluster:
   infraID: $infraID
   name: $CLUSTER_NAME
@@ -33,7 +32,6 @@ EOF
 if [ -n "$ACME_EMAIL" ]; then
 	mkdir -p "${CLUSTER_DIR}/values/cert-manager"
 	cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/values.yaml"
----
 certificates:
   clusterIssuer: letsencrypt
 acme:
@@ -44,7 +42,6 @@ acme:
       name: letsencrypt-private-key
 EOF
 	cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/secrets.yaml"
----
 acme:
   letsencrypt:
     email: ${ACME_EMAIL}
@@ -85,7 +82,6 @@ if [ ! -f "${CLUSTER_DIR}/values/oauth/secrets.yaml" ]; then
 		echo
 		read -rp "Enter your GitHub user accounts for administrator access, separated by spaces: " admins
 		cat <<EOF >"${CLUSTER_DIR}/values/oauth/values.yaml"
----
 providers:
   htpasswd: null
   github:
@@ -96,7 +92,6 @@ admins:
 $(for admin in $admins; do echo "  - $admin"; done)
 EOF
 		cat <<EOF >"${CLUSTER_DIR}/values/oauth/secrets.yaml"
----
 providers:
   github:
     clientId: $client_id
@@ -106,7 +101,6 @@ EOF
 		admin_pw=$(genpasswd)
 		developer_pw=$(genpasswd)
 		cat <<EOF >"${CLUSTER_DIR}/values/oauth/secrets.yaml"
----
 providers:
   htpasswd:
     admin: "${admin_pw}"
