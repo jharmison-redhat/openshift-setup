@@ -69,6 +69,11 @@ if [ ! -f "${CLUSTER_DIR}/values/oauth/secrets.yaml" ]; then
 	read -n1 -rp "Do you want to configure a GitHub OAuth application (y/N)? " make_oauth
 	echo
 	if [ "${make_oauth^^}" = "Y" ]; then
+		read -rp "Enter the GitHub organization for your OAuth application: " org
+		echo
+		echo "Check for an existing OAuth application at:"
+		echo "  https://github.com/organizations/${org}/settings/applications"
+		echo "If you don't see one for ${CLUSTER_URL}, then create a new one."
 		echo "Set the name to:"
 		echo "  ${CLUSTER_URL}"
 		echo "Set the homepage to:"
@@ -76,7 +81,6 @@ if [ ! -f "${CLUSTER_DIR}/values/oauth/secrets.yaml" ]; then
 		echo "Set the callback-url to:"
 		echo "  https://oauth-openshift.apps.${CLUSTER_URL}/oauth2callback/github"
 		echo
-		read -rp "Enter your OAuth App organization: " org
 		read -rp "Enter your OAuth App Client ID: " client_id
 		read -srp "Enter your OAuth App Client Secret: " client_secret
 		echo
