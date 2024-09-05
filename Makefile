@@ -22,7 +22,8 @@ INSTALL_DIR := install/$(CLUSTER_URL)
 
 RUNTIME ?= podman
 IMAGE ?= registry.jharmison.com/library/openshift-setup:latest
-CONTAINER_MAKE_ARGS :=
+CONTAINER_MAKE_ARGS ?= bootstrap
+RUNTIME_ARGS := run --rm -it --security-opt=label=disable --privileged -v "$${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --pull=newer
 
 -include $(INSTALL_DIR)/.env
 
@@ -106,24 +107,6 @@ stop:
 hosted-zone-setup:
 	@hack/hosted-zone.sh
 
-.PHONY: image
-image:
-	$(RUNTIME) build . --pull=newer -t $(IMAGE)
-	$(RUNTIME) push $(IMAGE)
-
-.PHONY: container
-container:
-	@if [ -f /run/.containerenv ]; then $(MAKE) bootstrap; else $(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --pull=newer $(IMAGE) $(CONTAINER_MAKE_ARGS); fi
-
-.PHONY: use-kubeconfig
-use-kubeconfig:
-	@KUBECONFIG=$${PWD}/$(INSTALL_DIR)/auth/kubeconfig-orig PATH=$${PWD}/$(INSTALL_DIR):"$$PATH" bash --init-file \
-		<(echo 'source /etc/profile; source $$HOME/.bashrc; PS1="($(CLUSTER_URL)) $$PS1"; alias oc="oc --insecure-skip-tls-verify=true"; alias k9s="k9s --insecure-skip-tls-verify"')
-
-.PHONY: shell
-shell: $(INSTALL_DIR)/oc
-	@$(RUNTIME) run --rm -it --security-opt=label=disable --privileged -v "${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --entrypoint /bin/bash --pull=newer $(IMAGE) -c 'make use-kubeconfig'
-
 .PHONY: destroy
 destroy:
 	@hack/destroy.sh
@@ -131,3 +114,16 @@ destroy:
 .PHONY: clean
 clean: destroy
 	rm -rf "${INSTALL_DIR}"
+
+.PHONY: image
+image:
+	$(RUNTIME) build container --pull=newer -t $(IMAGE)
+	$(RUNTIME) push $(IMAGE)
+
+.PHONY: container
+container:
+	@if [ -f /run/.containerenv ]; then $(MAKE) $(CONTAINER_MAKE_ARGS); else $(RUNTIME) $(RUNTIME_ARGS) $(IMAGE) $(CONTAINER_MAKE_ARGS); fi
+
+.PHONY: shell
+shell: $(INSTALL_DIR)/oc
+	@$(RUNTIME) $(RUNTIME_ARGS) --entrypoint /bin/bash $(IMAGE) -li

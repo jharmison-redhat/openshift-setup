@@ -1,9 +1,0 @@
-function _last_failed {
-    local last_exit=$?
-    if [ "$last_exit" -gt 0 ]; then
-        printf ' \e[0;31m✗\e[0m('"${last_exit})\n"
-    fi
-}
-PS1='[openshift-setup \w]$ '
-PROMPT_COMMAND=_last_failed
-source <(oc completion bash)

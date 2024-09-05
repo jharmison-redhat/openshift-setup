@@ -26,7 +26,7 @@ RUN dnf -y install \
   https://github.com/derailed/k9s/releases/download/v0.32.5/k9s_linux_amd64.rpm \
   && dnf -y clean all
 
-COPY .bashrc-container /root/.bashrc
+COPY overlay/ /
 WORKDIR /workdir
 
 ENTRYPOINT ["make"]
