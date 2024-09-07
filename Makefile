@@ -103,6 +103,10 @@ start:
 stop:
 	@hack/stop.sh
 
+.PHONY: approve-csrs
+approve-csrs:
+	@hack/approve-csrs.sh
+
 .PHONY: hosted-zone-setup
 hosted-zone-setup:
 	@hack/hosted-zone.sh
