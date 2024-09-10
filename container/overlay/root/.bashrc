@@ -15,10 +15,14 @@ if [ -n "${INSTALL_DIR}" ]; then
 	PATH="/workdir/${INSTALL_DIR}:${PATH}"
 	KUBECONFIG="/workdir/${INSTALL_DIR}/auth/kubeconfig-orig"
 	export KUBECONFIG
+
+	if ! command -v oc >/dev/null 2>&1; then
+		if [ -e "/workdir/Makefile" ]; then
+			make -C /workdir "${INSTALL_DIR}/oc"
+		fi
+	fi
 fi
 
-if command -v oc >/dev/null 2>&1; then
-	source <(oc completion bash)
-	alias oc='oc --insecure-skip-tls-verify=true'
-	alias k9s='k9s --insecure-skip-tls-verify'
-fi
+source <(oc completion bash)
+alias oc='oc --insecure-skip-tls-verify=true'
+alias k9s='k9s --insecure-skip-tls-verify'

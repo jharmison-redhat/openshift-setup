@@ -41,9 +41,20 @@ function aws_hosted_zone_id {
 
 function metadata_validate {
 	if ! [ -e "${INSTALL_DIR}/metadata.json" ]; then
-		echo "No cluster metadata.json, indicating that you probably haven't installed a cluster" >&2
+		echo "No cluster metadata.json, indicating that you probably haven't installed a cluster using this framework" >&2
 		return 1
 	fi
+}
+
+function cluster_validate {
+	local original_kubeconfig
+	original_kubeconfig="${INSTALL_DIR}/auth/kubeconfig"
+	if [ -e "$original_kubeconfig" ]; then
+		if KUBECONFIG="$original_kubeconfig" "${INSTALL_DIR}/oc" --insecure-skip-tls-verify=true whoami >/dev/null 2>&1; then
+			return 0
+		fi
+	fi
+	return 1
 }
 
 function argo_ssh_validate {
@@ -100,7 +111,11 @@ if [ -e "${CLUSTER_DIR}/cluster.yaml" ]; then
 fi
 
 function instances {
-	aws ec2 describe-instances --filters "$aws_cluster_filter" --query "Reservations[].Instances[]"
+	local -a filter
+	if [ -n "$infraID" ]; then
+		filter+=(--filters "$aws_cluster_filter")
+	fi
+	aws ec2 describe-instances "${filter[@]}" --query "Reservations[].Instances[]"
 }
 
 function instance_states {

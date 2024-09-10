@@ -76,8 +76,8 @@ $(CLUSTER_DIR)/cluster.yaml: $(INSTALL_DIR)/auth/kubeconfig-orig
 
 .PHONY: cluster-yaml
 cluster-yaml:
-	touch $(INSTALL_DIR)/auth/kubeconfig-orig
-	$(MAKE) $(CLUSTER_DIR)/cluster.yaml
+	@if [ -e $(INSTALL_DIR)/auth/kubeconfig-orig ]; then touch $(INSTALL_DIR)/auth/kubeconfig-orig; fi
+	@$(MAKE) $(CLUSTER_DIR)/cluster.yaml
 
 .PHONY: update-applications
 update-applications: $(CLUSTER_DIR)/cluster.yaml $(wildcard $(CLUSTER_DIR)/values/*/*.yaml) $(wildcard $(CLUSTER_DIR)/values/*/*.yml)

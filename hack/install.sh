@@ -3,7 +3,7 @@
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
 
-if metadata_validate && ! ${RECOVER_INSTALL}; then
+if cluster_validate || metadata_validate && ! ${RECOVER_INSTALL}; then
 	echo "Skipping install" >&2
 	touch "${INSTALL_DIR}/auth/kubeconfig"
 	exit 0
