@@ -71,6 +71,9 @@ $(INSTALL_DIR)/auth/kubeconfig-orig: $(INSTALL_DIR)/auth/kubeconfig
 		touch $@; else \
 		cp $< $@; fi
 
+.PHONY: install
+install: $(INSTALL_DIR)/auth/kubeconfig-orig
+
 $(CLUSTER_DIR)/cluster.yaml: $(INSTALL_DIR)/auth/kubeconfig-orig
 	@hack/cluster-yaml.sh
 
