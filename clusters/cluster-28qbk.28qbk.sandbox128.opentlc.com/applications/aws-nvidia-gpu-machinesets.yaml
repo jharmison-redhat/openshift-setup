@@ -1,0 +1,39 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: aws-nvidia-gpu-machinesets
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  destination:
+    name: in-cluster
+    namespace: openshift-machine-api
+  project: default
+  source:
+    path: charts/aws-nvidia-gpu-machinesets
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - ../../clusters/cluster-28qbk.28qbk.sandbox128.opentlc.com/cluster.yaml
+        - ../../clusters/cluster-28qbk.28qbk.sandbox128.opentlc.com/values/aws-nvidia-gpu-machinesets/values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
+    syncOptions:
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: machine.openshift.io
+      kind: MachineSet
+      jsonPointers:
+        - /spec/replicas
