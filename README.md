@@ -158,6 +158,12 @@ cluster dot-environment file inside `install/${CLUSTER_NAME}.${BASE_DOMAIN}/.env
     certificates. Not having cert-manager here will not trigger this templating
     of variables, so it might be preferable to remove this from the list if
     adopting a cluster with the certificates you want.
+- `GH_TOKEN` (default: *unset*)
+  - The GitHub token you've created at the [Personal Access Tokens Settings
+    Page](https://github.com/settings/tokens) that will allow the framework to
+    configure the ArgoCD Deploy Keys. Setting this will enable automatic
+    configuration of the generated SSH key for this ArgoCD instance to be able
+    to pull from the `ARGO_GIT_URL` described above.
 - `CLUSTER_VERSION` (default: `4.15.29`)
   - The version of OpenShift to install (if applicable). Affects the version of
     `oc` and `openshift-install` downloaded as well.
