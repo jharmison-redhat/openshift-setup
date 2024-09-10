@@ -20,6 +20,8 @@ if cluster_validate && (! metadata_validate >/dev/null 2>&1); then # We are adop
 		export CONTROL_PLANE_COUNT
 		WORKER_COUNT="$(oc get machine -n openshift-machine-api -l machine.openshift.io/cluster-api-machine-role=worker --no-headers 2>/dev/null | wc -l)"
 		export WORKER_COUNT
+		CLUSTER_VERSION="$(oc get clusterversion version -ojsonpath='{.status.desired.version}')"
+		export CLUSTER_VERSION
 	fi
 elif metadata_validate; then
 	infraID="$(jq -r '.infraID' "${INSTALL_DIR}/metadata.json")"
