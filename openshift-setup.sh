@@ -8,7 +8,7 @@ export BASE_DOMAIN="${BASE_DOMAIN:-demo.jharmison.dev}"
 export CLUSTER_URL="${CLUSTER_NAME}.${BASE_DOMAIN}"
 export CLUSTER_DIR="clusters/${CLUSTER_URL}"
 export INSTALL_DIR="install/${CLUSTER_URL}"
-cluster_env="${INSTALL_DIR}/.env"
+cluster_env="${INSTALL_DIR}.env"
 
 if [ -f "$cluster_env" ]; then
 	source "$cluster_env"

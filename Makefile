@@ -25,7 +25,7 @@ IMAGE ?= registry.jharmison.com/library/openshift-setup:latest
 CONTAINER_MAKE_ARGS ?= bootstrap
 RUNTIME_ARGS := run --rm -it --security-opt=label=disable --privileged -v "$${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --pull=newer
 
--include $(INSTALL_DIR)/.env
+-include $(INSTALL_DIR).env
 
 export
 

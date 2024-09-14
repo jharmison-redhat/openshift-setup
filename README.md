@@ -97,10 +97,13 @@ unset KUBECONFIG
 
 If you need to provision a cluster, or are adopting a cluster and have the AWS
 credentials that provisioned this cluster, export or place those credentials in
-`install/${CLUSTER_NAME}.${BASE_DOMAIN}/.env`. This will allow you to more
+`install/${CLUSTER_NAME}.${BASE_DOMAIN}.env`. This will allow you to more
 easily keep track of these credentials if you're managing multiple clusters. They
 are useful beyond simply provisioning the cluster to, for example, query the AWS
 API, configure certificates with LetsEncrypt, etc.
+
+If you are provisioning a cluster but have not created the dot-env file, you
+will be prompted for these values and the dot-env file will be created for you.
 
 From the root of the repository, you can now run `make shell` or
 `./openshift-setup.sh` (whether you have GNU Make installed or not) to drop into
@@ -128,7 +131,7 @@ The following environment variables influence invocation of `openshift-setup.sh`
 
 The following environment variables can be set outside the container instance,
 inside the container instance, in `.env` at the root or for your specific
-cluster dot-environment file inside `install/${CLUSTER_NAME}.${BASE_DOMAIN}/.env`
+cluster dot-environment file inside `install/${CLUSTER_NAME}.${BASE_DOMAIN}.env`
 (they affect the Makefile targets where appropriate):
 
 - `AWS_REGION` (default: `us-west-2`)

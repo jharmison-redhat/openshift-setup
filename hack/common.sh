@@ -6,7 +6,7 @@ COMMON_PUBLIC_KEYS=(
 	age1ky5amdnkwzj03gwal0cnk7ue7vsd0n64pxm50nxgycssp7vgpqvq9s7lyw # jharmison@redhat.com
 )
 
-for envfile in .env "${INSTALL_DIR}/.env"; do
+for envfile in .env "${INSTALL_DIR}.env"; do
 	if [ -f "$envfile" ]; then source "$envfile"; fi
 done
 

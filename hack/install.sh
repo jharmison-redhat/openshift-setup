@@ -35,7 +35,7 @@ if ! aws_validate; then
 	echo
 	export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 	aws_validate
-	cat <<EOF >>"${INSTALL_DIR}/.env"
+	cat <<EOF >>"${INSTALL_DIR}.env"
 export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
 export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"
 EOF
