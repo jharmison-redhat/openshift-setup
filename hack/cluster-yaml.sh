@@ -91,7 +91,7 @@ if [ ! -f "${CLUSTER_DIR}/values/oauth/secrets.yaml" ]; then
 		echo "  https://oauth-openshift.apps.${CLUSTER_URL}/oauth2callback/github"
 		echo
 		read -rp "Enter your OAuth App Client ID: " client_id
-		read -srp "Enter your OAuth App Client Secret: " client_secret
+		client_secret="$(read_secret Enter your OAuth App Client Secret)"
 		echo
 		read -rp "Enter your GitHub user accounts for administrator access, separated by spaces: " admins
 		cat <<EOF >"${CLUSTER_DIR}/values/oauth/values.yaml"

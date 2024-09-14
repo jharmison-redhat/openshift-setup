@@ -138,6 +138,27 @@ function stopped_instance_ids {
 	_state_instance_ids stopped
 }
 
+function read_secret {
+	local secret_answer
+	if echo "${*}" | grep -q ': $'; then
+		echo -n "${*}" >&2
+	elif echo "${*}" | grep -q ':$'; then
+		echo -n "${*} " >&2
+	else
+		echo -n "${*}: " >&2
+	fi
+	while IFS= read -rsn1 char; do
+		if [[ -z $char ]]; then
+			break
+		else
+			echo -n '*' >&2
+			secret_answer+="$char"
+		fi
+	done
+	echo >&2
+	echo "$secret_answer"
+}
+
 function ct_needs_update {
 	pt="$1"
 	ct="$2"
