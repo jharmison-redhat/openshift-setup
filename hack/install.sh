@@ -9,10 +9,10 @@ if cluster_validate || metadata_validate && ! ${RECOVER_INSTALL}; then
 	exit 0
 fi
 
-if ! pull_secret_validate; then
+if ! pull_secret_validate_and_clean; then
 	echo "Copy your pull secret from: https://console.redhat.com/openshift/install/pull-secret"
 	PULL_SECRET="$(read_secret Paste your pull secret here)"
-	export PULL_SECRET
+	pull_secret_validate_and_clean
 	cat <<EOF >>".env"
 export PULL_SECRET='${PULL_SECRET}'
 EOF

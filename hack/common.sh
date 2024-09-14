@@ -19,8 +19,10 @@ if ! command -v yq | grep -q '^/'; then
 	}
 fi
 
-function pull_secret_validate {
+function pull_secret_validate_and_clean {
 	[ -n "$PULL_SECRET" ] || return 1
+	PULL_SECRET="$(echo "$PULL_SECRET" | tr -d '[:space:]' | tr -d "'")"
+	export PULL_SECRET
 }
 
 function aws_validate {
