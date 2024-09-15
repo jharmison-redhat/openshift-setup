@@ -9,6 +9,8 @@ PROMPT_COMMAND=_last_failed
 PS1='[openshift-setup \w]$ '
 if [ -n "${CLUSTER_URL}" ]; then
 	PS1="(${CLUSTER_URL}) ${PS1}"
+	export HISTFILE="/workdir/install/${CLUSTER_URL}.bash_history"
+	export HISTFILESIZE=5000
 fi
 
 if [ -n "${INSTALL_DIR}" ]; then
@@ -16,9 +18,9 @@ if [ -n "${INSTALL_DIR}" ]; then
 	KUBECONFIG="/workdir/${INSTALL_DIR}/auth/kubeconfig-orig"
 	export KUBECONFIG
 
-	if ! command -v oc >/dev/null 2>&1; then
+	if ! command -v kubectl >/dev/null 2>&1; then
 		if [ -e "/workdir/Makefile" ]; then
-			make -C /workdir "${INSTALL_DIR}/oc"
+			make -C /workdir "${INSTALL_DIR}/kubectl"
 		fi
 	fi
 fi

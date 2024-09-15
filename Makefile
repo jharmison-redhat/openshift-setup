@@ -23,7 +23,7 @@ INSTALL_DIR := install/$(CLUSTER_URL)
 RUNTIME ?= podman
 IMAGE ?= registry.jharmison.com/library/openshift-setup:latest
 CONTAINER_MAKE_ARGS ?= bootstrap
-RUNTIME_ARGS := run --rm -it --security-opt=label=disable --privileged -v "$${PWD}:/workdir" -v ~/.config:/root/.config --env-host --env HOME=/root --env EDITOR=vi --env XDG_CONFIG_HOME=/root/.config --pull=newer
+RUNTIME_ARGS := run --rm -it --security-opt=label=disable --privileged -v "$${PWD}:/workdir" -v ~/.config:/root/.config --env-file .env --env-file $(INSTALL_DIR).env --env HOME=/root --env EDITOR=vi --env CLUSTER_NAME=$(CLUSTER_NAME) --env BASE_DOMAIN=$(BASE_DOMAIN) --env CLUSTER_URL=$(CLUSTER_URL) --env CLUSTER_DIR=$(CLUSTER_DIR) --env INSTALL_DIR=$(INSTALL_DIR) --env XDG_CONFIG_HOME=/root/.config --env XDG_DATA_HOME=/workdir/$(INSTALL_DIR)/.data --pull=newer
 
 -include $(INSTALL_DIR).env
 
@@ -38,7 +38,9 @@ $(INSTALL_DIR)/openshift-install:
 
 $(INSTALL_DIR)/oc:
 	mkdir -p $(@D)
-	curl -sLo- https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$(CLUSTER_VERSION)/openshift-client-linux.tar.gz | tar xvzf - -C $(@D) oc
+	curl -sLo- https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$(CLUSTER_VERSION)/openshift-client-linux.tar.gz | tar xvzf - -C $(@D) oc kubectl
+
+$(INSTALL_DIR)/kubectl: $(INSTALL_DIR)/oc
 
 $(INSTALL_DIR)/id_ed25519:
 	mkdir -p $(@D)
@@ -132,5 +134,5 @@ container:
 	@if [ -f /run/.containerenv ]; then $(MAKE) $(CONTAINER_MAKE_ARGS); else $(RUNTIME) $(RUNTIME_ARGS) $(IMAGE) $(CONTAINER_MAKE_ARGS); fi
 
 .PHONY: shell
-shell: $(INSTALL_DIR)/oc
+shell: $(INSTALL_DIR)/kubectl
 	@$(RUNTIME) $(RUNTIME_ARGS) --entrypoint /bin/bash $(IMAGE) -li
