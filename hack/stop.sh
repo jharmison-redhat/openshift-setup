@@ -5,7 +5,7 @@ source hack/common.sh
 
 mapfile -t running < <(running_instance_ids)
 if [ "${running[*]}" ]; then
-	aws ec2 stop-instances --instance-ids "${running[@]}" --output table
+	aws ec2 stop-instances --instance-ids "${running[@]}" --output table --no-cli-pager
 else
 	echo "No running instances:"
 	instance_states | sed 's/^/  /'

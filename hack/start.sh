@@ -5,7 +5,7 @@ source hack/common.sh
 
 mapfile -t stopped < <(stopped_instance_ids)
 if [ "${stopped[*]}" ]; then
-	aws ec2 start-instances --instance-ids "${stopped[@]}" --output table
+	aws ec2 start-instances --instance-ids "${stopped[@]}" --output table --no-cli-pager
 else
 	echo "No stopped instances:"
 	instance_states | sed 's/^/  /'
