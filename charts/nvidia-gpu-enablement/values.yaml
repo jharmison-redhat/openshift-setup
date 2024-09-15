@@ -14,7 +14,7 @@ nfd:
           - "vendor"
 
 gpuOperator:
-  channel: v24.3
+  channel: v24.6
   timeSlices: 1
   policy:
     operator:
