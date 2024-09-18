@@ -19,7 +19,6 @@ spec:
     helm:
       valueFiles:
         - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
-        - ../../clusters/cluster.demo.jharmison.dev/values/oauth/values.yaml
         - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.demo.jharmison.dev/values/oauth/secrets.enc.yaml
   syncPolicy:
     automated:
