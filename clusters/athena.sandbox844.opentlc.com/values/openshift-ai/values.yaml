@@ -1,0 +1,5 @@
+---
+channel: fast
+dataScienceClusterComponents:
+  modelmeshserving:
+    managementState: Managed
