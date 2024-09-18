@@ -1,5 +1,5 @@
 desiredUpdate:
-  version: 4.15.30
+  version: 4.15.31
 cluster:
   name: cluster
   baseDomain: demo.jharmison.dev
@@ -9,5 +9,5 @@ cluster:
   infraID: cluster-kjnzc
 aws:
   region: us-west-2
-  azs: ["us-west-2d","us-west-2a","us-west-2b","us-west-2c"]
+  azs: ["us-west-2d", "us-west-2a", "us-west-2b", "us-west-2c"]
   ami: ami-0509d3497db8610fd

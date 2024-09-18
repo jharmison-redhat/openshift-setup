@@ -1,5 +1,5 @@
 desiredUpdate:
-  version: 4.15.30
+  version: 4.15.31
 cluster:
   name: athena
   baseDomain: sandbox844.opentlc.com
@@ -9,5 +9,5 @@ cluster:
   infraID: athena-9v6l8
 aws:
   region: us-west-2
-  azs: ["us-west-2c","us-west-2d","us-west-2a","us-west-2b"]
+  azs: ["us-west-2c", "us-west-2d", "us-west-2a", "us-west-2b"]
   ami: ami-0509d3497db8610fd
