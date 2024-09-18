@@ -1,0 +1,9 @@
+providers:
+  github:
+    organizations:
+      - jharmison-redhat-org
+
+admins:
+  - jharmison-redhat
+  - adrezni
+  - admin
