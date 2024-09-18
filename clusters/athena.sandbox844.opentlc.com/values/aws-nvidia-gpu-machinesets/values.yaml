@@ -1,0 +1,4 @@
+instanceType: g4dn.4xlarge
+autoscaling:
+  enabled: true
+  maxReplicas: 2
