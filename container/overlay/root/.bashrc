@@ -14,6 +14,12 @@ if [ -n "${CLUSTER_URL}" ]; then
 fi
 
 if [ -n "${INSTALL_DIR}" ]; then
+	if [ -e /workdir/.env ]; then
+		source /workdir/.env
+	fi
+	if [ -e "/workdir/${INSTALL_DIR}.env" ]; then
+		source "/workdir/${INSTALL_DIR}.env"
+	fi
 	PATH="/workdir/${INSTALL_DIR}:${PATH}"
 	KUBECONFIG="/workdir/${INSTALL_DIR}/auth/kubeconfig-orig"
 	export KUBECONFIG

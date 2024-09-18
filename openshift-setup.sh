@@ -10,19 +10,15 @@ export CLUSTER_DIR="clusters/${CLUSTER_URL}"
 export INSTALL_DIR="install/${CLUSTER_URL}"
 cluster_env="${INSTALL_DIR}.env"
 
-if [ -f "$cluster_env" ]; then
-	source "$cluster_env"
-fi
-envs=(
-)
+declare -a envs
 if [ -e .env ]; then
 	envs+=(
 		--env-file .env
 	)
 fi
-if [ -e "$PWD/${INSTALL_DIR}.env" ]; then
+if [ -e "$cluster_env" ]; then
 	envs+=(
-		--env-file "$PWD/${INSTALL_DIR}.env"
+		--env-file "$cluster_env"
 	)
 fi
 envs+=(
@@ -37,6 +33,6 @@ envs+=(
 	--env XDG_DATA_DIR="/workdir/${INSTALL_DIR}/.data"
 )
 exec ${RUNTIME:-podman} run --rm -it --security-opt=label=disable --privileged \
-	--pull=newer --name openshift-setup --replace --entrypoint /bin/bash \
-	-v "$PWD:/workdir" -v ~/.config:/root/.config "${envs[@]}" \
+	--pull=newer --name "openshift-setup-${CLUSTER_URL//\./-}" --replace \
+	--entrypoint /bin/bash -v "$PWD:/workdir" -v ~/.config:/root/.config "${envs[@]}" \
 	"${IMAGE:-registry.jharmison.com/library/openshift-setup:latest}" -li
