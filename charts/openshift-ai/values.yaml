@@ -56,7 +56,7 @@ dashboardConfig:
   disableProjectSharing: false
   disableProjects: false
   disableSupport: false
-  disableTracking: false
+  disableTracking: true
   enablement: true
 
 defaultWorkbenchPvcSize: 20Gi
