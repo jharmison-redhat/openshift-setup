@@ -72,6 +72,7 @@ if [ -n "$ROOT_AWS_ACCESS_KEY_ID" ] && [ -n "$ROOT_AWS_SECRET_ACCESS_KEY" ]; the
 		echo
 		echo "ROOT_AWS_ACCESS_KEY_ID and ROOT_AWS_SECRET_ACCESS_KEY appear to be not valid for managing records in ${root_hosted_zone} Attempting DNS lookup." >&2
 		public_dns_validation
+		exit 0
 	fi
 	echo -n .
 	# shellcheck disable=SC2207
