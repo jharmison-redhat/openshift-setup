@@ -17,7 +17,7 @@ spec:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
       - ../../clusters/cluster.demo.jharmison.dev/values/database/values.yaml
-    path: charts/databse
+    path: charts/database
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
   syncPolicy:

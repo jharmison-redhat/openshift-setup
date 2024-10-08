@@ -14,7 +14,7 @@ spec:
     namespace: default
   project: default
   source:
-    path: charts/databse
+    path: charts/database
     repoURL: ${ARGO_GIT_URL}
     targetRevision: ${ARGO_GIT_REVISION}
     helm:
