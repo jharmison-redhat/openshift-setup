@@ -194,5 +194,5 @@ spec:
   rbac:
     defaultPolicy: role:readonly
     policy: |
-      g, sso-cluster-admins, role:admin
+      g, cluster-admins, role:admin
     scopes: "[groups]"
