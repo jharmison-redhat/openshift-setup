@@ -18,7 +18,11 @@ while read -rd $'\0' values; do
 	app="$(basename "$(dirname "$values")")"
 	if [[ ! -v applications["$app"] ]]; then
 		echo "Found $app in values from $values" >&2
-		applications["$app"]=''
+		if [ -e "applications-templates/${app}.yaml.tpl" ]; then
+			applications["$app"]=''
+		else
+			echo "No application template available, skipping..." >&2
+		fi
 	fi
 done < <(find "${CLUSTER_DIR}" -path '*/values/*' -type f \( -name values.yaml -o -name values.yml -o -name secrets.enc.yaml -o -name secrets.enc.yml \) -print0)
 
