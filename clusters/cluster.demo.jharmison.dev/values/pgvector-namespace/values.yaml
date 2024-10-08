@@ -1,0 +1,7 @@
+---
+annotations:
+  openshift.io/description: Project for housing Vector Database in Postgres
+  openshift.io/display-name: PGVector
+labels:
+  opendatahub.io/dashboard: 'true'
+name: pgvector

@@ -1,0 +1,7 @@
+---
+initSQL: '\c pgvector
+
+  CREATE EXTENSION IF NOT EXISTS vector;
+
+  GRANT ALL ON SCHEMA public TO pgvector;'
+name: pgvector
