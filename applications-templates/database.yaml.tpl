@@ -29,3 +29,9 @@ spec:
         duration: 10s
         factor: 3
         maxDuration: 30m
+    syncOptions:
+      - RespectIgnoreDifferences=true
+    ignoreDifferences:
+      - kind: Secret
+        jsonPointers:
+          - /data/password

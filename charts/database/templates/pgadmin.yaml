@@ -14,7 +14,19 @@ spec:
   serverGroups:
     - postgresClusterSelector: {}
       name: Crunchy Postgres for Kubernetes
+  users:
+    - name: {{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+      passwordRef:
+        name: pgadmin-password-{{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+        key: password
   serviceName: pgadmin-{{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pgadmin-password-{{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+data:
+  password: {{ if .Values.pgAdmin.password }}{{ .Values.pgAdmin.password | b64enc }}{{ else }}{{ randAlphaNum 20 | b64enc }}{{ end }}
 {{- if .Values.pgAdmin.route.enabled }}
 ---
 apiVersion: route.openshift.io/v1

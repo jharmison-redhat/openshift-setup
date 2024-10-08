@@ -27,3 +27,4 @@ pgAdmin:
   pvcSize: 1Gi
   route:
     enabled: true
+  password: ""
