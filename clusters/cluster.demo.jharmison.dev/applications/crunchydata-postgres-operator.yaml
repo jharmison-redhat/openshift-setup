@@ -2,30 +2,31 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: '3'
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
   name: crunchydata-postgres-operator
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   destination:
     name: in-cluster
     namespace: openshift-operators
   project: default
   source:
-    helm:
-      valueFiles:
-      - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
     path: charts/crunchydata-postgres-operator
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
+    helm:
+      valueFiles:
+        - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
+        - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.demo.jharmison.dev/values/crunchydata-postgres-operator/secrets.enc.yaml
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     retry:
+      limit: 10
       backoff:
         duration: 10s
         factor: 3
         maxDuration: 30m
-      limit: 10
