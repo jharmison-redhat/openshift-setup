@@ -15,7 +15,7 @@ spec:
     - postgresClusterSelector: {}
       name: Crunchy Postgres for Kubernetes
   users:
-    - name: {{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+    - username: {{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
       passwordRef:
         name: pgadmin-password-{{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
         key: password
