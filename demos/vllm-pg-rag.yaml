@@ -9,6 +9,7 @@ namespaces:
 applications:
   - name: crunchydata-postgres-operator
   - name: database
+    fileprefix: pgvector
     rewrite:
       metadata:
         name: pgvector

@@ -16,7 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
-      - ../../clusters/cluster.demo.jharmison.dev/values/database/values.yaml
+      - ../../clusters/cluster.demo.jharmison.dev/values/pgvector-database/values.yaml
     path: charts/database
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
