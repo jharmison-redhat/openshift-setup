@@ -21,7 +21,8 @@ if [ -n "${INSTALL_DIR}" ]; then
 		source "/workdir/${INSTALL_DIR}.env"
 	fi
 	PATH="/workdir/${INSTALL_DIR}:${PATH}"
-	KUBECONFIG="/workdir/${INSTALL_DIR}/auth/kubeconfig-orig"
+	echo "$PATH" | grep -Fq "/root/.krew/bin" || PATH="/root/.krew/bin:$PATH"
+	KUBECONFIG="/workdir/${INSTALL_DIR}/auth/kubeconfig"
 	export KUBECONFIG
 
 	if ! command -v kubectl >/dev/null 2>&1; then
@@ -32,5 +33,8 @@ if [ -n "${INSTALL_DIR}" ]; then
 fi
 
 source <(oc completion bash)
-alias oc='oc --insecure-skip-tls-verify=true'
+# Only alias oc if we can't connect to the cluster as is, to support plugins
+if ! oc whoami >/dev/null 2>&1; then
+	alias oc='oc --insecure-skip-tls-verify=true'
+fi
 alias k9s='k9s --insecure-skip-tls-verify'
