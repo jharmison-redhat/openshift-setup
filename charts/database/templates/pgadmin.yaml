@@ -23,7 +23,7 @@ metadata:
   name: pgadmin-{{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
 spec:
   port:
-    targetPort: http
+    targetPort: pgadmin-port
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: edge
