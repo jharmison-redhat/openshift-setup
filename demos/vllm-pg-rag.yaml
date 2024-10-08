@@ -1,7 +1,20 @@
 ---
+namespaces:
+  - name: pgvector
+    labels:
+      opendatahub.io/dashboard: "true"
+    annotations:
+      openshift.io/description: Project for housing Vector Database in Postgres
+      openshift.io/display-name: PGVector
 applications:
   - name: crunchydata-postgres-operator
   - name: database
+    rewrite:
+      metadata:
+        name: pgvector
+      spec:
+        destination:
+          namespace: pgvector
     values:
       name: pgvector
       initSQL: |-
@@ -10,30 +23,30 @@ applications:
         GRANT ALL ON SCHEMA public TO pgvector;
   - name: openshift-ai
     values:
-    dataScienceClusterComponents:
-      codeflare:
-        managementState: Removed
-      dashboard:
-        managementState: Managed
-      datasciencepipelines:
-        managementState: Managed
-      kserve:
-        managementState: Managed
-        serving:
-          ingressGateway:
-            certificate:
-              type: OpenshiftDefaultIngress
+      dataScienceClusterComponents:
+        codeflare:
+          managementState: Removed
+        dashboard:
           managementState: Managed
-          name: knative-serving
-      kueue:
-        managementState: Removed
-      modelmeshserving:
-        managementState: Removed
-      ray:
-        managementState: Removed
-      trainingoperator:
-        managementState: Removed
-      trustyai:
-        managementState: Removed
-      workbenches:
-        managementState: Managed
+        datasciencepipelines:
+          managementState: Managed
+        kserve:
+          managementState: Managed
+          serving:
+            ingressGateway:
+              certificate:
+                type: OpenshiftDefaultIngress
+            managementState: Managed
+            name: knative-serving
+        kueue:
+          managementState: Removed
+        modelmeshserving:
+          managementState: Removed
+        ray:
+          managementState: Removed
+        trainingoperator:
+          managementState: Removed
+        trustyai:
+          managementState: Removed
+        workbenches:
+          managementState: Managed
