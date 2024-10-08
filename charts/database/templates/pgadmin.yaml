@@ -1,0 +1,36 @@
+{{- if .Values.pgAdmin.enabled -}}
+---
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PGAdmin
+metadata:
+  name: {{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+spec:
+  dataVolumeClaimSpec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: {{ .Values.pgAdmin.pvcSize }}
+  serverGroups:
+    - postgresClusterSelector: {}
+      name: Crunchy Postgres for Kubernetes
+  serviceName: pgadmin-{{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+{{- if .Values.pgAdmin.route.enabled }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: pgadmin-{{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+spec:
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: pgadmin-{{ .Values.name | default (.Release.Name | printf "%s-%s" .Chart.Name) }}
+    weight: 100
+  wildcardPolicy: None
+{{- end -}}
+{{- end -}}

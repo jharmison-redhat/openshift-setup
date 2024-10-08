@@ -21,3 +21,9 @@ backrestRepoResources:
 
 # You can specify init SQL to run when creating a new database
 # initSQL: ""
+
+pgAdmin:
+  enabled: false
+  pvcSize: 1Gi
+  route:
+    enabled: true

@@ -21,6 +21,8 @@ applications:
         \c pgvector
         CREATE EXTENSION IF NOT EXISTS vector;
         GRANT ALL ON SCHEMA public TO pgvector;
+      pgAdmin:
+        enabled: true
   - name: openshift-ai
     values:
       dataScienceClusterComponents:

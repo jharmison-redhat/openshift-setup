@@ -5,3 +5,5 @@ initSQL: '\c pgvector
 
   GRANT ALL ON SCHEMA public TO pgvector;'
 name: pgvector
+pgAdmin:
+  enabled: true
