@@ -48,7 +48,7 @@ COPY overlay/ /
 WORKDIR /workdir
 
 RUN mkdir -p /root/.bash_completions \
-  && /bin/bash -c 'demo.py --show-completion bash >> /root/.bashrc'
+  && /bin/bash -c 'openshift-setup --show-completion bash >> /root/.bashrc'
 
 ENTRYPOINT ["make"]
 CMD ["bootstrap"]
