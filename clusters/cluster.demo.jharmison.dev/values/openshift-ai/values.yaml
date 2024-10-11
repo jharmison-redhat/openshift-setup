@@ -17,7 +17,7 @@ dataScienceClusterComponents:
   kueue:
     managementState: Removed
   modelmeshserving:
-    managementState: Managed
+    managementState: Removed
   ray:
     managementState: Removed
   trainingoperator:
