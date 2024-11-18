@@ -57,6 +57,7 @@ spec:
                 - name: tag:Name
                   values:
                     - {{ .Values.cluster.infraID }}-node
+            - filters:
                 - name: tag:Name
                   values:
                     - {{ .Values.cluster.infraID }}-lb
