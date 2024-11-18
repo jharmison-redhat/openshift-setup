@@ -1,6 +1,6 @@
 nfd:
   channel: stable
-  image: registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9@sha256:9e06ddd109ac3a6e829f1d49f2ffad3c0ae78f7667fdeededa2540a3371478c9
+  image: registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9@sha256:b0f786e21798c27905c6fdf189bd91cae1f5ddd58ad101a28dbb8b5de92069ce
   configData:
     core:
       sleepInterval: 60s
