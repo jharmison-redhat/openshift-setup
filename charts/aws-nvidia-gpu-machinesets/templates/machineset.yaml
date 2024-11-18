@@ -65,7 +65,7 @@ spec:
             filters:
               - name: tag:Name
                 values:
-                  - {{ .Values.cluster.infraID }}-private-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+                  - {{ .Values.cluster.infraID }}-subnet-private-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
           tags:
             - name: kubernetes.io/cluster/{{ .Values.cluster.infraID }}
               value: owned
