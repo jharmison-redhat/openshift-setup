@@ -29,9 +29,12 @@ spec:
           effect: NoSchedule
       providerSpec:
         value:
+          apiVersion: machine.openshift.io/v1beta1
+          kind: AWSMachineProviderConfig
+          metadata:
+            creationTimestamp: null
           ami:
             id: {{ .Values.aws.ami }}
-          apiVersion: machine.openshift.io/v1beta1
           blockDevices:
             - ebs:
                 encrypted: true
@@ -46,9 +49,6 @@ spec:
           iamInstanceProfile:
             id: {{ .Values.cluster.infraID }}-worker-profile
           instanceType: {{ .Values.instanceType }}
-          kind: AWSMachineProviderConfig
-          metadata:
-            creationTimestamp: null
           placement:
             availabilityZone: {{ include "aws-nvidia-gpu-machinesets.az" $ }}
             region: {{ .Values.aws.region }}
@@ -56,7 +56,10 @@ spec:
             - filters:
                 - name: tag:Name
                   values:
-                    - {{ .Values.cluster.infraID }}-worker-sg
+                    - {{ .Values.cluster.infraID }}-node
+                - name: tag:Name
+                  values:
+                    - {{ .Values.cluster.infraID }}-lb
           subnet:
             filters:
               - name: tag:Name
