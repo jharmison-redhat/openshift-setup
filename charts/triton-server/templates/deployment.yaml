@@ -49,7 +49,6 @@ spec:
       labels:
         app: {{ template "triton-inference-server.name" . }}
         release: {{ .Release.Name }}
-
     spec:
       serviceAccountName: {{ template "triton-inference-server.fullname" . }}
       volumes:
@@ -65,17 +64,14 @@ spec:
           volumeMounts:
             - mountPath: /models
               name: models
-
           resources:
             limits:
               nvidia.com/gpu: {{ .Values.image.numGpus }}
-
           args:
             - tritonserver
             {{- range .Values.serverArgs }}
             - {{ . }}
             {{- end }}
-
           ports:
             - containerPort: 8000
               name: http
@@ -106,7 +102,10 @@ spec:
             httpGet:
               path: /v2/health/ready
               port: http
-
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       securityContext:
         runAsUser: 1000
         fsGroup: 1000

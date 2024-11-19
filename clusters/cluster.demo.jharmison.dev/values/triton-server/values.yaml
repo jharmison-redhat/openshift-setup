@@ -7,3 +7,8 @@ image:
   modelRepositoryPath: /
 
 openshift: true
+
+tolerations:
+  - effect: NoSchedule
+    key: nvidia.com/gpu
+    operator: Exists

@@ -42,6 +42,8 @@ serverArgs:
 # When deploying on OpenShift, set to true in order to correctly handle security-related configuration
 openshift: false
 
+tolerations: []
+
 traefik:
   ports:
     triton-http:
