@@ -51,6 +51,7 @@ spec:
         release: {{ .Release.Name }}
 
     spec:
+      serviceAccountName: {{ template "triton-inference-server.fullname" . }}
       volumes:
         - name: models
           nfs:
@@ -106,8 +107,6 @@ spec:
               path: /v2/health/ready
               port: http
 
-      {{- if not .Values.openshift }}
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
-      {{- end }}
