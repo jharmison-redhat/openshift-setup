@@ -33,7 +33,7 @@ metadata:
   annotations:
     kubernetes.io/description: triton has the same settings as restricted-v2,
       except it also allows non-root UIDs and NFS mounts.
-    name: {{ template "triton-inference-server.fullname" . }}
+  name: {{ template "triton-inference-server.fullname" . }}
 allowHostDirVolumePlugin: false
 allowHostIPC: false
 allowHostNetwork: false
