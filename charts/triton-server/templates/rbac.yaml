@@ -66,10 +66,10 @@ volumes:
 - downwardAPI
 - emptyDir
 - ephemeral
+- nfs
 - persistentVolumeClaim
 - projected
 - secret
-- nfs
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
