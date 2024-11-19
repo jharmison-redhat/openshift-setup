@@ -1,0 +1,9 @@
+tags:
+  autoscaling: false
+  loadBalancing: false
+
+image:
+  modelRepositoryServer: fs-0424d3fc71b9bc365.efs.us-east-2.amazonaws.com
+  modelRepositoryPath: /
+
+openshift: true
