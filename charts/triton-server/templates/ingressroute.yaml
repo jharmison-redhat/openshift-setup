@@ -85,7 +85,7 @@ spec:
     targetPort: http-inference-server
   tls:
     insecureEdgeTerminationPolicy: Redirect
-    termination: reencrypt
+    termination: edge
   to:
     kind: Service
     name: {{ template "triton-inference-server.fullname" . }}
