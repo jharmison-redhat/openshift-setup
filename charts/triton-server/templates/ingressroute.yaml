@@ -82,7 +82,7 @@ metadata:
 spec:
   subdomain: {{ template "triton-inference-server.name" . }}
   port:
-    targetPort: http
+    targetPort: http-inference-server
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: reencrypt
