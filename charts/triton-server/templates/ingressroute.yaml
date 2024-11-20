@@ -67,3 +67,28 @@ spec:
           port: 8001
           scheme: h2c
 {{- end -}}
+{{- if and .Values.tags.openshift .Values.openshift.deployRoute }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ template "triton-inference-server.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "triton-inference-server.name" . }}
+    chart: {{ template "triton-inference-server.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  subdomain: {{ template "triton-inference-server.name" . }}
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: reencrypt
+  to:
+    kind: Service
+    name: {{ template "triton-inference-server.fullname" . }}
+    weight: 100
+  wildcardPolicy: None
+{{- end -}}
