@@ -7,6 +7,9 @@ image:
   modelRepositoryServer: fs-0424d3fc71b9bc365.efs.us-east-2.amazonaws.com
   modelRepositoryPath: /models
 
+strategy:
+  type: Recreate
+
 tolerations:
   - effect: NoSchedule
     key: nvidia.com/gpu
