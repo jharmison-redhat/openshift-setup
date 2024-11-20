@@ -3,14 +3,15 @@ tags:
   loadBalancing: false
   openshift: true
 
-image:
-  modelRepositoryServer: fs-0424d3fc71b9bc365.efs.us-east-2.amazonaws.com
-  modelRepositoryPath: /models
+modelRepository:
+  nfs:
+    server: fs-0424d3fc71b9bc365.efs.us-east-2.amazonaws.com
+    path: /models
 
-strategy:
-  type: Recreate
-
-tolerations:
-  - effect: NoSchedule
-    key: nvidia.com/gpu
-    operator: Exists
+deployment:
+  strategy:
+    type: Recreate
+  tolerations:
+    - effect: NoSchedule
+      key: nvidia.com/gpu
+      operator: Exists

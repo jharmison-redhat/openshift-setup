@@ -40,7 +40,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.autoscaling.minReplicas }}
-  {{- with .Values.strategy }}
+  {{- with .Values.deployment.strategy }}
   strategy:
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -55,26 +55,47 @@ spec:
         release: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ template "triton-inference-server.fullname" . }}
+      {{- /*
+      We'll need to add other supported modelRepository types to ensure we're
+      wiring the volumes up correctly
+      */}}
+      {{- with .Values.modelRepository }}
+      {{- if eq .type "nfs" }}
       volumes:
         - name: models
           nfs:
-            server: {{ .Values.image.modelRepositoryServer }}
-            path: {{ .Values.image.modelRepositoryPath }}
-            readOnly: false
+            server: {{ .nfs.server }}
+            path: {{ .nfs.path }}
+            readOnly: {{ .nfs.readOnly }}
+      {{- end }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.imageName }}"
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.modelRepository }}
+          {{- if eq .type "nfs" }}
           volumeMounts:
             - mountPath: /models
               name: models
+          {{- end }}
+          {{- end }}
           resources:
             limits:
-              nvidia.com/gpu: {{ .Values.image.numGpus }}
+              nvidia.com/gpu: {{ .Values.deployment.numGpus }}
           args:
             - tritonserver
-            {{- range .Values.serverArgs }}
-            - {{ . }}
+            {{- /*
+            We need to confirm the modelRepository type because some won't have
+            a mountPath at all, e.g. S3
+            */}}
+            {{- with .Values.modelRepository }}
+            {{- if eq .type "nfs" }}
+            - --model-repository={{ .mountPath }}
+            {{- end }}
+            {{- end }}
+            {{- with .Values.deployment.extraArgs }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:
             - containerPort: 8000
@@ -106,10 +127,10 @@ spec:
             httpGet:
               path: /v2/health/ready
               port: http
-      {{- with .Values.tolerations }}
+      {{- with .Values.deployment.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       securityContext:
-        runAsUser: 1000
-        fsGroup: 1000
+        runAsUser: {{ .Values.deployment.uid }}
+        fsGroup: {{ .Values.deployment.uid }}

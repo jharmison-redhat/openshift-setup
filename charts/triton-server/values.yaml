@@ -31,17 +31,25 @@ tags:
   openshift: false
 
 image:
-  imageName: nvcr.io/nvidia/tritonserver:24.10-py3
+  registry: nvcr.io
+  repository: nvidia/tritonserver
+  tag: null # defaults to appVersion
   pullPolicy: IfNotPresent
-  modelRepositoryServer: < Replace with the IP Address of your file server >
-  modelRepositoryPath: /srv/models
+
+modelRepository:
+  type: nfs
+  mountPath: /models
+  nfs:
+    server: < Replace with the IP Address of your file server >
+    path: /srv/models
+    readOnly: false
+
+deployment:
   numGpus: 1
-
-# add server args here e.g. --grpc-use-ssl, --grpc-server-certs, repository-poll-secs, etc
-serverArgs:
-  - "--model-repository=/models"
-
-tolerations: []
+  extraArgs: []
+  tolerations: []
+  strategy: {}
+  uid: 1000
 
 openshift:
   deployRoute: true
