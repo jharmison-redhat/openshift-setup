@@ -18,3 +18,5 @@ deployment:
     - effect: NoSchedule
       key: nvidia.com/gpu
       operator: Exists
+# curl https://www.healthyseasonalrecipes.com/wp-content/uploads/2019/12/greek-pizza-21-034.jpg > /tmp/pizza.jpg
+# podman run --rm -v /tmp/pizza.jpg:/pizza.jpg --security-opt=label=disable --entrypoint python3 docker.io/ultralytics/ultralytics:latest -c 'from ultralytics import YOLO; from pprint import pprint; pprint(YOLO("https://triton-inference-server.apps.cluster.demo.jharmison.dev/yolo11n", task="detect")("/pizza.jpg"))'
