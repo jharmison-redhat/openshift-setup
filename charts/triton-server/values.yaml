@@ -43,6 +43,12 @@ modelRepository:
     server: < Replace with the IP Address of your file server >
     path: /srv/models
     readOnly: false
+  s3:
+    host: null # defaults to s3.amazonaws.com
+    protocol: null # defaults to http
+    port: 80
+    bucket: bucket
+    path: /models
 
 deployment:
   numGpus: 1

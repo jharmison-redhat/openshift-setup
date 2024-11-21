@@ -109,3 +109,23 @@ Create chart name and version as used by the chart label.
 {{- define "triton-inference-server.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Template the S3 connection string used by Triton
+*/}}
+{{- define "triton-inference-server.s3url" -}}
+{{- with .Values.modelRepository.s3 -}}
+
+{{- $s3proto := "" -}}
+{{- if .protocol -}}
+{{- $s3proto = printf "%s://" .protocol -}}
+{{- end -}}
+
+{{- $s3host := "" }}
+{{- if and .host .port -}}
+{{- $s3host = printf "%s:%s" .host (toString .port) -}}
+{{- end -}}
+
+{{- printf "s3://%s%s/%s%s" $s3proto $s3host .bucket .path -}}
+{{- end -}}
+{{- end -}}

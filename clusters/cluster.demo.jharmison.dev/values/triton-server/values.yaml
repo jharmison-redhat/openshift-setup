@@ -4,9 +4,12 @@ tags:
   openshift: true
 
 modelRepository:
-  nfs:
-    server: fs-0424d3fc71b9bc365.efs.us-east-2.amazonaws.com
-    path: /models
+  type: s3
+  s3:
+    host: s3.jharmison.com
+    protocol: https
+    port: 443
+    bucket: public
 
 deployment:
   strategy:

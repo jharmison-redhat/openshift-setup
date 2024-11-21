@@ -26,7 +26,8 @@
 
 # Creates a deployment for the Triton Inference Server pods
 # Each pod contains a Triton container and an nfs mount as specified in
-# values.yaml for the model repository
+# values.yaml for the model repository (if the modelRepository.type is
+# set to nfs)
 
 apiVersion: apps/v1
 kind: Deployment
@@ -92,6 +93,8 @@ spec:
             {{- with .Values.modelRepository }}
             {{- if eq .type "nfs" }}
             - --model-repository={{ .mountPath }}
+            {{- else if eq .type "s3" }}
+            - --model-repository={{ include "triton-inference-server.s3url" $ }}
             {{- end }}
             {{- end }}
             {{- with .Values.deployment.extraArgs }}
