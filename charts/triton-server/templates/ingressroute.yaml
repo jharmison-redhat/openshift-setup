@@ -83,9 +83,10 @@ spec:
   subdomain: {{ template "triton-inference-server.name" . }}
   port:
     targetPort: http-inference-server
+  {{- with .Values.openshift.routeTls }}
   tls:
-    insecureEdgeTerminationPolicy: Redirect
-    termination: edge
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   to:
     kind: Service
     name: {{ template "triton-inference-server.fullname" . }}

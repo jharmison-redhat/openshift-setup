@@ -11,6 +11,10 @@ modelRepository:
     port: 443
     bucket: public
 
+openshift:
+  routeTls:
+    insecureEdgeTerminationPolicy: Allow
+
 deployment:
   strategy:
     type: Recreate

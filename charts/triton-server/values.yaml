@@ -59,6 +59,9 @@ deployment:
 
 openshift:
   deployRoute: true
+  routeTls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
 
 traefik:
   ports:

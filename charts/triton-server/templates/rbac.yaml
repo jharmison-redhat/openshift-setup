@@ -24,9 +24,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Configures RBAC if required for the platform to support running
+# Configures RBAC if required for the platform to support running with
+# NFS volumes and pinned non-root UIDs as required
 
 {{- if .Values.tags.openshift }}
+{{- if eq .Values.modelRepository.type "nfs" }}
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
 metadata:
@@ -91,6 +93,23 @@ rules:
   resources: ["securitycontextconstraints"]
   resourceNames: [{{ include "triton-inference-server.fullname" . | quote }}]
   verbs: ["use"]
+{{- else }}
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "triton-inference-server.fullname" . }}-scc
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "triton-inference-server.name" . }}
+    chart: {{ template "triton-inference-server.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+rules:
+- apiGroups: ["security.openshift.io"]
+  resources: ["securitycontextconstraints"]
+  resourceNames: ["nonroot-v2"]
+  verbs: ["use"]
+{{- end }}
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
