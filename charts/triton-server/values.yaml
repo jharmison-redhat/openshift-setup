@@ -56,6 +56,7 @@ deployment:
   tolerations: []
   strategy: {}
   uid: 1000
+  devShmAmount: null
 
 openshift:
   deployRoute: true

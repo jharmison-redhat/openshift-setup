@@ -60,9 +60,9 @@ spec:
       We'll need to add other supported modelRepository types to ensure we're
       wiring the volumes up correctly
       */}}
+      volumes:
       {{- with .Values.modelRepository }}
       {{- if eq .type "nfs" }}
-      volumes:
         - name: models
           nfs:
             server: {{ .nfs.server }}
@@ -70,17 +70,25 @@ spec:
             readOnly: {{ .nfs.readOnly }}
       {{- end }}
       {{- end }}
+        - name: dev-shm
+          emptyDir:
+            medium: Memory
+            {{- with .Values.deployment.devShmAMount }}
+            sizeLimit: {{ . }}
+            {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
           {{- with .Values.modelRepository }}
           {{- if eq .type "nfs" }}
-          volumeMounts:
             - mountPath: /models
               name: models
           {{- end }}
           {{- end }}
+            - mountPath: /dev/shm
+              name: dev-shm
           resources:
             limits:
               nvidia.com/gpu: {{ .Values.deployment.numGpus }}
