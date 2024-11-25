@@ -22,7 +22,6 @@ deployment:
     - --model-control-mode=poll
     - --strict-readiness=false
     - --exit-on-error=false
-    - --load-model=*
   tolerations:
     - effect: NoSchedule
       key: nvidia.com/gpu
