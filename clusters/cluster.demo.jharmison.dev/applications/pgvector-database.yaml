@@ -1,0 +1,38 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '4'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: pgvector
+spec:
+  destination:
+    name: in-cluster
+    namespace: pgvector
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
+      - ../../clusters/cluster.demo.jharmison.dev/values/pgvector-database/values.yaml
+    path: charts/database
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    ignoreDifferences:
+    - jsonPointers:
+      - /data/password
+      kind: Secret
+    retry:
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
+      limit: 10
+    syncOptions:
+    - RespectIgnoreDifferences=true

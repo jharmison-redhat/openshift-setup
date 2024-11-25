@@ -7,6 +7,7 @@ namespaces:
       openshift.io/description: Project for housing Vector Database in Postgres
       openshift.io/display-name: PGVector
 applications:
+  - name: nvidia-gpu-enablement
   - name: crunchydata-postgres-operator
   - name: database
     fileprefix: pgvector
@@ -24,6 +25,8 @@ applications:
         GRANT ALL ON SCHEMA public TO pgvector;
       pgAdmin:
         enabled: true
+  - name: openshift-serverless
+  - name: openshift-servicemesh
   - name: openshift-ai
     values:
       dataScienceClusterComponents:
