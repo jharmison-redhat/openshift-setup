@@ -38,7 +38,6 @@ userGroups:
 dashboardConfig:
   disableAcceleratorProfiles: false
   disableBYONImageStream: false
-  disableBiasMetrics: true
   disableClusterManager: false
   disableCustomServingRuntimes: false
   disableDistributedWorkloads: false
