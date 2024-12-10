@@ -1,4 +1,6 @@
 ---
+channel: stable-2.13
+
 dataScienceClusterComponents:
   codeflare:
     managementState: Removed
