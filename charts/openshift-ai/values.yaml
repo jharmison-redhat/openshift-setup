@@ -1,5 +1,5 @@
 ---
-channel: fast
+channel: stable
 
 enableUserTelemetry: false
 
