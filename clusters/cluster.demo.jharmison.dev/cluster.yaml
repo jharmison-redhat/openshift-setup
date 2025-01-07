@@ -5,9 +5,9 @@ cluster:
   baseDomain: demo.jharmison.dev
   controlPlaneNodes: 3
   workerNodes: 3
-  agePublicKey: age166gy2qjqlm0y90va96qn7yt2yyn4qcdtnsht42w8ud7fuyjrfssqrplct7
-  infraID: cluster-gc28d
+  agePublicKey: age16aht3p275yre5nwnp5af3qtdes28upzwqr5jejznfwf6sk2xpvtqpp44ja
+  infraID: cluster-vdrrj
 aws:
   region: us-east-2
-  azs: ["us-east-2c","us-east-2a","us-east-2b"]
+  azs: ["us-east-2a","us-east-2b","us-east-2c"]
   ami: ami-08997afda521c28fa
