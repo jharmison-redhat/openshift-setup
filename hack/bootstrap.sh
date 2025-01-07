@@ -2,6 +2,7 @@
 
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
+hack/encrypt.sh
 
 if ! argo_ssh_validate; then
 	if gh_validate; then
