@@ -1,0 +1,13 @@
+desiredUpdate:
+  version: 4.17.9
+cluster:
+  name: cluster
+  baseDomain: demo.jharmison.dev
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1y0wultgnaafuc5qxjl799wajftfaxcq0lvw5sj5nzv2vrrplkujqkv0al6
+  infraID: cluster-2v2df
+aws:
+  region: us-east-2
+  azs: ["us-east-2a","us-east-2b","us-east-2c"]
+  ami: ami-08997afda521c28fa
