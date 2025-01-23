@@ -1,0 +1,38 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: cert-manager
+spec:
+  destination:
+    name: in-cluster
+    namespace: cert-manager-operator
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - ../../clusters/cluster2.demo.jharmison.dev/cluster.yaml
+      - ../../clusters/cluster2.demo.jharmison.dev/values/cert-manager/values.yaml
+      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster2.demo.jharmison.dev/values/cert-manager/secrets.enc.yaml
+    path: charts/cert-manager
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+    retry:
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
+      limit: 10
+    syncOptions:
+    - CreateNamespace=true
