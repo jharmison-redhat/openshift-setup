@@ -21,6 +21,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
+      - ../../clusters/cluster.demo.jharmison.dev/values/aws-nvidia-gpu-machinesets/values.yaml
     path: charts/aws-nvidia-gpu-machinesets
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
