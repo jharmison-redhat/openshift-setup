@@ -1,0 +1,29 @@
+{{- if .Values.enableConsolePlugin }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: enable-odf-console-plugin
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: enable-plugin
+          image: 'image-registry.openshift-image-registry.svc:5000/openshift/tools:latest'
+          env:
+            - name: PLUGIN_NAME
+              value: odf-console
+          command: ["/bin/bash"]
+          args:
+            - /app/enable-console-plugin.sh
+          volumeMounts:
+            - name: enable-plugin
+              mountPath: /app
+      volumes:
+        - name: enable-plugin
+          configMap:
+            name: enable-odf-console-plugin
+            defaultMode: 493
+      serviceAccountName: enable-odf-console-plugin
+{{- end }}

@@ -1,5 +1,9 @@
 ---
-channel: stable-4.15
+channel: stable-4.17
 enableCephTools: true
 storageDeviceSets: []
 disks: []
+enableConsolePlugin: true
+resources: {}
+multiCloudGateway: {}
+resourceProfile: balanced

@@ -1,0 +1,34 @@
+{{- if .Values.enableConsolePlugin }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: enable-odf-console-plugin
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: enable-odf-console-plugin
+rules:
+  - apiGroups:
+      - operator.openshift.io
+    resources:
+      - consoles
+    verbs:
+      - get
+      - list
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: enable-odf-console-plugin
+subjects:
+- kind: ServiceAccount
+  name: enable-odf-console-plugin
+  namespace: openshift-storage
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: enable-odf-console-plugin
+{{- end }}

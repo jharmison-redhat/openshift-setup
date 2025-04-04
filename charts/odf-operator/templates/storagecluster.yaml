@@ -8,6 +8,8 @@ metadata:
 spec:
   arbiter: {}
   encryption:
+    keyRotation:
+      schedule: '@weekly'
     kms: {}
   externalStorage: {}
   {{- with .Values.monDataDirHostPath }}
@@ -20,7 +22,18 @@ spec:
     cephFilesystems: {}
     cephObjectStoreUsers: {}
     cephObjectStores: {}
+  resourceProfile: {{ .Values.resourceProfile }}
+  {{- with .Values.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   mirroring: {}
   nodeTopologies: {}
+  {{- with .Values.storageDeviceSets }}
   storageDeviceSets:
-    {{- toYaml .Values.storageDeviceSets | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.multiCloudGateway }}
+  multiCloudGateway:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}

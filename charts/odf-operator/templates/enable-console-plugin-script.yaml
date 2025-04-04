@@ -1,0 +1,9 @@
+{{- if .Values.enableConsolePlugin }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: enable-odf-console-plugin
+data:
+{{ (.Files.Glob "files/enable-console-plugin*").AsConfig | indent 2 }}
+{{- end }}
