@@ -1,0 +1,11 @@
+dataScienceClusterComponents:
+  codeflare:
+    managementState: Removed
+  datasciencepipelines:
+    managementState: Removed
+  ray:
+    managementState: Removed
+  trainingoperator:
+    managementState: Removed
+  kueue:
+    managementState: Removed
