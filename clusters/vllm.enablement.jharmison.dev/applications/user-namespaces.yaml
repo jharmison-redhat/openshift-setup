@@ -1,0 +1,43 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: user-namespaces
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+              revision: HEAD
+              files:
+                - path: clusters/vllm.enablement.jharmison.dev/values/oauth/values.yaml
+          - list:
+              elementsYaml: "{{ .clusterReaders | toJson }}"
+  template:
+    metadata:
+      name: "ns-{{ . }}"
+    spec:
+      destination:
+        name: in-cluster
+        namespace: default
+      project: default
+      source:
+        path: charts/namespace
+        repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+        targetRevision: HEAD
+        helm:
+          valuesObject:
+            name: "{{ . }}"
+            namespaceAdmins:
+              - "{{ . }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

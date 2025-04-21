@@ -1,2 +1,4 @@
 ---
-name: ""
+name: "example"
+namespaceAdmins: []
+## You can provide a list of user accounts to be granted the admin ClusterRole in the namespace here
