@@ -16,6 +16,11 @@ providers:
 admins:
   - admin
 
+clusterReaders: []
+## You can add users to the array here to grant cluster-wide reader privileges,
+# which doesn't include reading secrets
+#  - developer
+
 mappingMethod: claim
 
 removeKubeAdmin: true

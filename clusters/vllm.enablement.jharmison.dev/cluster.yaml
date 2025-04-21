@@ -1,0 +1,13 @@
+desiredUpdate:
+  version: 4.18.8
+cluster:
+  name: vllm
+  baseDomain: enablement.jharmison.dev
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1h7e7yk7ttk47c79u4q43xjzc0d4rvr647scwkzvu6gyxvnxyfcuseh20qg
+  infraID: vllm-grjlx
+aws:
+  region: us-east-2
+  azs: ["us-east-2a","us-east-2b","us-east-2c"]
+  ami: ami-078e26f293629fe91
