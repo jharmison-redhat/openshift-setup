@@ -2,44 +2,46 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: user-namespaces
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: '3'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: user-namespaces
 spec:
-  goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
   generators:
-    - matrix:
-        generators:
-          - git:
-              repoURL: git@github.com:jharmison-redhat/openshift-setup.git
-              revision: HEAD
-              files:
-                - path: clusters/vllm.enablement.jharmison.dev/values/oauth/values.yaml
-          - list:
-              elementsYaml: |
-                {{- range $name := .clusterReaders }}
-                - name: {{ $name }}
-                {{- end }}
+  - matrix:
+      generators:
+      - git:
+          files:
+          - path: clusters/vllm.enablement.jharmison.dev/values/user-namespaces/values.yaml
+          repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+          revision: HEAD
+      - list:
+          elementsYaml: '{{- range $name := .users }}
+
+            - name: {{ $name }}
+
+            {{- end }}'
+  goTemplate: true
+  goTemplateOptions:
+  - missingkey=error
   template:
     metadata:
-      name: "ns-{{ .name }}"
+      name: user-namespace-{{ .name }}
     spec:
       destination:
         name: in-cluster
         namespace: default
       project: default
       source:
+        helm:
+          valuesObject:
+            name: '{{ .name }}'
+            namespaceAdmins:
+            - '{{ .name }}'
         path: charts/namespace
         repoURL: git@github.com:jharmison-redhat/openshift-setup.git
         targetRevision: HEAD
-        helm:
-          valuesObject:
-            name: "{{ .name }}"
-            namespaceAdmins:
-              - "{{ .name }}"
       syncPolicy:
         automated:
           prune: true
