@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: azure-nvidia-gpu-machinesets
+description: >
+  A helm chart to manage MachineSets of Nvidia GPU instances on Azure
+type: application
+version: 0.1.0
+appVersion: 0.1.0

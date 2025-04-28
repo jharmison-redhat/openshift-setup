@@ -1,0 +1,30 @@
+---
+# https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/overview?tabs=breakdownseries%2Cgeneralsizelist%2Ccomputesizelist%2Cmemorysizelist%2Cstoragesizelist%2Cgpusizelist%2Cfpgasizelist%2Chpcsizelist#gpu-accelerated
+vmSize: Standard_NC4as_T4_v3
+desiredReplicas: 1
+diskSizeGB: 128
+
+autoscaling:
+  enabled: false
+  minReplicas: 0
+  maxReplicas: 1
+  scaleDown:
+    enabled: true
+    delayAfterAdd: 30m
+    delayAfterDelete: 5m
+    delayAfterFailure: 30s
+    unneededTime: 15m
+    utilizationThreshold: "0.7"
+
+cluster: # This needs updated based on your existing cluster name
+  infraID: cluster-9w6jz
+azure:
+  region: westus
+  imageResourceId: null # if provided, will not use the marketplace lookup
+  offer: rh-ocp-worker
+  publisher: RedHat
+  sku: rh-ocp-worker
+  version: 4.18.2025031114
+  type: MarketplaceWithPlan
+  resourceGroup: null
+  networkResourceGroup: null

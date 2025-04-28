@@ -1,0 +1,17 @@
+{{- if .Values.autoscaling.enabled }}
+apiVersion: autoscaling.openshift.io/v1
+kind: ClusterAutoscaler
+metadata:
+  name: default
+spec:
+  podPriorityThreshold: -10
+  resourceLimits:
+    gpus:
+    - min: {{ .Values.autoscaling.minReplicas }}
+      max: {{ .Values.autoscaling.maxReplicas }}
+      type: nvidia.com/gpu
+  {{- with .Values.autoscaling.scaleDown }}
+  scaleDown:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

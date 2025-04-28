@@ -1,0 +1,12 @@
+desiredUpdate:
+  version: 4.18.9
+cluster:
+  name: nim
+  baseDomain: 6tfnf.azure.redhatworkshops.io
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1ahrpjpv7995ymdax772kf3hdjf567zkkeakjjfvz3lq9v2vuppksnsckrl
+  infraID: nim-wmhsp
+azure:
+  region: westus
+  imageResourceId: /resourceGroups/nim-wmhsp-rg/providers/Microsoft.Compute/galleries/gallery_nim_wmhsp/images/nim-wmhsp-gen2/versions/latest

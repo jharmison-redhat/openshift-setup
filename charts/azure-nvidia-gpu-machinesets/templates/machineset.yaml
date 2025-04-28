@@ -1,0 +1,64 @@
+---
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  labels:
+    machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
+  name: {{ .Values.cluster.infraID }}-gpu-worker-{{ .Values.azure.region }}
+spec:
+  {{- if and (.Values.desiredReplicas) (not .Values.autoscaling.enabled) }}
+  replicas: {{ .Values.desiredReplicas }}
+  {{- end }}
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
+      machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-worker-{{ .Values.azure.region }}
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
+        machine.openshift.io/cluster-api-machine-role: worker
+        machine.openshift.io/cluster-api-machine-type: worker
+        machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-worker-{{ .Values.azure.region }}
+    spec:
+      metadata:
+        labels:
+          node-role.kubernetes.io/gpu: ""
+      taints:
+        - key: nvidia.com/gpu
+          value: ""
+          effect: NoSchedule
+      providerSpec:
+        value:
+          acceleratedNetworking: true
+          apiVersion: machine.openshift.io/v1beta1
+          credentialsSecret:
+            name: azure-cloud-credentials
+            namespace: openshift-machine-api
+          diagnostics: {}
+          image:
+            {{- include "azure-nvidia-gpu-machinesets.image" . | nindent 12 }}
+          kind: AzureMachineProviderSpec
+          location: {{ .Values.azure.region }}
+          managedIdentity: {{ .Values.cluster.infraID }}-identity
+          metadata:
+            creationTimestamp: null
+          networkResourceGroup: {{ include "azure-nvidia-gpu-machinesets.network-rg" . }}
+          osDisk:
+            diskSettings: {}
+            diskSizeGB: {{ .Values.diskSizeGB }}
+            managedDisk:
+              securityProfile:
+                diskEncryptionSet: {}
+              storageAccountType: Premium_LRS
+            osType: Linux
+          publicIP: false
+          publicLoadBalancer: {{ .Values.cluster.infraID }}
+          resourceGroup: {{ include "azure-nvidia-gpu-machinesets.rg" . }}
+          securityProfile:
+            settings: {}
+          subnet: {{ .Values.cluster.infraID }}-worker-subnet
+          userDataSecret:
+            name: worker-user-data
+          vmSize: {{ .Values.vmSize }}
+          vnet: {{ .Values.cluster.infraID }}-vnet
