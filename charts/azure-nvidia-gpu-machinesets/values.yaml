@@ -3,6 +3,7 @@
 vmSize: Standard_NC4as_T4_v3
 desiredReplicas: 1
 diskSizeGB: 128
+nameStub: gpu-worker
 
 autoscaling:
   enabled: false
