@@ -1,0 +1,5 @@
+---
+gpuOperator:
+  policy:
+    driver:
+      version: 550.163.01

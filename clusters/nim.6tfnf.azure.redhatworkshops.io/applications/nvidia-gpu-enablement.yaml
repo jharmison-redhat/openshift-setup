@@ -16,6 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/nim.6tfnf.azure.redhatworkshops.io/cluster.yaml
+      - ../../clusters/nim.6tfnf.azure.redhatworkshops.io/values/nvidia-gpu-enablement/values.yaml
     path: charts/nvidia-gpu-enablement
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
