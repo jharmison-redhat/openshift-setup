@@ -3,6 +3,5 @@ gpuOperator:
   policy:
     driver:
       version: 550.163.01
-      usePrecompiled: true
       image: nvidia-gpu-driver
       repository: quay.io/jharmison
