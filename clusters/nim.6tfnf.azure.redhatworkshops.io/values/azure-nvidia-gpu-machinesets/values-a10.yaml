@@ -1,4 +1,4 @@
 ---
 nameStub: a10-worker
-vmSize: Standard_NV12ads_A10_v5
+vmSize: Standard_NV36ads_A10_v5
 diskSizeGB: 300
