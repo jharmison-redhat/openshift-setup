@@ -3,5 +3,5 @@ gpuOperator:
   policy:
     driver:
       version: 550.163.01
-      image: nvidia-gpu-driver
-      repository: quay.io/jharmison
+      image: driver
+      repository: nvcr.io/nvidia
