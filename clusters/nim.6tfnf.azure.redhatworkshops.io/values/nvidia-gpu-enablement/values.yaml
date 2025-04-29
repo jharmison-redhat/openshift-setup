@@ -4,5 +4,5 @@ gpuOperator:
     driver:
       version: 550.163.01
       usePrecompiled: true
-      image: nvidia-gpu-driver
-      repository: quay.io/fabiendupont
+      image: driver
+      repository: nvcr.io/nvidia
