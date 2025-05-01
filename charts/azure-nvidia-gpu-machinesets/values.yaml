@@ -5,6 +5,11 @@ desiredReplicas: 1
 diskSizeGB: 128
 nameStub: gpu-worker
 
+taints:
+  - key: nvidia.com/gpu
+    value: ""
+    effect: NoSchedule
+
 autoscaling:
   enabled: false
   minReplicas: 0

@@ -24,10 +24,10 @@ spec:
       metadata:
         labels:
           node-role.kubernetes.io/gpu: ""
+      {{- with .Values.taints }}
       taints:
-        - key: nvidia.com/gpu
-          value: ""
-          effect: NoSchedule
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       providerSpec:
         value:
           acceleratedNetworking: true
