@@ -10,10 +10,6 @@ nfd:
   image: registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9:v4.18
   configData:
     sources:
-      pci:
-        deviceLabelFields:
-          - vendor
-          - device
       custom:
         - name: amd-gpu
           labels:
