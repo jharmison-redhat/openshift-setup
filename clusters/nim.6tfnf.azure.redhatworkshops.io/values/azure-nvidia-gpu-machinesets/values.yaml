@@ -1,3 +1,8 @@
 ---
 vmSize: Standard_NC80adis_H100_v5
 diskSizeGB: 500
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
