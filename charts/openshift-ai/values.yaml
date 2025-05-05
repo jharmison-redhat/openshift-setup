@@ -6,29 +6,37 @@ enableUserTelemetry: false
 dataScienceClusterComponents:
   codeflare:
     managementState: Managed
-  dashboard:
-    managementState: Managed
-  datasciencepipelines:
-    managementState: Managed
   kserve:
     managementState: Managed
+    nim:
+      managementState: Managed
+    rawDeploymentServiceConfig: Headless
     serving:
       ingressGateway:
         certificate:
           type: OpenshiftDefaultIngress
       managementState: Managed
       name: knative-serving
+  modelregistry:
+    managementState: Managed
+    registriesNamespace: rhoai-model-registries
+  trustyai:
+    managementState: Managed
+  ray:
+    managementState: Managed
   kueue:
+    managementState: Managed
+  workbenches:
+    managementState: Managed
+  dashboard:
     managementState: Managed
   modelmeshserving:
     managementState: Removed
-  ray:
+  datasciencepipelines:
     managementState: Managed
   trainingoperator:
     managementState: Managed
-  trustyai:
-    managementState: Removed
-  workbenches:
+  codeflare:
     managementState: Managed
 
 admins: []
