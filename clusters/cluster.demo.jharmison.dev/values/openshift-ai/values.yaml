@@ -1,4 +1,7 @@
 dataScienceClusterComponents:
+  kserve:
+    nim:
+      managementState: Removed
   codeflare:
     managementState: Removed
   datasciencepipelines:

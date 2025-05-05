@@ -1,13 +1,13 @@
 desiredUpdate:
-  version: 4.17.17
+  version: 4.18.10
 cluster:
   name: cluster
   baseDomain: demo.jharmison.dev
   controlPlaneNodes: 3
-  workerNodes: 3
-  agePublicKey: age1x3u74cavc363h37ecn9zu4d3cw849a4gvpaj8ezek7lc8q4pd4aqz3z74s
-  infraID: cluster-mrvhd
+  workerNodes: 5
+  agePublicKey: age1c5fv8exsndknketpzzhdgpyq845ddu0zdtxzzmy3j6xtdreczuaqv2yw7h
+  infraID: cluster-6vzxk
 aws:
   region: us-east-2
   azs: ["us-east-2c","us-east-2a","us-east-2b"]
-  ami: ami-022fbb77a3226215f
+  ami: ami-078e26f293629fe91

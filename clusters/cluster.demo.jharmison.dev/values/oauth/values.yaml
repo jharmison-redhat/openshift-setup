@@ -2,8 +2,7 @@ providers:
   htpasswd: null
   github:
     organizations:
-      - jharmison-redhat-org
+      - 
 
 admins:
   - jharmison-redhat
-  - brianjball
