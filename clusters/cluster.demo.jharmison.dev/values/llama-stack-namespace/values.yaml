@@ -1,0 +1,5 @@
+---
+annotations:
+  openshift.io/description: Project for housing Llama Stack components
+  openshift.io/display-name: Llama Stack
+name: llama-stack

@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: llama-stack-namespace
+spec:
+  destination:
+    name: in-cluster
+    namespace: default
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
+      - ../../clusters/cluster.demo.jharmison.dev/values/llama-stack-namespace/values.yaml
+    path: charts/namespace
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

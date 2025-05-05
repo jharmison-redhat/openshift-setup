@@ -1,0 +1,33 @@
+---
+namespaces:
+  - name: model-serving
+    labels:
+      opendatahub.io/dashboard: "true"
+    annotations:
+      openshift.io/description: Project for housing model servers
+      openshift.io/display-name: Model Serving
+  - name: llama-stack
+    annotations:
+      openshift.io/description: Project for housing Llama Stack components
+      openshift.io/display-name: Llama Stack
+applications:
+  - name: nvidia-gpu-enablement
+  - name: openshift-serverless
+  - name: openshift-servicemesh
+  - name: authorino
+  - name: openshift-ai
+    values:
+      dataScienceClusterComponents:
+        kserve:
+          nim:
+            managementState: Removed
+        codeflare:
+          managementState: Removed
+        datasciencepipelines:
+          managementState: Removed
+        ray:
+          managementState: Removed
+        trainingoperator:
+          managementState: Removed
+        kueue:
+          managementState: Removed

@@ -1,14 +1,15 @@
+---
 dataScienceClusterComponents:
-  kserve:
-    nim:
-      managementState: Removed
   codeflare:
     managementState: Removed
   datasciencepipelines:
     managementState: Removed
+  kserve:
+    nim:
+      managementState: Removed
+  kueue:
+    managementState: Removed
   ray:
     managementState: Removed
   trainingoperator:
-    managementState: Removed
-  kueue:
     managementState: Removed
