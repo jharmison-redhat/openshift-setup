@@ -1,0 +1,12 @@
+{{- with .Values.dashboardReplicas }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rhods-dashboard
+  namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/sync-wave: "9"
+spec:
+  replicas: {{ . }}
+{{- end }}

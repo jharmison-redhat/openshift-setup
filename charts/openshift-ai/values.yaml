@@ -3,6 +3,9 @@ channel: stable
 
 enableUserTelemetry: false
 
+# If set, will override the dashboard deployment replica count
+dashboardReplicas: null
+
 dataScienceClusterComponents:
   codeflare:
     managementState: Managed

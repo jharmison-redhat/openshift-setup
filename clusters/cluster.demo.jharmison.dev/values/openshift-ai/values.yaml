@@ -1,4 +1,6 @@
 ---
+dashboardReplicas: 1
+
 dataScienceClusterComponents:
   codeflare:
     managementState: Removed
