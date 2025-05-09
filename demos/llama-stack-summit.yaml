@@ -18,9 +18,6 @@ applications:
   - name: openshift-ai
     values:
       dataScienceClusterComponents:
-        kserve:
-          nim:
-            managementState: Removed
         codeflare:
           managementState: Removed
         datasciencepipelines:
@@ -31,3 +28,11 @@ applications:
           managementState: Removed
         kueue:
           managementState: Removed
+  - name: kserve-vllm-model
+    fileprefix: granite-31
+    rewrite:
+      metadata:
+        name: granite-31
+      spec:
+        destination:
+          namespace: model-serving

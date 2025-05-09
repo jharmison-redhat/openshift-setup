@@ -1,0 +1,53 @@
+{{- if eq .Values.deploymentMode "Serverless" }}
+apiVersion: authorino.kuadrant.io/v1beta3
+kind: AuthConfig
+metadata:
+  labels:
+    security.opendatahub.io/authorization-group: default
+  name: {{ include "kserve-vllm-model.fullname" . }}
+spec:
+  {{- if .Values.exposedWithToken }}
+  authentication:
+    kubernetes-user:
+      kubernetesTokenReview:
+        audiences:
+          - https://kubernetes.default.svc
+      metrics: false
+      priority: 0
+  authorization:
+    kubernetes-rbac:
+      kubernetesSubjectAccessReview:
+        resourceAttributes:
+          group:
+            value: serving.kserve.io
+          name:
+            value: {{ include "kserve-vllm-model.fullname" . }}
+          namespace:
+            value: {{ .Release.Namespace }}
+          resource:
+            value: inferenceservices
+          subresource:
+            value: ""
+          verb:
+            value: get
+        user:
+          selector: auth.identity.user.username
+      metrics: false
+      priority: 0
+  {{- else }}
+  authentication:
+    anonymous-access:
+      anonymous: {}
+      credentials:
+        authorizationHeader: {}
+      metrics: false
+      priority: 0
+  {{- end }}
+  hosts:
+    - {{ include "kserve-vllm-model.fullname" . }}-predictor.{{ .Release.Namespace }}
+    - {{ include "kserve-vllm-model.fullname" . }}-predictor.{{ .Release.Namespace }}.svc
+    - {{ include "kserve-vllm-model.fullname" . }}-predictor.{{ .Release.Namespace }}.svc.cluster.local
+    - {{ include "kserve-vllm-model.fullname" . }}.{{ .Release.Namespace }}
+    - {{ include "kserve-vllm-model.fullname" . }}.{{ .Release.Namespace }}.svc
+    - {{ include "kserve-vllm-model.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+{{- end }}

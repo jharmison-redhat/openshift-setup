@@ -1,0 +1,106 @@
+---
+# This is for the vLLM image
+image:
+  registry: quay.io
+  repository: vllm/vllm
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  # Override the tag to choose a manifest hash reference
+  manifestHash: ""
+
+nameOverride: ""
+fullnameOverride: ""
+
+# Must be one of Serverless or RawDeployment
+deploymentMode: Serverless
+# If exposed, token is always added in this chart
+exposedWithToken: true
+
+model:
+  type: uri
+  uri: oci://quay.io/jharmison/models:redhatai--granite-3_1-8b-instruct-quantized_w8a8-modelcar
+  # uri: oci://quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
+  storageConfig:
+    path: models/
+    secret: >-
+      {
+        "access_key_id": "${AWS_ACCESS_KEY_ID}",
+        "bucket": "${AWS_S3_BUCKET}",
+        "default_bucket": "${AWS_S3_BUCKET}",
+        "endpoint_url": "https://${AWS_S3_ENDPOINT}",
+        "region": "${AWS_DEFAULT_REGION}",
+        "secret_access_key": "${AWS_SECRET_ACCESS_KEY}",
+        "type": "s3"
+      }
+
+# This should match the name of your AcceleratorProfile - the default is the auto-discovered one
+acceleratorName: migrated-gpu
+# This should be paired with the image that you're using (e.g. nvidia.com/gpu for a CUDA image)
+recommendedAccelerators: '["nvidia.com/gpu"]'
+# This should align with the built-in RHOAI template you're intending to mimic
+rhoaiTemplate:
+  name: vllm-cuda-runtime-template
+  displayName: vLLM ServingRuntime with CUDA support (for NVIDIA GPUs)
+vLLMExtraArgs: []
+shmSize: 2Gi
+
+# This is for the model car (if any)
+imagePullSecrets: []
+# - name: my-manual-pull-secret
+###############################################################################
+# NOTE: The format for the pull secret needs to be modified slightly.
+# An example follows:
+###############################################################################
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: my-data-connection-name
+#   annotations:
+#     opendatahub.io/connection-type-ref: oci-v1
+#     openshift.io/description: "Credentials to connect to a registry"
+#     openshift.io/display-name: My Data Connection Name
+#   labels:
+#     opendatahub.io/dashboard: "true"
+# type: kubernetes.io/dockerconfigjson
+# stringData:
+#   .dockerconfigjson: >-
+#     {
+#       "auths": {
+#         "quay.io": {
+#           "auth": "dXNlcm5hbWUrbG9jYWw6UkFORE9NRkFLRVFVQVlUT0tFTg=="
+#         }
+#       }
+#     }
+#   ACCESS_TYPE: '["Pull"]'
+#   OCI_HOST: quay.io
+
+resources:
+  limits:
+    cpu: "6"
+    memory: 32Gi
+    nvidia.com/gpu: "1"
+  requests:
+    cpu: "2"
+    memory: 24Gi
+    nvidia.com/gpu: "1"
+
+scaling:
+  maxReplicas: 1
+  minReplicas: 1
+  progressDeadline: 30m
+  retentionPeriod: 5m
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  # NOTE: This only applies if exposedWithToken is set to true
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  tokenName: default-name
+
+tolerations:
+  - effect: NoSchedule
+    key: nvidia.com/gpu
+    operator: Exists

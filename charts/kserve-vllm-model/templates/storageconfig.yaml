@@ -1,0 +1,12 @@
+{{- if eq .Values.model.type "storageConfig" }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: storage-config
+  labels:
+    opendatahub.io/managed: "true"
+    {{- include "kserve-vllm-model.labels" . | nindent 4 }}
+data:
+  {{ include "kserve-vllm-model.name" . }}: {{ .Values.model.storageConfig.secret | b64enc }}
+{{- end }}

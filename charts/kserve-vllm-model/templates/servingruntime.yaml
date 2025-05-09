@@ -1,0 +1,52 @@
+---
+apiVersion: serving.kserve.io/v1alpha1
+kind: ServingRuntime
+metadata:
+  annotations:
+    {{- with .Values.acceleratorName }}
+    opendatahub.io/accelerator-name: {{ . }}
+    {{- end }}
+    opendatahub.io/apiProtocol: REST
+    opendatahub.io/recommended-accelerators: {{ quote .Values.recommendedAccelerators }}
+    opendatahub.io/template-display-name: {{ .Values.rhoaiTemplate.displayName }}
+    opendatahub.io/template-name: {{ .Values.rhoaiTemplate.name }}
+    openshift.io/display-name: {{ .Release.Name | replace "-" " " | title }}
+  labels:
+    opendatahub.io/dashboard: "true"
+  name: {{ include "kserve-vllm-model.fullname" . }}
+spec:
+  annotations:
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8080"
+  multiModel: false
+  supportedModelFormats:
+    - autoSelect: true
+      name: vLLM
+  containers:
+    - name: kserve-container
+      image: {{ include "kserve-vllm-model.image" . }}
+      command:
+        - python
+        - -m
+        - vllm.entrypoints.openai.api_server
+      args:
+        - --port=8080
+        - --model=/mnt/models
+        - --served-model-name={{ "{{" }}.Name{{ "}}" }}
+        {{- with .Values.vLLMExtraArgs }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      env:
+        - name: HF_HOME
+          value: /tmp/hf_home
+      volumeMounts:
+        - mountPath: /dev/shm
+          name: shm
+      ports:
+        - containerPort: 8080
+          protocol: TCP
+  volumes:
+    - emptyDir:
+        medium: Memory
+        sizeLimit: {{ .Values.shmSize }}
+      name: shm

@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: kserve-vllm-model
+description: >
+  A helm chart to deploy a model using KServe and vLLM
+type: application
+version: 0.1.0
+appVersion: 0.8.4.post1
