@@ -1,9 +1,0 @@
----
-certificates:
-  clusterIssuer: letsencrypt
-acme:
-  letsencrypt:
-    server: https://acme-v02.api.letsencrypt.org/directory
-    disableAccountKeyGeneration: true
-    privateKeySecretRef:
-      name: letsencrypt-private-key

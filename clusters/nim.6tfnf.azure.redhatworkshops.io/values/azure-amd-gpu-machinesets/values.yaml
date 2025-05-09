@@ -1,9 +1,0 @@
----
-vmSize: Standard_ND96isr_MI300X_v5
-nameStub: amd-gpu-worker
-diskSizeGB: 500
-
-taints:
-  - key: amd.com/gpu
-    value: ""
-    effect: NoSchedule
