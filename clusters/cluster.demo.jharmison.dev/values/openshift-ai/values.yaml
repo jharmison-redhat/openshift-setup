@@ -6,9 +6,6 @@ dataScienceClusterComponents:
     managementState: Removed
   datasciencepipelines:
     managementState: Removed
-  kserve:
-    nim:
-      managementState: Removed
   kueue:
     managementState: Removed
   ray:

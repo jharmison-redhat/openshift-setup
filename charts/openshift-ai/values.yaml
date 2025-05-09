@@ -21,7 +21,7 @@ dataScienceClusterComponents:
       managementState: Managed
       name: knative-serving
   modelregistry:
-    managementState: Managed
+    managementState: Removed
     registriesNamespace: rhoai-model-registries
   trustyai:
     managementState: Managed
