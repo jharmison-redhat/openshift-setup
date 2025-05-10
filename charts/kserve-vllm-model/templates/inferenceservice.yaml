@@ -7,9 +7,12 @@ metadata:
     security.opendatahub.io/enable-auth: "true"
     {{- end }}
     {{- if eq .Values.deploymentMode "Serverless" }}
+    serving.kserve.io/deploymentMode: Serverless
     serving.knative.openshift.io/enablePassthrough: "true"
     sidecar.istio.io/inject: "true"
     sidecar.istio.io/rewriteAppHTTPProbers: "true"
+    {{- else }}
+    serving.kserve.io/deploymentMode: RawDeployment
     {{- end }}
   labels:
     opendatahub.io/dashboard: "true"
