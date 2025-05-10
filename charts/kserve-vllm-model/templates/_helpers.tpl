@@ -44,17 +44,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "kserve-vllm-model.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "kserve-vllm-model.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-{{/*
 Image Reference - sha256 or tag
 */}}
 {{- define "kserve-vllm-model.image.tag" -}}

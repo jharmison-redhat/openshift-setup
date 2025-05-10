@@ -1,20 +1,17 @@
-{{- if false }}
 {{- if .Values.exposedWithToken }}
-{{- if .Values.serviceAccount.create }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "kserve-vllm-model.serviceAccountName" . }}
+  name: {{ include "kserve-vllm-model.fullname" . }}-sa
   labels:
     {{- include "kserve-vllm-model.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 ---
-{{- end }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: {{ include "kserve-vllm-model.serviceAccountName" . }}-view-role
+  name: {{ include "kserve-vllm-model.fullname" . }}-view-role
   labels:
     opendatahub.io/dashboard: "true"
     {{- include "kserve-vllm-model.labels" . | nindent 4 }}
@@ -29,7 +26,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ include "kserve-vllm-model.serviceAccountName" . }}-view
+  name: {{ include "kserve-vllm-model.fullname" . }}-view
   labels:
     opendatahub.io/dashboard: "true"
     {{- include "kserve-vllm-model.labels" . | nindent 4 }}
@@ -37,23 +34,22 @@ metadata:
     argocd.argoproj.io/sync-wave: "0"
 subjects:
 - kind: ServiceAccount
-  name: {{ include "kserve-vllm-model.serviceAccountName" . }}
+  name: {{ include "kserve-vllm-model.fullname" . }}-sa
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ include "kserve-vllm-model.serviceAccountName" . }}-view-role
+  name: {{ include "kserve-vllm-model.fullname" . }}-view-role
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ .Values.serviceAccount.tokenName }}-{{ include "kserve-vllm-model.serviceAccountName" . }}
+  name: {{ .Values.serviceAccount.tokenName }}-{{ include "kserve-vllm-model.fullname" . }}-sa
   labels:
     opendatahub.io/dashboard: "true"
     {{- include "kserve-vllm-model.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-wave: "0"
-    kubernetes.io/service-account.name: {{ include "kserve-vllm-model.serviceAccountName" . }}
+    kubernetes.io/service-account.name: {{ include "kserve-vllm-model.fullname" . }}-sa
     openshift.io/display-name: {{ .Values.serviceAccount.tokenName }}
 type: kubernetes.io/service-account-token
-{{- end }}
 {{- end }}
