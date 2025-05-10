@@ -7,5 +7,5 @@ metadata:
     opendatahub.io/managed: "true"
     {{- include "kserve-vllm-model.labels" . | nindent 4 }}
 data:
-  {{ include "kserve-vllm-model.name" . }}: {{ .Values.model.storageConfig.secret | b64enc }}
+  {{ include "kserve-vllm-model.fullname" . }}: {{ .Values.model.storageConfig.secret | b64enc }}
 {{- end }}

@@ -1,5 +1,5 @@
 ---
-# This is for the vLLM image
+# vLLM image specification
 image:
   registry: quay.io
   repository: vllm/vllm
@@ -9,15 +9,22 @@ image:
   # Override the tag to choose a manifest hash reference
   manifestHash: ""
 
+# Name defaults to the chart name
 nameOverride: ""
+# Full name defaults to release-name-chart-name or release-name (if they are the same)
 fullnameOverride: ""
+# Display name defaults to Release Name in Title Case
+displaynameOverride: ""
 
 # Must be one of Serverless or RawDeployment
 deploymentMode: Serverless
 # If exposed, token is always added in this chart
 exposedWithToken: true
+shmSize: 2Gi
 
 model:
+  extraArgs: []
+  extraEnv: []
   type: uri
   uri: oci://quay.io/jharmison/models:redhatai--granite-3_1-8b-instruct-quantized_w8a8-modelcar
   # uri: oci://quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
@@ -34,6 +41,28 @@ model:
         "type": "s3"
       }
 
+scaling:
+  maxReplicas: 1
+  minReplicas: 1
+  progressDeadline: "" # How long a Serverless replica may try to roll out before failing, e.g. 30m
+  retentionPeriod: "" # How long a Serverless replica may be unused before scaling down, when minReplicas is 0
+
+resources:
+  limits:
+    cpu: "8"
+    memory: 10Gi
+    nvidia.com/gpu: "1"
+  requests:
+    cpu: "4"
+    memory: 8Gi
+    nvidia.com/gpu: "1"
+
+tolerations:
+  - effect: NoSchedule
+    key: nvidia.com/gpu
+    operator: Exists
+
+## These only affect display in the dashboard
 # This should match the name of your AcceleratorProfile - the default is the auto-discovered one
 acceleratorName: migrated-gpu
 # This should be paired with the image that you're using (e.g. nvidia.com/gpu for a CUDA image)
@@ -42,14 +71,17 @@ recommendedAccelerators: '["nvidia.com/gpu"]'
 rhoaiTemplate:
   name: vllm-cuda-runtime
   displayName: vLLM NVIDIA GPU ServingRuntime for KServe
-vLLMExtraArgs: []
-shmSize: 2Gi
+
+serviceAccount:
+  tokenName: default-name
 
 # This is for the model car (if any)
 imagePullSecrets: []
 # - name: my-manual-pull-secret
 ###############################################################################
-# NOTE: The format for the pull secret needs to be modified slightly.
+# NOTE: The format for the pull secret needs to be modified slightly, if you
+# want it to display in the dashboard properly. These need to be created
+# separately from the chart!
 # An example follows:
 ###############################################################################
 # apiVersion: v1
@@ -74,27 +106,3 @@ imagePullSecrets: []
 #     }
 #   ACCESS_TYPE: '["Pull"]'
 #   OCI_HOST: quay.io
-
-resources:
-  limits:
-    cpu: "6"
-    memory: 32Gi
-    nvidia.com/gpu: "1"
-  requests:
-    cpu: "2"
-    memory: 24Gi
-    nvidia.com/gpu: "1"
-
-scaling:
-  maxReplicas: 1
-  minReplicas: 1
-  progressDeadline: "" # How long a Serverless replica may try to roll out before failing, e.g. 30m
-  retentionPeriod: "" # How long a Serverless replica may be unused before scaling down, when minReplicas is 0
-
-serviceAccount:
-  tokenName: default-name
-
-tolerations:
-  - effect: NoSchedule
-    key: nvidia.com/gpu
-    operator: Exists

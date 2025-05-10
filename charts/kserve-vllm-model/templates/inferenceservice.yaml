@@ -2,7 +2,7 @@ apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
   annotations:
-    openshift.io/display-name: {{ .Values.displayName | default (.Release.Name | replace "-" " " | title) }}
+    openshift.io/display-name: {{ include "kserve-vllm-model.displayname" . }}
     {{- if .Values.exposedWithToken }}
     security.opendatahub.io/enable-auth: "true"
     {{- end }}
@@ -36,6 +36,14 @@ spec:
     maxReplicas: {{ .Values.scaling.maxReplicas }}
     minReplicas: {{ .Values.scaling.minReplicas }}
     model:
+      {{- with .Values.model.extraArgs }}
+      args:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.model.extraEnv }}
+      env:
+        {{- toYaml . | nindent 8}}
+      {{- end }}
       modelFormat:
         name: vLLM
       name: ""
@@ -50,7 +58,7 @@ spec:
       storageUri: {{ .Values.model.uri }}
       {{- else if eq .Values.model.type "storageConfig" }}
       storage:
-        key: {{ include "kserve-vllm-model.name" . }}
+        key: {{ include "kserve-vllm-model.fullname" . }}
         path: {{ .Values.model.storageConfig.path }}
       {{- end }}
     {{- with .Values.tolerations }}

@@ -24,6 +24,13 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
+Create a display name, for use in the OpenShift and OpenShift AI consoles
+*/}}
+{{- define "kserve-vllm-model.displayname" -}}
+{{- default (.Release.Name | replace "-" " " | title) .Values.displaynameOverride }}
+{{- end }}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "kserve-vllm-model.chart" -}}
