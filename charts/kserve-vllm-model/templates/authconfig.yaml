@@ -44,6 +44,10 @@ spec:
       priority: 0
   {{- end }}
   hosts:
+    {{- if .Values.exposedWithToken }}
+    - {{ include "kserve-vllm-model.fullname" . }}-{{ .Release.Namespace }}.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    - {{ include "kserve-vllm-model.fullname" . }}-predictor-{{ .Release.Namespace }}.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    {{- end }}
     - {{ include "kserve-vllm-model.fullname" . }}-predictor.{{ .Release.Namespace }}
     - {{ include "kserve-vllm-model.fullname" . }}-predictor.{{ .Release.Namespace }}.svc
     - {{ include "kserve-vllm-model.fullname" . }}-predictor.{{ .Release.Namespace }}.svc.cluster.local
