@@ -26,11 +26,10 @@ spec:
     imagePullSecrets:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- with include "kserve-vllm-model.isvc.predictor.annotations" . }}
     annotations:
-      serving.knative.dev/progress-deadline: {{ .Values.scaling.progressDeadline }}
-      {{- if eq (int .Values.scaling.minReplicas) 0 }}
-      autoscaling.knative.dev/scale-to-zero-pod-retention-period: {{ .Values.scaling.retentionPeriod }}
-      {{- end }}
+      {{- . | indent 6 }}
+    {{- end }}
     maxReplicas: {{ .Values.scaling.maxReplicas }}
     minReplicas: {{ .Values.scaling.minReplicas }}
     model:

@@ -93,8 +93,8 @@ resources:
 scaling:
   maxReplicas: 1
   minReplicas: 1
-  progressDeadline: 30m
-  retentionPeriod: 5m
+  progressDeadline: "" # How long a Serverless replica may try to roll out before failing, e.g. 30m
+  retentionPeriod: "" # How long a Serverless replica may be unused before scaling down, when minReplicas is 0
 
 serviceAccount:
   # Specifies whether a service account should be created

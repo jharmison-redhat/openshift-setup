@@ -68,3 +68,16 @@ Image Reference - sha256 or tag
 {{ .Values.image.registry }}/{{ .Values.image.repository }}{{ include "kserve-vllm-model.image.tag" . }}
 {{- end }}
 
+{{/*
+Annotations for predictor spec on InferenceService
+*/}}
+{{- define "kserve-vllm-model.isvc.predictor.annotations" -}}
+{{- with .Values.scaling.progressDeadline }}
+serving.knative.dev/progress-deadline: {{ quote . }}
+{{- end }}
+{{- if eq (int .Values.scaling.minReplicas) 0 }}
+{{- with .Values.scaling.retentionPeriod }}
+autoscaling.knative.dev/scale-to-zero-pod-retention-period: {{ quote . }}
+{{- end }}
+{{- end }}
+{{- end }}
