@@ -39,6 +39,10 @@ spec:
     {{- end }}
     maxReplicas: {{ .Values.scaling.maxReplicas }}
     minReplicas: {{ .Values.scaling.minReplicas }}
+    {{- if or (ne .Values.scaling.minReplicas 1) (ne .Values.scaling.maxReplicas 1) }}
+    scaleMetric: {{ .Values.scaling.scaleMetric }}
+    scaleTarget: {{ .Values.scaling.scaleTarget }}
+    {{- end }}
     model:
       {{- with .Values.model.extraArgs }}
       args:
