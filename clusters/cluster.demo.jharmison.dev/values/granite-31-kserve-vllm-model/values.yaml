@@ -1,3 +1,4 @@
 ---
 displaynameOverride: Granite 3.1 8B w8a8
 deploymentMode: RawDeployment
+exposedWithToken: false
