@@ -10,7 +10,7 @@ metadata:
     opendatahub.io/recommended-accelerators: {{ quote .Values.recommendedAccelerators }}
     opendatahub.io/template-display-name: {{ .Values.rhoaiTemplate.displayName }}
     opendatahub.io/template-name: {{ .Values.rhoaiTemplate.name }}
-    openshift.io/display-name: {{ .Release.Name | replace "-" " " | title }}
+    openshift.io/display-name: {{ .Values.displayName | default (.Release.Name | replace "-" " " | title) }}
   labels:
     opendatahub.io/dashboard: "true"
   name: {{ include "kserve-vllm-model.fullname" . }}
