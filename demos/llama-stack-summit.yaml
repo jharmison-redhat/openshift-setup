@@ -17,6 +17,7 @@ applications:
   - name: authorino
   - name: openshift-ai
     values:
+      dashboardReplicas: 1
       dataScienceClusterComponents:
         codeflare:
           managementState: Removed
