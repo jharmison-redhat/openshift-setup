@@ -1,5 +1,4 @@
 {{- if eq .Values.model.type "storageConfig" }}
----
 apiVersion: v1
 kind: Secret
 metadata:
