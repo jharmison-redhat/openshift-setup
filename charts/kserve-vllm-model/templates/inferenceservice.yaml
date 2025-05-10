@@ -6,6 +6,10 @@ metadata:
     {{- if .Values.exposedWithToken }}
     security.opendatahub.io/enable-auth: "true"
     {{- end }}
+    {{- $deploymentModes := list "RawDeployment" "Serverless" }}
+    {{- if not (mustHas .Values.deploymentMode $deploymentModes) }}
+      {{- fail (printf "Model deployment mode must be one of: %s" $deploymentModes) }}
+    {{- end }}
     {{- if eq .Values.deploymentMode "Serverless" }}
     serving.kserve.io/deploymentMode: Serverless
     serving.knative.openshift.io/enablePassthrough: "true"
