@@ -45,11 +45,6 @@ rhoaiTemplate:
 vLLMExtraArgs: []
 shmSize: 2Gi
 
-# Used to build route hostnames for the AuthConfig
-cluster:
-  name: cluster
-  baseDomain: demo.jharmison.dev
-
 # This is for the model car (if any)
 imagePullSecrets: []
 # - name: my-manual-pull-secret
