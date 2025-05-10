@@ -5,6 +5,7 @@ kind: AuthConfig
 metadata:
   labels:
     security.opendatahub.io/authorization-group: default
+    {{- include "kserve-vllm-model.labels" . | nindent 4 }}
   name: {{ include "kserve-vllm-model.fullname" . }}
 spec:
   {{- if .Values.exposedWithToken }}

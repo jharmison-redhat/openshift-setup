@@ -13,6 +13,7 @@ metadata:
     openshift.io/display-name: {{ .Values.displayName | default (.Release.Name | replace "-" " " | title) }}
   labels:
     opendatahub.io/dashboard: "true"
+    {{- include "kserve-vllm-model.labels" . | nindent 4 }}
   name: {{ include "kserve-vllm-model.fullname" . }}
 spec:
   annotations:
