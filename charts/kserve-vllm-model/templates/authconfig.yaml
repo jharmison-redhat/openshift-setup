@@ -1,3 +1,4 @@
+{{- if false }}
 {{- if eq .Values.deploymentMode "Serverless" }}
 apiVersion: authorino.kuadrant.io/v1beta3
 kind: AuthConfig
@@ -54,4 +55,5 @@ spec:
     - {{ include "kserve-vllm-model.fullname" . }}.{{ .Release.Namespace }}
     - {{ include "kserve-vllm-model.fullname" . }}.{{ .Release.Namespace }}.svc
     - {{ include "kserve-vllm-model.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+{{- end }}
 {{- end }}
