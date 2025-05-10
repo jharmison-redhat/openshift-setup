@@ -40,8 +40,8 @@ acceleratorName: migrated-gpu
 recommendedAccelerators: '["nvidia.com/gpu"]'
 # This should align with the built-in RHOAI template you're intending to mimic
 rhoaiTemplate:
-  name: vllm-cuda-runtime-template
-  displayName: vLLM ServingRuntime with CUDA support (for NVIDIA GPUs)
+  name: vllm-cuda-runtime
+  displayName: vLLM NVIDIA GPU ServingRuntime for KServe
 vLLMExtraArgs: []
 shmSize: 2Gi
 
