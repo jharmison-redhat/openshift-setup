@@ -1,0 +1,27 @@
+{{- $fullname := include "kserve-vllm-model.fullname" . -}}
+When vLLM has loaded your model, the endpoint will be accessible from the following endpoints
+{{- if eq .Values.deploymentMode "Serverless" }}
+
+# NOTE: This endpoint is only accessible from inside the same Service Mesh, and requires policy configuration
+http://{{ $fullname }}-predictor.{{ .Release.Namespace }}.svc/v1
+{{- if .Values.exposedWithToken }}
+
+# NOTE: Accessible inside or outside the Service Mesh, inside or outside the cluster at the endpoint printed when you run this command:
+echo https://{{ $fullname }}-{{ .Release.Namespace }}.$(oc get ingresses.config.openshift.io cluster -ojsonpath='{.spec.domain}')/v1
+
+# NOTE: A token is required to use either endpoint. It can be recovered with this command:
+oc get secret -n {{ .Release.Namespace }} {{ .Values.serviceAccount.tokenName }}-{{ $fullname }}-sa -ogo-template='{{ "{{" }} .data.token | base64decode {{ "}}{{" }} "\n" {{ "}}" }}'
+{{- end }}
+{{- else }}
+
+# NOTE: This endpoint is only accessible from inside the cluster, when in the same namespace or if you update the NetworkPolicies in the namespace
+http://{{ $fullname }}-predictor.{{ .Release.Namespace }}.svc:8080/v1
+{{- if .Values.exposedWithToken }}
+
+# NOTE: Accessible inside or outside the cluster at the endpoint printed when you run this command:
+echo https://{{ $fullname }}-{{ .Release.Namespace }}.$(oc get ingresses.config.openshift.io cluster -ojsonpath='{.spec.domain}')/v1
+
+# NOTE: A token is required to use either endpoint. It can be recovered with this command:
+oc get secret -n {{ .Release.Namespace }} {{ .Values.serviceAccount.tokenName }}-{{ $fullname }}-sa -ogo-template='{{ "{{" }} .data.token | base64decode {{ "}}{{" }} "\n" {{ "}}" }}'
+{{- end }}
+{{- end }}
