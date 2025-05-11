@@ -11,6 +11,13 @@ namespaces:
       openshift.io/description: Project for housing Llama Stack components
       openshift.io/display-name: Llama Stack
 applications:
+  - name: aws-nvidia-gpu-machinesets
+    values:
+      instanceType: g6e.2xlarge
+      autoscaling:
+        enabled: true
+        minReplicas: 1
+        maxReplicas: 3
   - name: nvidia-gpu-enablement
   - name: openshift-serverless
   - name: openshift-servicemesh
@@ -39,3 +46,6 @@ applications:
           namespace: model-serving
     values:
       displaynameOverride: Granite 3.1 8B w8a8
+      scaling:
+        maxReplicas: 3
+        retentioPeriod: 1m
