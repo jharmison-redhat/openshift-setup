@@ -56,7 +56,6 @@ applications:
         progressDeadline: 45m
         scaleTarget: 5
   - name: kserve-vllm-model
-    fullnameOverride: granite33-8b
     fileprefix: granite-33
     rewrite:
       metadata:
@@ -65,6 +64,7 @@ applications:
         destination:
           namespace: model-serving
     values:
+      fullnameOverride: granite33-8b
       displaynameOverride: Granite 3.3 8B Instruct
       model:
         uri: oci://quay.io/jharmison/models:ibm-granite--granite-3_3-8b-instruct-modelcar
