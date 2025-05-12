@@ -1,0 +1,10 @@
+---
+displaynameOverride: Granite 3.3 8B Instruct
+model:
+  uri: oci://quay.io/jharmison/models:ibm-granite--granite-3_3-8b-instruct-modelcar
+scaling:
+  maxReplicas: 3
+  minReplicas: 1
+  progressDeadline: 45m
+  retentionPeriod: 1m
+  scaleTarget: 5

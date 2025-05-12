@@ -1,8 +1,0 @@
----
-displaynameOverride: Granite 3.1 8B w8a8
-scaling:
-  maxReplicas: 3
-  minReplicas: 1
-  progressDeadline: 45m
-  retentionPeriod: 1m
-  scaleTarget: 5

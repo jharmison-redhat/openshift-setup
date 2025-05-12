@@ -37,15 +37,37 @@ applications:
         kueue:
           managementState: Removed
   - name: kserve-vllm-model
-    fileprefix: granite-31
+    fileprefix: llama-32
     rewrite:
       metadata:
-        name: granite-31
+        name: llama-32
       spec:
         destination:
           namespace: model-serving
     values:
-      displaynameOverride: Granite 3.1 8B w8a8
+      fullnameOverride: llama32-3b
+      displaynameOverride: Llama 3.2 3B Instruct
+      model:
+        uri: oci://quay.io/jharmison/models:meta-llama--llama-3_2-3b-instruct-modelcar
+      scaling:
+        minReplicas: 1
+        maxReplicas: 3
+        retentionPeriod: 1m
+        progressDeadline: 45m
+        scaleTarget: 5
+  - name: kserve-vllm-model
+    fullnameOverride: granite33-8b
+    fileprefix: granite-33
+    rewrite:
+      metadata:
+        name: granite-33
+      spec:
+        destination:
+          namespace: model-serving
+    values:
+      displaynameOverride: Granite 3.3 8B Instruct
+      model:
+        uri: oci://quay.io/jharmison/models:ibm-granite--granite-3_3-8b-instruct-modelcar
       scaling:
         minReplicas: 1
         maxReplicas: 3
