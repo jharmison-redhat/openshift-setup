@@ -1,9 +1,10 @@
 ---
 models:
-- name: mistral-small-3.1-24b
-  url: https://mistral-small-31-model-serving.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/v1
+- url: https://mistral-small-31-model-serving.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/v1
   model: mistral-small-31
-  token: fake
+
+tokens:
+  mistral-small-31: fake
 
 slack:
   botToken: xoxb-fake

@@ -3,36 +3,30 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '6'
+    argocd.argoproj.io/sync-wave: '5'
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-  name: summit-demo
+  name: llama-32-3b
 spec:
   destination:
     name: in-cluster
-    namespace: llama-serve
+    namespace: model-serving
   project: default
   source:
     helm:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
-      - ../../clusters/cluster.demo.jharmison.dev/values/summit-demo/values.yaml
-      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.demo.jharmison.dev/values/summit-demo/secrets.enc.yaml
-    path: charts/summit-demo
+      - ../../clusters/cluster.demo.jharmison.dev/values/llama-32-3b-kserve-vllm-model/values.yaml
+    path: charts/kserve-vllm-model
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    managedNamespaceMetadata:
-      labels:
-        argocd.argoproj.io/managed-by: openshift-gitops
     retry:
       backoff:
         duration: 10s
         factor: 3
         maxDuration: 60m
       limit: 10
-    syncOptions:
-    - CreateNamespace=true

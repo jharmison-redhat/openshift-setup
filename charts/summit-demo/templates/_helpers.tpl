@@ -5,7 +5,7 @@
   config:
     url: {{ tpl (required "A URL is required for each model" $model.url) $ }}
     max_tokens: {{ $model.maxTokens | default 128000 }}
-    api_token: {{ $model.token | default "fake" }}
+    api_token: {{ get $.Values.tokens $model.model | default "fake" }}
     tls_verify: {{ $model.tlsVerify | default "true" }}
 {{- end }}
 {{- end }}

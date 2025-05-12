@@ -33,23 +33,22 @@ applications:
         kueue:
           managementState: Removed
   - name: kserve-vllm-model
-    fileprefix: mistral-small-31
+    fileprefix: llama-32-3b
     rewrite:
       metadata:
-        name: mistral-small-31
+        name: llama-32-3b
       spec:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: mistral-small-31
-      displaynameOverride: Mistral Small 3.1 24B FP8
+      fullnameOverride: llama-32-3b
+      displaynameOverride: Llama 3.2 3B Instruct
       model:
-        uri: oci://quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
+        uri: oci://quay.io/jharmison/models:meta-llama--llama-3_2-3b-instruct-modelcar
         extraArgs:
           - --enable-auto-tool-choice
-          - --tool-call-parser=mistral
-          - --chat-template=/app/data/template/tool_chat_template_mistral.jinja
-          - --max-model-len=65536
+          - --tool-call-parser=llama3_json
+          - --chat-template=/app/data/template/tool_chat_template_llama3.2_json.jinja
       scaling:
         minReplicas: 1
         maxReplicas: 3
@@ -57,3 +56,8 @@ applications:
         progressDeadline: 60m
         scaleTarget: 5
   - name: summit-demo
+    values:
+      models:
+        - url: https://llama-32-3b-model-serving.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/v1
+          model: llama-32-3b
+          maxTokens: 131072
