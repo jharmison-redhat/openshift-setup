@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-wave: '5'
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-  name: llama-32
+  name: mistral-small-31
 spec:
   destination:
     name: in-cluster
@@ -16,7 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
-      - ../../clusters/cluster.demo.jharmison.dev/values/llama-32-kserve-vllm-model/values.yaml
+      - ../../clusters/cluster.demo.jharmison.dev/values/mistral-small-31-kserve-vllm-model/values.yaml
     path: charts/kserve-vllm-model
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
