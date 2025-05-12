@@ -50,7 +50,7 @@ applications:
           - --tool-call-parser
           - llama3_json
           - --chat-template
-          - /app/data/template/tool_chat_template_llam3.2_json.jinja
+          - /app/data/template/tool_chat_template_llama3.2_json.jinja
       scaling:
         minReplicas: 1
         maxReplicas: 3

@@ -7,7 +7,7 @@ model:
   - --tool-call-parser
   - llama3_json
   - --chat-template
-  - /app/data/template/tool_chat_template_llam3.2_json.jinja
+  - /app/data/template/tool_chat_template_llama3.2_json.jinja
   uri: oci://quay.io/jharmison/models:meta-llama--llama-3_2-3b-instruct-modelcar
 scaling:
   maxReplicas: 3
