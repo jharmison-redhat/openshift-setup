@@ -12,6 +12,6 @@ model:
 scaling:
   maxReplicas: 3
   minReplicas: 1
-  progressDeadline: 45m
+  progressDeadline: 60m
   retentionPeriod: 1m
   scaleTarget: 5

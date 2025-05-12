@@ -55,6 +55,6 @@ applications:
         minReplicas: 1
         maxReplicas: 3
         retentionPeriod: 1m
-        progressDeadline: 45m
+        progressDeadline: 60m
         scaleTarget: 5
   - name: summit-demo
