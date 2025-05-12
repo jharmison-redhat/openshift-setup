@@ -47,7 +47,7 @@ INSERT INTO opportunity_items (opportunityid, description, amount, year) VALUES
 (1, 'Upsell - Cloud package', 5000.00, 2025),
 (2, 'Enterprise license renewal', 25000.00, 2025),
 (3, 'Legacy support', 8000.00, 2024)
-ON CONFLICT (opporunityid)
+ON CONFLICT (opportunityid)
 DO NOTHING;
 
 INSERT INTO support_cases (subject, description, status, severity, account_id) VALUES
