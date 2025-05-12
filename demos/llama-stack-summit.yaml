@@ -6,10 +6,6 @@ namespaces:
     annotations:
       openshift.io/description: Project for housing model servers
       openshift.io/display-name: Model Serving
-  - name: llama-stack
-    annotations:
-      openshift.io/description: Project for housing Llama Stack components
-      openshift.io/display-name: Llama Stack
 applications:
   - name: aws-nvidia-gpu-machinesets
     values:
