@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: slack-mcp-server-secrets
+type: Opaque
+data:
+  SLACK_BOT_TOKEN: {{ .Values.slack.botToken | b64enc }}
+  SLACK_TEAM_ID: {{ .Values.slack.teamId | b64enc }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: slack-mcp-server
+  name: slack-mcp-server
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: slack-mcp-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: slack-mcp-server
+  name: slack-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slack-mcp-server
+  template:
+    metadata:
+      labels:
+        app: slack-mcp-server
+    spec:
+      containers:
+      - args:
+        - |
+          npx -y supergateway --stdio "node dist/index.js" --port 8080
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: NPM_CONFIG_CACHE
+          value: /tmp/.npm
+        - name: SLACK_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: SLACK_BOT_TOKEN
+              name: slack-mcp-server-secrets
+        - name: SLACK_TEAM_ID
+          valueFrom:
+            secretKeyRef:
+              key: SLACK_TEAM_ID
+              name: slack-mcp-server-secrets
+        image: quay.io/rh-aiservices-bu/mcp-servers:slack
+        imagePullPolicy: Always
+        name: slack-mcp-server
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi

@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-import
+data:
+  init.sql: "CREATE USER claimdb;\nCREATE DATABASE claimdb ENCODING UTF8;\nGRANT ALL
+    PRIVILEGES ON DATABASE claimdb TO claimdb;\nALTER USER claimdb WITH PASSWORD 'claimdb';\n\\c
+    claimdb;\n\nCREATE TABLE accounts (\n    id SERIAL PRIMARY KEY,\n    name VARCHAR(255)
+    NOT NULL\n);\n\nCREATE TABLE opportunities (\n    id SERIAL PRIMARY KEY,\n    status
+    VARCHAR(50),\n    account_id INTEGER REFERENCES accounts(id),\n    created_at
+    TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\nCREATE TABLE opportunity_items (\n
+    \   id SERIAL PRIMARY KEY,\n    opportunityid INTEGER REFERENCES opportunities(id),\n
+    \   description TEXT,\n    amount DECIMAL(10, 2),\n    year INTEGER\n);\n\nCREATE
+    TABLE support_cases (\n    id SERIAL PRIMARY KEY,\n    subject TEXT NOT NULL,\n
+    \   description TEXT,\n    status VARCHAR(50) NOT NULL,\n    severity VARCHAR(20)
+    CHECK (severity IN ('Low', 'Medium', 'High', 'Critical')),\n    created_at TIMESTAMP
+    DEFAULT CURRENT_TIMESTAMP,\n    account_id INTEGER NOT NULL REFERENCES accounts(id)\n);\n\nINSERT
+    INTO accounts (name) VALUES \n('Acme Corp'), \n('Globex Inc'), \n('Soylent Corp');\n\nINSERT
+    INTO opportunities (status, account_id) VALUES \n('active', 1),\n('active', 2),\n('closed',
+    3);\n\nINSERT INTO opportunity_items (opportunityid, description, amount, year)
+    VALUES \n(1, 'Subscription renewal - Tier A', 15000.00, 2025),\n(1, 'Upsell -
+    Cloud package', 5000.00, 2025),\n(2, 'Enterprise license renewal', 25000.00, 2025),\n(3,
+    'Legacy support', 8000.00, 2024);\n\nINSERT INTO support_cases (subject, description,
+    status, severity, account_id) VALUES\n('Login failure', 'Customer unable to log
+    in with correct credentials.', 'open', 'High', 1),\n('Slow dashboard', 'Performance
+    issues loading analytics dashboard.', 'in progress', 'Critical', 1),\n('Payment
+    not processed', 'Invoice payment failed on retry.', 'open', 'Medium', 2),\n('Email
+    delivery issue', 'Confirmation emails not reaching clients.', 'closed', 'High',
+    2),\n('API outage', 'Integration API returns 500 error intermittently.', 'open',
+    'Critical', 3),\n('Feature request: Dark mode', 'Request to implement dark mode
+    UI.', 'closed', 'Low', 1);\n"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+spec:
+  ports:
+  - port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    app: postgresql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+      - env:
+        - name: POSTGRESQL_USER
+          value: claimdb
+        - name: POSTGRESQL_PASSWORD
+          value: claimdb
+        - name: POSTGRESQL_DATABASE
+          value: claimdb
+        image: registry.redhat.io/rhel9/postgresql-15
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - /usr/libexec/check-container
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: postgresql
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - /usr/libexec/check-container
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          limits:
+            memory: 512Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/pgsql/data
+          name: postgresql-data
+        - mountPath: /opt/app-root/src/postgresql-startup
+          name: init-sql
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: postgresql-data
+      - configMap:
+          name: postgres-import
+        name: init-sql

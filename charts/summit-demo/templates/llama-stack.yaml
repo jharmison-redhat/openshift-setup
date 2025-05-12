@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: run-config
+data:
+  config.yaml: |
+    {{- tpl (.Files.Get "files/llama-stack/config.yaml") . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llamastack-server
+spec:
+  ports:
+  - port: 8321
+    protocol: TCP
+    targetPort: 8321
+  selector:
+    app: llamastack
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    openshift.io/description: Storage for llama stack state
+  name: llama-persist
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llamastack-deployment
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: llamastack
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: llamastack
+    spec:
+      containers:
+      - args:
+        - --config
+        - /app-config/config.yaml
+        env:
+        - name: MILVUS_DB_PATH
+          value: milvus.db
+        - name: LLAMA_STACK_LOG
+          value: debug
+        image: quay.io/redhat-et/llama:vllm-0.2.2
+        imagePullPolicy: Always
+        name: llamastack
+        ports:
+        - containerPort: 8321
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /pythainlp-data
+          name: pythain
+        - mountPath: /app-config
+          name: run-config-volume
+        - mountPath: /.llama
+          name: llama-persist
+        - mountPath: /.cache
+          name: cache
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: run-config
+        name: run-config-volume
+      - name: llama-persist
+        persistentVolumeClaim:
+          claimName: llama-persist
+      - emptyDir: {}
+        name: cache
+      - emptyDir: {}
+        name: pythain
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: llamastack-server
+spec:
+  port:
+    targetPort: 8321
+  to:
+    kind: Service
+    name: llamastack-server
+    weight: 100
+  wildcardPolicy: None
