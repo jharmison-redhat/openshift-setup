@@ -9,6 +9,10 @@ granite:
   model: granite33-8b
   token: fake
 
+slack:
+  botToken: xoxb-fake
+  teamId: TFAKE
+
 cluster:
   name: cluster
   baseDomain: example.com
