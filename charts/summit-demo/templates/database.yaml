@@ -71,7 +71,7 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/pgsql/data
           name: postgresql-data
-        - mountPath: /opt/app-root/src/postgresql-init
+        - mountPath: /opt/app-root/src/postgresql-start
           name: init-sql
       dnsPolicy: ClusterFirst
       restartPolicy: Always
