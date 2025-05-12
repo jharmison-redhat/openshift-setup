@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS accounts (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS opportunities (
@@ -28,34 +28,34 @@ CREATE TABLE IF NOT EXISTS support_cases (
     account_id INTEGER NOT NULL REFERENCES accounts(id)
 );
 
-INSERT INTO accounts (name) VALUES
-('Acme Corp'),
-('Globex Inc'),
-('Soylent Corp')
-ON CONFLICT (name)
+INSERT INTO accounts (id, name) VALUES
+(1, 'Acme Corp'),
+(2, 'Globex Inc'),
+(3, 'Soylent Corp')
+ON CONFLICT (id)
 DO NOTHING;
 
-INSERT INTO opportunities (status, account_id) VALUES
-('active', 1),
-('active', 2),
-('closed', 3)
-ON CONFLICT (account_id)
+INSERT INTO opportunities (id, status, account_id) VALUES
+(1, 'active', 1),
+(2, 'active', 2),
+(3, 'closed', 3)
+ON CONFLICT (id)
 DO NOTHING;
 
-INSERT INTO opportunity_items (opportunityid, description, amount, year) VALUES
-(1, 'Subscription renewal - Tier A', 15000.00, 2025),
-(1, 'Upsell - Cloud package', 5000.00, 2025),
-(2, 'Enterprise license renewal', 25000.00, 2025),
-(3, 'Legacy support', 8000.00, 2024)
-ON CONFLICT (opportunityid)
+INSERT INTO opportunity_items (id, opportunityid, description, amount, year) VALUES
+(1, 1, 'Subscription renewal - Tier A', 15000.00, 2025),
+(2, 1, 'Upsell - Cloud package', 5000.00, 2025),
+(3, 2, 'Enterprise license renewal', 25000.00, 2025),
+(4, 3, 'Legacy support', 8000.00, 2024)
+ON CONFLICT (id)
 DO NOTHING;
 
-INSERT INTO support_cases (subject, description, status, severity, account_id) VALUES
-('Login failure', 'Customer unable to log in with correct credentials.', 'open', 'High', 1),
-('Slow dashboard', 'Performance issues loading analytics dashboard.', 'in progress', 'Critical', 1),
-('Payment not processed', 'Invoice payment failed on retry.', 'open', 'Medium', 2),
-('Email delivery issue', 'Confirmation emails not reaching clients.', 'closed', 'High', 2),
-('API outage', 'Integration API returns 500 error intermittently.', 'open', 'Critical', 3),
-('Feature request: Dark mode', 'Request to implement dark mode UI.', 'closed', 'Low', 1)
-ON CONFLICT (account_id)
+INSERT INTO support_cases (id, subject, description, status, severity, account_id) VALUES
+(1, 'Login failure', 'Customer unable to log in with correct credentials.', 'open', 'High', 1),
+(2, 'Slow dashboard', 'Performance issues loading analytics dashboard.', 'in progress', 'Critical', 1),
+(3, 'Payment not processed', 'Invoice payment failed on retry.', 'open', 'Medium', 2),
+(4, 'Email delivery issue', 'Confirmation emails not reaching clients.', 'closed', 'High', 2),
+(5, 'API outage', 'Integration API returns 500 error intermittently.', 'open', 'Critical', 3),
+(6, 'Feature request: Dark mode', 'Request to implement dark mode UI.', 'closed', 'Low', 1)
+ON CONFLICT (id)
 DO NOTHING;
