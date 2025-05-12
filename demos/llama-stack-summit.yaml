@@ -33,49 +33,24 @@ applications:
         kueue:
           managementState: Removed
   - name: kserve-vllm-model
-    fileprefix: llama-32
+    fileprefix: mistral-small-31
     rewrite:
       metadata:
-        name: llama-32
+        name: mistral-small-31
       spec:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: llama32-3b
-      displaynameOverride: Llama 3.2 3B Instruct
+      fullnameOverride: mistral-small-31
+      displaynameOverride: Mistral Small 3.1 24B FP8
       model:
-        uri: oci://quay.io/jharmison/models:meta-llama--llama-3_2-3b-instruct-modelcar
+        uri: oci://quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
         extraArgs:
           - --enable-auto-tool-choice
           - --tool-call-parser
-          - llama3_json
+          - mistral
           - --chat-template
-          - /app/data/template/tool_chat_template_llama3.2_json.jinja
-      scaling:
-        minReplicas: 1
-        maxReplicas: 3
-        retentionPeriod: 1m
-        progressDeadline: 45m
-        scaleTarget: 5
-  - name: kserve-vllm-model
-    fileprefix: granite-33
-    rewrite:
-      metadata:
-        name: granite-33
-      spec:
-        destination:
-          namespace: model-serving
-    values:
-      fullnameOverride: granite33-8b
-      displaynameOverride: Granite 3.3 8B Instruct
-      model:
-        uri: oci://quay.io/jharmison/models:ibm-granite--granite-3_3-8b-instruct-modelcar
-        extraArgs:
-          - --enable-auto-tool-choice
-          - --tool-call-parser
-          - granite
-          - --chat-template
-          - /app/data/template/tool_chat_template_granite.jinja
+          - /app/data/template/tool_chat_template_mistral.jinja
       scaling:
         minReplicas: 1
         maxReplicas: 3
