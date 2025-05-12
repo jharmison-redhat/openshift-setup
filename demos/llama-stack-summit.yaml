@@ -47,5 +47,8 @@ applications:
     values:
       displaynameOverride: Granite 3.1 8B w8a8
       scaling:
+        minReplicas: 1
         maxReplicas: 3
-        retentioPeriod: 1m
+        retentionPeriod: 1m
+        progressDeadline: 45m
+        scaleTarget: 5
