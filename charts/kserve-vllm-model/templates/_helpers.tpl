@@ -68,10 +68,10 @@ Image Reference - sha256 or tag
 Annotations for predictor spec on InferenceService
 */}}
 {{- define "kserve-vllm-model.isvc.predictor.annotations" -}}
+{{- if eq .Values.deploymentMode "Serverless" }}
 {{- with .Values.scaling.progressDeadline }}
 serving.knative.dev/progress-deadline: {{ quote . }}
 {{- end }}
-{{- if eq (int .Values.scaling.minReplicas) 0 }}
 {{- with .Values.scaling.retentionPeriod }}
 autoscaling.knative.dev/scale-to-zero-pod-retention-period: {{ quote . }}
 {{- end }}

@@ -45,7 +45,7 @@ scaling:
   maxReplicas: 1
   minReplicas: 1
   progressDeadline: "" # How long a Serverless replica may try to roll out before failing, e.g. 30m
-  retentionPeriod: "" # How long a Serverless replica may be unused before scaling down, when minReplicas is 0
+  retentionPeriod: "" # How long a Serverless replica may be unused before scaling down
   scaleMetric: concurrency
   scaleTarget: 10
 
