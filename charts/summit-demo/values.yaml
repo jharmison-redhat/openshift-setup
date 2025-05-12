@@ -6,7 +6,7 @@ llama:
 
 granite:
   url: https://granite33-8b-model-serving.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/v1
-  model: granite32-8b
+  model: granite33-8b
   token: fake
 
 cluster:
