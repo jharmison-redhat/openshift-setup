@@ -74,3 +74,4 @@ applications:
         retentionPeriod: 1m
         progressDeadline: 45m
         scaleTarget: 5
+  - name: summit-demo

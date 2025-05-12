@@ -1,0 +1,691 @@
+apiVersion: v1
+data:
+  htpasswd: |
+    reports:$apr1$MHzwWLP6$P/dRWWfgBe4J8wfId78v71
+  nginx.conf: "types {\n    text/plain    yaml yml;\n}\n\nserver {\n    listen 8080
+    default_server;\n    gzip on;\n\n\tlocation /upload {\n\t\tsatisfy any;\n\t\tauth_basic
+    \"Welcome to the ParasolCloud Reports Repository!\"; #For Basic Auth\n    \tauth_basic_user_file
+    conf.d/htpasswd;  #For Basic Auth\n\t\tdeny all;\n\n\t\tproxy_set_header  Host
+    $host;\n\t\tproxy_set_header  X-Real-IP $remote_addr;\n\t\tproxy_set_header  X-Forwarded-Proto
+    https;\n\t\tproxy_set_header  X-Forwarded-For $remote_addr;\n\t\tproxy_set_header
+    \ X-Forwarded-Host $remote_addr;\n\n\t\tproxy_pass http://localhost:9000;\n\t}\n\n\tlocation
+    /private {\n\t\troot /fileuploads;\n\n\t\tsatisfy any;\n\t\tauth_basic \"Welcome
+    to the ParasolCloud Reports Repository!\"; #For Basic Auth\n    \tauth_basic_user_file
+    conf.d/htpasswd;  #For Basic Auth\n\t\tdeny all;\n\n\t    autoindex on;\n\t    autoindex_exact_size
+    off;\n\t    autoindex_localtime on;\n\t}\n\n\tlocation / {\n\t\troot /fileuploads;\n\t
+    \   autoindex on;\n\t    autoindex_exact_size off;\n\t    autoindex_localtime
+    on;\n\t}\n}\n"
+kind: ConfigMap
+metadata:
+  name: reports-repo-nginx-conf
+---
+apiVersion: v1
+data:
+  config.yaml: |
+    version: '2'
+    image_name: remote-vllm
+    apis:
+    - agents
+    - datasetio
+    - eval
+    - inference
+    - safety
+    - scoring
+    - telemetry
+    - tool_runtime
+    - vector_io
+    providers:
+      inference:
+      - provider_id: llama-3b
+        provider_type: remote::vllm
+        config:
+          url: ${env.LLAMA3B_URL}
+          max_tokens: 128000
+          api_token: ${env.LLAMA_TOKEN:fake}
+          tls_verify: false
+      - provider_id: granite
+        provider_type: remote::vllm
+        config:
+          url: ${env.GRANITE_URL}
+          max_tokens: 128000
+          api_token: ${env.GRANITE_TOKEN:fake}
+          tls_verify: false
+      - provider_id: sentence-transformers
+        provider_type: inline::sentence-transformers
+        config: {}
+      vector_io:
+      - provider_id: milvus
+        provider_type: inline::milvus
+        config:
+         db_path: ${env.MILVUS_DB_PATH}
+      agents:
+      - provider_id: meta-reference
+        provider_type: inline::meta-reference
+        config:
+          persistence_store:
+            type: sqlite
+            namespace: null
+            db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/remote-vllm}/agents_store.db
+      eval:
+      - provider_id: meta-reference
+        provider_type: inline::meta-reference
+        config:
+          kvstore:
+            type: sqlite
+            namespace: null
+            db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/remote-vllm}/meta_reference_eval.db
+      datasetio:
+      - provider_id: huggingface
+        provider_type: remote::huggingface
+        config:
+          kvstore:
+            type: sqlite
+            namespace: null
+            db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/remote-vllm}/huggingface_datasetio.db
+      - provider_id: localfs
+        provider_type: inline::localfs
+        config:
+          kvstore:
+            type: sqlite
+            namespace: null
+            db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/remote-vllm}/localfs_datasetio.db
+      scoring:
+      - provider_id: basic
+        provider_type: inline::basic
+        config: {}
+      - provider_id: llm-as-judge
+        provider_type: inline::llm-as-judge
+        config: {}
+      - provider_id: braintrust
+        provider_type: inline::braintrust
+        config:
+          openai_api_key: ${env.OPENAI_API_KEY:}
+      telemetry:
+      - provider_id: meta-reference
+        provider_type: inline::meta-reference
+        config:
+          service_name: ${env.OTEL_SERVICE_NAME:llama-stack}
+          sinks: ${env.TELEMETRY_SINKS:console,sqlite}
+          sqlite_db_path: ${env.SQLITE_DB_PATH:~/.llama/distributions/remote-vllm/trace_store.db}
+      tool_runtime:
+      - provider_id: brave-search
+        provider_type: remote::brave-search
+        config:
+          api_key: ${env.BRAVE_SEARCH_API_KEY:}
+          max_results: 3
+      - provider_id: tavily-search
+        provider_type: remote::tavily-search
+        config:
+          api_key: ${env.TAVILY_SEARCH_API_KEY:}
+          max_results: 3
+      - provider_id: code-interpreter
+        provider_type: inline::code-interpreter
+        config: {}
+      - provider_id: rag-runtime
+        provider_type: inline::rag-runtime
+        config: {}
+      - provider_id: model-context-protocol
+        provider_type: remote::model-context-protocol
+        config: {}
+    metadata_store:
+      type: sqlite
+      db_path: ${env.SQLITE_STORE_DIR:~/.llama/distributions/remote-vllm}/registry.db
+    models:
+    - metadata: {}
+      model_id: ${env.LLAMA3B_MODEL}
+      provider_id: llama-3b
+      model_type: llm
+    - metadata: {}
+      model_id: ${env.GRANITE_MODEL}
+      provider_id: granite
+      model_type: llm
+    - metadata:
+        embedding_dimension: 384
+      model_id: all-MiniLM-L6-v2
+      provider_id: sentence-transformers
+      model_type: embedding
+    vector_dbs: []
+    datasets: []
+    scoring_fns: []
+    benchmarks: []
+    tool_groups:
+    - toolgroup_id: builtin::websearch
+      provider_id: tavily-search
+    - toolgroup_id: builtin::rag
+      provider_id: rag-runtime
+    - toolgroup_id: builtin::code_interpreter
+      provider_id: code-interpreter
+    - toolgroup_id: mcp::pdf
+      provider_id: model-context-protocol
+      mcp_endpoint:
+       uri: "http://pdf-mcp-server.llama-serve.svc.cluster.local:8010/sse"
+    - toolgroup_id: mcp::slack
+      provider_id: model-context-protocol
+      mcp_endpoint:
+       uri: "http://slack-mcp-server.llama-serve.svc.cluster.local:8080/sse"
+    - toolgroup_id: mcp::crm
+      provider_id: model-context-protocol
+      mcp_endpoint:
+       uri: "http://crm-mcp-server.llama-serve.svc.cluster.local:8080/sse"
+    - toolgroup_id: mcp::upload
+      provider_id: model-context-protocol
+      mcp_endpoint:
+       uri: "http://upload-mcp-server.llama-serve.svc.cluster.local:8080/sse"
+kind: ConfigMap
+metadata:
+  name: run-config
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: crm-mcp-server-secrets
+stringData:
+  DB_HOST: postgresql.llama-serve.svc.cluster.local
+  DB_NAME: claimdb
+  DB_PASSWORD: claimdb
+  DB_USER: claimdb
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: slack-mcp-server-secrets
+stringData:
+  SLACK_BOT_TOKEN: xoxb-
+  SLACK_TEAM_ID: T...
+type: Opaque
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: crm-mcp-server
+  name: crm-mcp-server
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: crm-mcp-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llamastack-server
+spec:
+  ports:
+  - port: 8321
+    protocol: TCP
+    targetPort: 8321
+  selector:
+    app: llamastack
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: pdf-mcp-server
+  name: pdf-mcp-server
+spec:
+  ports:
+  - port: 8010
+    targetPort: 8010
+  selector:
+    app: pdf-mcp-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: slack-mcp-server
+  name: slack-mcp-server
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: slack-mcp-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ui
+    app.kubernetes.io/component: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/name: ui
+    app.kubernetes.io/part-of: ui-app
+  name: ui
+spec:
+  ports:
+  - port: 8501
+    protocol: TCP
+    targetPort: 8501
+  selector:
+    app: ui
+    deployment: ui
+---
+kind: Service
+metadata:
+  labels:
+    app: reports-repo
+  name: reports-repo
+sapiVersion: v1
+spec:
+  ports:
+  - name: 8080-tcp
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: reports-repo
+    deployment: reports-repo
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    openshift.io/description: Storage for llama stack state
+  name: llama-persist
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: reports-repo
+  name: reports-repo-pv
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: crm-mcp-server
+  name: crm-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crm-mcp-server
+  template:
+    metadata:
+      labels:
+        app: crm-mcp-server
+    spec:
+      containers:
+      - args:
+        - npx -y supergateway --stdio "node app/index.js" --port 8080
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: NPM_CONFIG_CACHE
+          value: /tmp/.npm
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: DB_USER
+              name: crm-mcp-server-secrets
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: DB_PASSWORD
+              name: crm-mcp-server-secrets
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              key: DB_HOST
+              name: crm-mcp-server-secrets
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              key: DB_NAME
+              name: crm-mcp-server-secrets
+        image: quay.io/rh-aiservices-bu/mcp-servers:crm
+        imagePullPolicy: Always
+        name: crm-mcp-server
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llamastack-deployment
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: llamastack
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: llamastack
+    spec:
+      containers:
+      - args:
+        - --config
+        - /app-config/config.yaml
+        env:
+        - name: MAX_TOKENS
+          value: "128000"
+        - name: VLLM_MAX_TOKENS
+          value: "128000"
+        - name: LLAMA3B_URL
+          value: {{ tpl .Values.llama.url . }}
+        - name: LLAMA3B_MODEL
+          value: {{ .Values.llama.model }}
+        - name: LLAMA_TOKEN
+          value: {{ .Values.llama.token }}
+        - name: GRANITE_URL
+          value: {{ tpl .Values.granite.url . }}
+        - name: GRANITE_MODEL
+          value: {{ .Values.granite.model }}
+        - name: GRANITE_TOKEN
+          value: {{ .Values.granite.token }}
+        - name: MILVUS_DB_PATH
+          value: milvus.db
+        - name: LLAMA_STACK_LOG
+          value: debug
+        image: quay.io/redhat-et/llama:vllm-0.2.2
+        imagePullPolicy: Always
+        name: llamastack
+        ports:
+        - containerPort: 8321
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /pythainlp-data
+          name: pythain
+        - mountPath: /app-config
+          name: run-config-volume
+        - mountPath: /.llama
+          name: llama-persist
+        - mountPath: /.cache
+          name: cache
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: run-config
+        name: run-config-volume
+      - name: llama-persist
+        persistentVolumeClaim:
+          claimName: llama-persist
+      - emptyDir: {}
+        name: cache
+      - emptyDir: {}
+        name: pythain
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pdf-mcp-server
+  name: pdf-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pdf-mcp-server
+  template:
+    metadata:
+      labels:
+        app: pdf-mcp-server
+    spec:
+      containers:
+      - args:
+        - npx -y supergateway --stdio "node build/index.js" --port 8010
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: NPM_CONFIG_CACHE
+          value: /tmp/.npm
+        image: quay.io/rh-aiservices-bu/mcp-servers:pdf
+        imagePullPolicy: Always
+        name: pdf-mcp-server
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: reports-repo
+    app.kubernetes.io/instance: reports-repo
+    app.kubernetes.io/name: reports-repo
+    app.kubernetes.io/part-of: reports-repo
+  name: reports-repo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reports-repo
+      deployment: reports-repo
+  template:
+    metadata:
+      labels:
+        app: reports-repo
+        deployment: reports-repo
+    spec:
+      containers:
+      - env:
+        - name: UPLOADER_PORT
+          value: "9000"
+        - name: UPLOADER_DIRECTORY
+          value: /fileuploads
+        image: quay.io/chmouel/go-simple-uploader:latest
+        imagePullPolicy: IfNotPresent
+        name: uploader
+        volumeMounts:
+        - mountPath: /fileuploads
+          name: staticfiles
+      - image: quay.io/siamaksade/nginx:latest
+        name: nginx
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d/
+          name: nginx-conf
+        - mountPath: /fileuploads
+          name: staticfiles
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: reports-repo-nginx-conf
+        name: nginx-conf
+      - name: staticfiles
+        persistentVolumeClaim:
+          claimName: reports-repo-pv
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: slack-mcp-server
+  name: slack-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slack-mcp-server
+  template:
+    metadata:
+      labels:
+        app: slack-mcp-server
+    spec:
+      containers:
+      - args:
+        - |
+          npx -y supergateway --stdio "node dist/index.js" --port 8080
+        command:
+        - /bin/sh
+        - -c
+        env:
+        - name: NPM_CONFIG_CACHE
+          value: /tmp/.npm
+        - name: SLACK_BOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: SLACK_BOT_TOKEN
+              name: slack-mcp-server-secrets
+        - name: SLACK_TEAM_ID
+          valueFrom:
+            secretKeyRef:
+              key: SLACK_TEAM_ID
+              name: slack-mcp-server-secrets
+        image: quay.io/rh-aiservices-bu/mcp-servers:slack
+        imagePullPolicy: Always
+        name: slack-mcp-server
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 200m
+            memory: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: ui
+    app.kubernetes.io/component: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/name: ui
+    app.kubernetes.io/part-of: ui-app
+  name: ui
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: ui
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ui
+        deployment: ui
+    spec:
+      containers:
+      - env:
+        - name: LLAMA_STACK_ENDPOINT
+          value: http://llamastack-server.llama-serve.svc.cluster.local:8321
+        image: quay.io/rh-aiservices-bu/rh-summit-agentic-demo-ui:v4
+        imagePullPolicy: IfNotPresent
+        name: ui
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8501
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: llamastack-server
+spec:
+  port:
+    targetPort: 8321
+  to:
+    kind: Service
+    name: llamastack-server
+    weight: 100
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: reports-repo
+  name: reports-repo
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: reports-repo
+    weight: 100
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: ui
+    app.kubernetes.io/component: ui
+    app.kubernetes.io/instance: ui
+    app.kubernetes.io/name: ui
+    app.kubernetes.io/part-of: ui-app
+  name: ui
+spec:
+  port:
+    targetPort: 8501
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: ui
+    weight: 100
+  wildcardPolicy: None

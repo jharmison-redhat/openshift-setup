@@ -1,0 +1,14 @@
+---
+llama:
+  url: https://llama32-3b-model-serving.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/v1
+  model: llama32-3b
+  token: fake
+
+granite:
+  url: https://granite33-8b-model-serving.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/v1
+  model: granite32-8b
+  token: fake
+
+cluster:
+  name: cluster
+  baseDomain: example.com
