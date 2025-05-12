@@ -12,8 +12,8 @@ applications:
       instanceType: g6e.2xlarge
       autoscaling:
         enabled: true
-        minReplicas: 2
-        maxReplicas: 6
+        minReplicas: 1
+        maxReplicas: 3
   - name: nvidia-gpu-enablement
   - name: openshift-serverless
   - name: openshift-servicemesh
