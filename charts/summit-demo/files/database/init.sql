@@ -1,16 +1,16 @@
-CREATE TABLE accounts IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS accounts (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE opportunities IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS opportunities (
     id SERIAL PRIMARY KEY,
     status VARCHAR(50),
     account_id INTEGER REFERENCES accounts(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE opportunity_items IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS opportunity_items (
     id SERIAL PRIMARY KEY,
     opportunityid INTEGER REFERENCES opportunities(id),
     description TEXT,
@@ -18,7 +18,7 @@ CREATE TABLE opportunity_items IF NOT EXISTS (
     year INTEGER
 );
 
-CREATE TABLE support_cases IF NOT EXISTS (
+CREATE TABLE IF NOT EXISTS support_cases (
     id SERIAL PRIMARY KEY,
     subject TEXT NOT NULL,
     description TEXT,
