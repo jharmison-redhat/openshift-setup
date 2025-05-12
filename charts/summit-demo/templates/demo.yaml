@@ -266,12 +266,12 @@ spec:
     app: ui
     deployment: ui
 ---
+apiVersion: v1
 kind: Service
 metadata:
   labels:
     app: reports-repo
   name: reports-repo
-sapiVersion: v1
 spec:
   ports:
   - name: 8080-tcp

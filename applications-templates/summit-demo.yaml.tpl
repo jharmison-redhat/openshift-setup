@@ -28,3 +28,8 @@ spec:
         duration: 10s
         factor: 3
         maxDuration: 60m
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
