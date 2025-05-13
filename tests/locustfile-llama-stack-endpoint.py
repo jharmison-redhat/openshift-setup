@@ -28,7 +28,6 @@ class LlamaStackInteraction(TaskSet):
                 response.failure("Response could not be decoded as JSON")
             except KeyError:
                 response.failure("Response did not contain expected keys to identify model")
-        print("using:", self.model)
         agent_config = {
             "model": self.model,
             "instructions": "You are a helpful AI assistant, responsible for helping me find and communicate information back to my team. You have access to a number of tools. Whenever a tool is called, be sure return the Response in a friendly and helpful tone. When you are asked to find out about opportunities and support cases you must use a tool. If you need to create a pdf you must use a tool, create the content for the pdf as simple markdown formatted as tables where possible and add this markdown to the start of the generated markdown:  '![ParasolCloud Logo](https://i.postimg.cc/MHZB5tmL/Screenshot-2025-04-21-at-5-58-46-PM.png) *Secure Cloud Solutions for a Brighter Business* \n --- \n'  ",
@@ -43,7 +42,6 @@ class LlamaStackInteraction(TaskSet):
                 response.failure("Response could not be decoded as JSON")
             except KeyError:
                 response.failure("Response did not contain expected keys to identify agent")
-        print("built agent ID:", self.agent)
         with self.client.post(f"/agents/{self.agent}/session", json={"session_name": self.agent}) as response:
             try:
                 self.session = response.json()["session_id"]
@@ -51,20 +49,16 @@ class LlamaStackInteraction(TaskSet):
                 response.failure("Response could not be decoded as JSON")
             except KeyError:
                 response.failure("Response did not contain expected keys to identify session")
-        print("initiating session:", self.session)
 
     def on_stop(self):
-        print("ending session and closing agent")
         self.client.delete(f"/agents/{self.agent}/sessions/{self.session}")
         self.client.delete(f"/agents/{self.agent}")
 
     @task
     def discuss_customer(self):
         customer = random.choice(customers)
-        print("asking about:", customer)
         for question in questions:
             message = f"{question} for {customer}"
-            print("sending:", message)
             with self.client.post(
                 f'/agents/{self.agent}/session/{self.session}/turn',
                 json={
@@ -82,13 +76,12 @@ class LlamaStackInteraction(TaskSet):
                     try:
                         data = json.loads(chunk.lstrip("data: "))
                         if data['event']['payload']['event_type'] == "turn_complete":
-                            print("received:", data['event']['payload']['turn']['output_message']['content'])
+                            print("turn complete")
                     except:
                         pass
 
             time.sleep(1)
         self.interrupt()
-
 
 
 class LlamaStackUser(HttpUser):
