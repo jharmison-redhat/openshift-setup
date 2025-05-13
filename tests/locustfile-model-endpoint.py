@@ -1,7 +1,8 @@
 import os
 import random
 
-from locust import HttpUser, TaskSet, task
+from json import JSONDecodeError
+from locust import HttpUser, task
 
 
 messages = [
@@ -12,12 +13,14 @@ messages = [
     "What's up, doc?"
 ]
 
-class LanguageModelInteraction(TaskSet):
+class LanguageModelUser(HttpUser):
+    host = os.getenv("VLLM_BASE_URI", 'https://llama-32-3b-model-serving.apps.cluster.demo.jharmison.dev/v1')
+
     def on_start(self):
         self.client.headers = {'Authorization': f'Bearer {os.getenv("TOKEN", "fake")}'}
         with self.client.get("/models") as response:
             try:
-                self.model = response.json().get("data")[0].get("id")
+                self.model = response.json()["data"][0]["id"]
             except JSONDecodeError:
                 response.failure("Response could not be decoded as JSON")
             except KeyError:
@@ -47,7 +50,3 @@ class LanguageModelInteraction(TaskSet):
                 ],
             },
         )
-
-class LanguageModelUser(HttpUser):
-    host = os.getenv("BASE_URI", 'https://llama-32-3b-model-serving.apps.cluster.demo.jharmison.dev/v1')
-    tasks = [LanguageModelInteraction]
