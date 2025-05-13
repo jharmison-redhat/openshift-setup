@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora:41
+FROM registry.fedoraproject.org/fedora:42
 
 RUN dnf -y install \
     awscli2 \
@@ -25,9 +25,11 @@ RUN dnf -y install \
     python3-pydantic \
     python3-typer \
     python3-dotenv \
+    python3-pip \
     https://github.com/getsops/sops/releases/download/v3.10.2/sops-3.10.2-1.x86_64.rpm \
     https://github.com/derailed/k9s/releases/download/v0.50.4/k9s_linux_amd64.rpm \
-    && dnf -y clean all
+    && dnf -y clean all \
+    && python3 -m pip install --no-cache-dir locust
 
 RUN mkdir -p /tmp/krew && cd /tmp/krew \
     && curl -fLo- "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz" | tar zx \

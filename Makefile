@@ -136,3 +136,9 @@ container:
 .PHONY: shell
 shell: $(INSTALL_DIR)/kubectl
 	@$(RUNTIME) $(RUNTIME_ARGS) --entrypoint /bin/bash $(IMAGE) -li
+
+.PHONY: test
+test:
+	for n in 1 5 10 32 10 5 1; do \
+		locust --headless --users $$n --processes $$n -f tests/locustfile-model-endpoint.py -t 2m; \
+	done

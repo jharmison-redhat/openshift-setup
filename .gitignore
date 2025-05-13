@@ -10,3 +10,7 @@ clusters/*/values/*/secrets.yaml
 # Helm stuff should not be committed
 Chart.lock
 charts/*/charts/*
+
+# Python things, thanks to Locust
+*.pyc
+__pycache__
