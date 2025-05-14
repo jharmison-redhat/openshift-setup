@@ -1,4 +1,22 @@
 ---
-clusterMonitoringConfig: {}
-#  prometheusK8s:
-#    collectionProfile: ""
+clusterMonitoringConfig:
+  enableUserWorkload: true
+  prometheusK8s:
+    retention: 168h
+    volumeClaimTemplate:
+      spec:
+        storageClassName: gp3-csi
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 40Gi
+userWorkloadMonitoringConfig:
+  prometheus:
+    retention: 72h
+    volumeClaimTemplate:
+      spec:
+        storageClassName: gp3-csi
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 40Gi
