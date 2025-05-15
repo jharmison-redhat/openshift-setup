@@ -1,6 +1,3 @@
 ---
-autoscaling:
-  enabled: true
-  maxReplicas: 4
-  minReplicas: 2
+desiredReplicas: 5
 instanceType: g6e.2xlarge
