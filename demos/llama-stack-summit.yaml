@@ -44,7 +44,7 @@ applications:
       fullnameOverride: llama-32-3b
       displaynameOverride: Llama 3.2 3B Instruct
       model:
-        uri: oci://quay.io/jharmison/models:meta-llama--llama-3_2-3b-instruct-modelcar
+        uri: oci://quay.io/jharmison/models:redhatai--llama-3_2-3b-instruct-fp8-modelcar
         extraArgs:
           - --enable-auto-tool-choice
           - --tool-call-parser=llama3_json
