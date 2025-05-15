@@ -2,7 +2,8 @@ providers:
   htpasswd: null
   github:
     organizations:
-      - jharmison-redhat-org
+      - rhai-code
 
 admins:
   - jharmison-redhat
+  - gshipley
