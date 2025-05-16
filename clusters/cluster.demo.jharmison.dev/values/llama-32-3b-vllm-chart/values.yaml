@@ -1,12 +1,13 @@
 ---
-configuration:
-  extraArgs:
-  - --served-model-name=RedHatAI/Llama-3.2-3B-Instruct-FP8
-  hfModelDownload:
-    enabled: false
-  modelStorage:
-    image:
-      reference: quay.io/jharmison/models:redhatai--llama-3_2-3b-instruct-fp8-modelcar
-      type: modelCar
-    type: image
-fullnameOverride: llama-32-3b
+vllm:
+  configuration:
+    extraArgs:
+    - --served-model-name=RedHatAI/Llama-3.2-3B-Instruct-FP8
+    hfModelDownload:
+      enabled: false
+    modelStorage:
+      image:
+        reference: quay.io/jharmison/models:redhatai--llama-3_2-3b-instruct-fp8-modelcar
+        type: modelCar
+      type: image
+  fullnameOverride: llama-32-3b

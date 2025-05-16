@@ -21,17 +21,18 @@ applications:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: granite-33-8b
-      configuration:
-        hfModelDownload:
-          enabled: false
-        modelStorage:
-          type: image
-          image:
-            type: modelCar
-            reference: quay.io/jharmison/models:ibm-granite--granite-3_3-8b-instruct-modelcar
-        extraArgs:
-          - --served-model-name=ibm-granite/granite-3.3-8b-instruct
+      vllm:
+        fullnameOverride: granite-33-8b
+        configuration:
+          hfModelDownload:
+            enabled: false
+          modelStorage:
+            type: image
+            image:
+              type: modelCar
+              reference: quay.io/jharmison/models:ibm-granite--granite-3_3-8b-instruct-modelcar
+          extraArgs:
+            - --served-model-name=ibm-granite/granite-3.3-8b-instruct
   - name: vllm-chart
     fileprefix: llama-32-3b
     rewrite:
@@ -41,17 +42,18 @@ applications:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: llama-32-3b
-      configuration:
-        hfModelDownload:
-          enabled: false
-        modelStorage:
-          type: image
-          image:
-            type: modelCar
-            reference: quay.io/jharmison/models:redhatai--llama-3_2-3b-instruct-fp8-modelcar
-        extraArgs:
-          - --served-model-name=RedHatAI/Llama-3.2-3B-Instruct-FP8
+      vllm:
+        fullnameOverride: llama-32-3b
+        configuration:
+          hfModelDownload:
+            enabled: false
+          modelStorage:
+            type: image
+            image:
+              type: modelCar
+              reference: quay.io/jharmison/models:redhatai--llama-3_2-3b-instruct-fp8-modelcar
+          extraArgs:
+            - --served-model-name=RedHatAI/Llama-3.2-3B-Instruct-FP8
   - name: vllm-chart
     fileprefix: qwen-3-8b
     rewrite:
@@ -61,17 +63,18 @@ applications:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: qwen-3-8b
-      configuration:
-        hfModelDownload:
-          enabled: false
-        modelStorage:
-          type: image
-          image:
-            type: modelCar
-            reference: quay.io/jharmison/models:qwen--qwen3-8b-fp8-modelcar
-        extraArgs:
-          - --served-model-name=Qwen/Qwen3-8B-FP8
+      vllm:
+        fullnameOverride: qwen-3-8b
+        configuration:
+          hfModelDownload:
+            enabled: false
+          modelStorage:
+            type: image
+            image:
+              type: modelCar
+              reference: quay.io/jharmison/models:qwen--qwen3-8b-fp8-modelcar
+          extraArgs:
+            - --served-model-name=Qwen/Qwen3-8B-FP8
   - name: vllm-chart
     fileprefix: mistral-31-24b
     rewrite:
@@ -81,18 +84,19 @@ applications:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: mistral-31-24b
-      configuration:
-        hfModelDownload:
-          enabled: false
-        modelStorage:
-          type: image
-          image:
-            type: modelCar
-            reference: quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
-        extraArgs:
-          - --served-model-name=RedHatAI/Mistral-Small-3.1-24B-Instruct-2503-FP8-dynamic
-          - --max-model-len=65536
+      vllm:
+        fullnameOverride: mistral-31-24b
+        configuration:
+          hfModelDownload:
+            enabled: false
+          modelStorage:
+            type: image
+            image:
+              type: modelCar
+              reference: quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
+          extraArgs:
+            - --served-model-name=RedHatAI/Mistral-Small-3.1-24B-Instruct-2503-FP8-dynamic
+            - --max-model-len=65536
   - name: vllm-chart
     fileprefix: bge-m3
     rewrite:
@@ -102,15 +106,16 @@ applications:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: bge-m3
-      configuration:
-        hfModelDownload:
-          enabled: false
-        modelStorage:
-          type: image
-          image:
-            type: modelCar
-            reference: podman pull quay.io/jharmison/models:baai--bge-m3-modelcar
-        extraArgs:
-          - --served-model-name=BAAI/bge-m3
-          - --enforce-eager
+      vllm:
+        fullnameOverride: bge-m3
+        configuration:
+          hfModelDownload:
+            enabled: false
+          modelStorage:
+            type: image
+            image:
+              type: modelCar
+              reference: podman pull quay.io/jharmison/models:baai--bge-m3-modelcar
+          extraArgs:
+            - --served-model-name=BAAI/bge-m3
+            - --enforce-eager
