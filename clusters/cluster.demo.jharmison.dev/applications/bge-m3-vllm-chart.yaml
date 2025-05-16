@@ -18,7 +18,7 @@ spec:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
       - ../../clusters/cluster.demo.jharmison.dev/values/bge-m3-vllm-chart/values.yaml
-    repoURL: https://https://rhai-code.github.io/vllm/
+    repoURL: https://rhai-code.github.io/vllm/
     targetRevision: 0.2.2
   syncPolicy:
     automated:

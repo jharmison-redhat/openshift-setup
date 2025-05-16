@@ -18,7 +18,7 @@ spec:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
       - ../../clusters/cluster.demo.jharmison.dev/values/mistral-31-24b-vllm-chart/values.yaml
-    repoURL: https://https://rhai-code.github.io/vllm/
+    repoURL: https://rhai-code.github.io/vllm/
     targetRevision: 0.2.2
   syncPolicy:
     automated:

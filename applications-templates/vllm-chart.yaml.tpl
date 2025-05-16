@@ -15,7 +15,7 @@ spec:
   project: default
   source:
     chart: vllm
-    repoURL: https://https://rhai-code.github.io/vllm/
+    repoURL: https://rhai-code.github.io/vllm/
     targetRevision: 0.2.2
     helm:
       valueFiles: []
