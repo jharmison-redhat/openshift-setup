@@ -14,9 +14,9 @@ spec:
     namespace: default
   project: default
   source:
-    chart: vllm
-    repoURL: https://rhai-code.github.io/vllm/
-    targetRevision: 0.2.2
+    path: charts/vllm-chart
+    repoURL: ${ARGO_GIT_URL}
+    targetRevision: ${ARGO_GIT_REVISION}
     helm:
       valueFiles: []
   syncPolicy:

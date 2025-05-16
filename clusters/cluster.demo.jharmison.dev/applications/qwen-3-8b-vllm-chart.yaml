@@ -13,13 +13,13 @@ spec:
     namespace: model-serving
   project: default
   source:
-    chart: vllm
     helm:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
       - ../../clusters/cluster.demo.jharmison.dev/values/qwen-3-8b-vllm-chart/values.yaml
-    repoURL: https://rhai-code.github.io/vllm/
-    targetRevision: 0.2.2
+    path: charts/vllm-chart
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true

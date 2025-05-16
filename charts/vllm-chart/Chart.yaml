@@ -1,0 +1,13 @@
+---
+apiVersion: v2
+name: vllm-chart
+description: A helm chart to include vLLM with values
+type: application
+version: 0.1.0
+appVersion: "0.8.5.0_cu128"
+
+dependencies:
+- name: vllm
+  version: 0.2.2
+  repository: https://rhai-code.github.io/vllm/
+  condition: vllm.enabled
