@@ -115,7 +115,7 @@ applications:
             type: image
             image:
               type: modelCar
-              reference: podman pull quay.io/jharmison/models:baai--bge-m3-modelcar
+              reference: quay.io/jharmison/models:baai--bge-m3-modelcar
           extraArgs:
             - --served-model-name=BAAI/bge-m3
             - --enforce-eager

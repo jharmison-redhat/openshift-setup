@@ -8,7 +8,7 @@ vllm:
       enabled: false
     modelStorage:
       image:
-        reference: podman pull quay.io/jharmison/models:baai--bge-m3-modelcar
+        reference: quay.io/jharmison/models:baai--bge-m3-modelcar
         type: modelCar
       type: image
   fullnameOverride: bge-m3
