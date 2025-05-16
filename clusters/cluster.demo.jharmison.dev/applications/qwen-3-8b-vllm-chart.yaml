@@ -1,0 +1,32 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '4'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: qwen-3-8b
+spec:
+  destination:
+    name: in-cluster
+    namespace: model-serving
+  project: default
+  source:
+    chart: vllm
+    helm:
+      valueFiles:
+      - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
+      - ../../clusters/cluster.demo.jharmison.dev/values/qwen-3-8b-vllm-chart/values.yaml
+    repoURL: https://https://rhai-code.github.io/vllm/
+    targetRevision: 0.2.2
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 60m
+      limit: 10

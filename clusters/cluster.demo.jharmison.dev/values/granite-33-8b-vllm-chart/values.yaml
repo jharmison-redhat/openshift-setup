@@ -1,0 +1,12 @@
+---
+configuration:
+  extraArgs:
+  - --served-model-name=ibm-granite/granite-3.3-8b-instruct
+  hfModelDownload:
+    enabled: false
+  modelStorage:
+    image:
+      reference: quay.io/jharmison/models:ibm-granite--granite-3_3-8b-instruct-modelcar
+      type: modelCar
+    type: image
+fullnameOverride: granite-33-8b

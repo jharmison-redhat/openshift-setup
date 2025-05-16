@@ -2,23 +2,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: model-serving-namespace
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/sync-wave: '0'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: model-serving-namespace
 spec:
   destination:
     name: in-cluster
     namespace: default
   project: default
   source:
+    helm:
+      valueFiles:
+      - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
+      - ../../clusters/cluster.demo.jharmison.dev/values/model-serving-namespace/values.yaml
     path: charts/namespace
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
-    helm:
-      valueFiles:
-      - ../../clusters/cluster.demo.jharmison.dev/values/model-serving-namespace/values.yaml
   syncPolicy:
     automated:
       prune: true

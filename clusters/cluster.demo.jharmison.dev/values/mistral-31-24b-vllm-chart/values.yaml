@@ -1,0 +1,13 @@
+---
+configuration:
+  extraArgs:
+  - --served-model-name=RedHatAI/Mistral-Small-3.1-24B-Instruct-2503-FP8-dynamic
+  - --max-model-len=65536
+  hfModelDownload:
+    enabled: false
+  modelStorage:
+    image:
+      reference: quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
+      type: modelCar
+    type: image
+fullnameOverride: mistral-31-24b
