@@ -8,7 +8,7 @@ image:
   tag: ""
   # Override the tag to choose a manifest hash reference
   manifestHash: ""
-  pullSecrets: []
+  pullSecrets: []  # NOTE: this is busted. If you use this, you have to specify it also in the top level imagePullSecrets.
   # - name: terms-based-registry
   #   username: 123456|myaccount
   #   password: asdf1234.ASDF-_34
