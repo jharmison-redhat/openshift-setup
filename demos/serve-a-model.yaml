@@ -30,15 +30,17 @@ applications:
         kueue:
           managementState: Removed
   - name: kserve-vllm-model
-    fileprefix: qwen3-14b
+    fileprefix: granite-40-tiny
     rewrite:
       metadata:
-        name: qwen3-14b
+        name: granite-40-tiny
       spec:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: qwen3-14b
-      displaynameOverride: Qwen 3 14b FP8
+      fullnameOverride: granite-40-tiny
+      displaynameOverride: IBM Granite 4.0 Tiny Preview
       model:
-        uri: oci://quay.io/jharmison/models:qwen--qwen3-14b-fp8-modelcar
+        uri: oci://quay.io/jharmison/models:ibm-granite--granite-4_0-tiny-preview-modelcar
+      imagePullSecrets:
+      - name: terms-based-registry-pull-secret
