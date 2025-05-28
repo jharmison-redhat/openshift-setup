@@ -1,0 +1,44 @@
+---
+namespaces:
+  - name: model-serving
+    labels:
+      opendatahub.io/dashboard: "true"
+    annotations:
+      openshift.io/description: Project for housing model servers
+      openshift.io/display-name: Model Serving
+applications:
+  - name: aws-nvidia-gpu-machinesets
+    values:
+      instanceType: g6e.2xlarge
+  - name: nvidia-gpu-enablement
+  - name: monitoring
+  - name: openshift-serverless
+  - name: openshift-servicemesh
+  - name: authorino
+  - name: openshift-ai
+    values:
+      dashboardReplicas: 1
+      dataScienceClusterComponents:
+        codeflare:
+          managementState: Removed
+        datasciencepipelines:
+          managementState: Removed
+        ray:
+          managementState: Removed
+        trainingoperator:
+          managementState: Removed
+        kueue:
+          managementState: Removed
+  - name: kserve-vllm-model
+    fileprefix: qwen3-14b
+    rewrite:
+      metadata:
+        name: qwen3-14b
+      spec:
+        destination:
+          namespace: model-serving
+    values:
+      fullnameOverride: qwen3-14b
+      displaynameOverride: Qwen 3 14b FP8
+      model:
+        uri: oci://quay.io/jharmison/models:qwen--qwen3-14b-fp8-modelcar

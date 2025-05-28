@@ -1,0 +1,5 @@
+---
+displaynameOverride: Qwen 3 14b FP8
+fullnameOverride: qwen3-14b
+model:
+  uri: oci://quay.io/jharmison/models:qwen--qwen3-14b-fp8-modelcar
