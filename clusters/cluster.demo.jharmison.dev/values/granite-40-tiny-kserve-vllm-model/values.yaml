@@ -5,3 +5,5 @@ imagePullSecrets:
 - name: terms-based-registry-pull-secret
 model:
   uri: oci://quay.io/jharmison/models:ibm-granite--granite-4_0-tiny-preview-modelcar
+scaling:
+  progressDeadline: 60m

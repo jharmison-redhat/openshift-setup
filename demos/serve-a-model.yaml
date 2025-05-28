@@ -44,3 +44,5 @@ applications:
         uri: oci://quay.io/jharmison/models:ibm-granite--granite-4_0-tiny-preview-modelcar
       imagePullSecrets:
       - name: terms-based-registry-pull-secret
+      scaling:
+        progressDeadline: 60m
