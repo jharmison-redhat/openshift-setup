@@ -30,18 +30,22 @@ applications:
         kueue:
           managementState: Removed
   - name: kserve-vllm-model
-    fileprefix: granite-40-tiny
+    fileprefix: llama-32-3b
     rewrite:
       metadata:
-        name: granite-40-tiny
+        name: llama-32-3b
       spec:
         destination:
           namespace: model-serving
     values:
-      fullnameOverride: granite-40-tiny
-      displaynameOverride: IBM Granite 4.0 Tiny Preview
+      fullnameOverride: llama-32-3b
+      displaynameOverride: Llama 3.2 3B Instruct
       model:
-        uri: oci://quay.io/jharmison/models:ibm-granite--granite-4_0-tiny-preview-modelcar
+        uri: oci://quay.io/jharmison/models:redhatai--llama-3_2-3b-instruct-fp8-modelcar
+        extraArgs:
+          - --enable-auto-tool-choice
+          - --tool-call-parser=llama3_json
+          - --chat-template=/app/data/template/tool_chat_template_llama3.2_json.jinja
       imagePullSecrets:
       - name: terms-based-registry-pull-secret
       scaling:
