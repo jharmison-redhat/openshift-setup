@@ -1,8 +1,6 @@
 ---
 displaynameOverride: Llama 3.2 3B Instruct
 fullnameOverride: llama-32-3b
-imagePullSecrets:
-- name: terms-based-registry-pull-secret
 model:
   extraArgs:
   - --enable-auto-tool-choice

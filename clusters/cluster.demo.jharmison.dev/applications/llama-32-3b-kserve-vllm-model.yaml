@@ -17,7 +17,6 @@ spec:
       valueFiles:
       - ../../clusters/cluster.demo.jharmison.dev/cluster.yaml
       - ../../clusters/cluster.demo.jharmison.dev/values/llama-32-3b-kserve-vllm-model/values.yaml
-      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.demo.jharmison.dev/values/llama-32-3b-kserve-vllm-model/secrets.enc.yaml
     path: charts/kserve-vllm-model
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
