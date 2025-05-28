@@ -8,6 +8,12 @@ image:
   tag: ""
   # Override the tag to choose a manifest hash reference
   manifestHash: ""
+  pullSecrets: []
+  # - name: terms-based-registry
+  #   username: 123456|myaccount
+  #   password: asdf1234.ASDF-_34
+  # - name: my-registry
+  #   authString: dXNlcm5hbWUrbG9jYWw6UkFORE9NRkFLRVFVQVlUT0tFTg
 
 # Name defaults to the chart name
 nameOverride: ""

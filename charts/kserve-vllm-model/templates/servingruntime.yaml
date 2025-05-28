@@ -22,6 +22,12 @@ spec:
   supportedModelFormats:
     - autoSelect: true
       name: vLLM
+  {{- with .Values.image.pullSecrets }}
+  imagePullSecrets:
+    {{- range . }}
+    - name: {{ .name }}-pull-secret
+    {{- end }}
+  {{- end }}
   containers:
     - name: kserve-container
       image: {{ include "kserve-vllm-model.image" . }}

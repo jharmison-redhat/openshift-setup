@@ -77,3 +77,14 @@ autoscaling.knative.dev/scale-to-zero-pod-retention-period: {{ quote . }}
 {{- end }}
 {{- end }}
 {{- end }}
+
+{{/*
+Convenience function to template dockerconfigjson
+*/}}
+{{- define "kserve-vllm-model.dockerconfigjson" -}}
+{{- if .pullSecret.authString -}}
+{ "auths": { {{ quote .registry }}: {{ quote .pullSecret.authString }} } }
+{{- else -}}
+{ "auths": { {{ quote .registry }}: {{ quote ((printf "%s:%s" .pullSecret.username .pullSecret.password) | b64enc) }} } }
+{{- end }}
+{{- end }}
