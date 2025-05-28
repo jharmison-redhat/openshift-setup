@@ -30,7 +30,9 @@ shmSize: 2Gi
 
 model:
   extraArgs: []
-  extraEnv: []
+  extraEnv:
+    - name: VLLM_USE_V1
+      value: '0'
   type: uri
   uri: oci://quay.io/jharmison/models:redhatai--granite-3_1-8b-instruct-quantized_w8a8-modelcar
   # uri: oci://quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
