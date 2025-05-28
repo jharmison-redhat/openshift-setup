@@ -3,7 +3,9 @@
 {{ .htpasswd }}
 {{- else -}}
 {{- range $user, $password := . -}}
+{{- if $password -}}
 {{ htpasswd $user $password }}
 {{ end -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
