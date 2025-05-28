@@ -1,8 +1,8 @@
 ---
 # vLLM image specification
 image:
-  registry: quay.io
-  repository: vllm/vllm
+  registry: registry.redhat.io
+  repository: rhaiis/vllm-cuda-rhel9
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
