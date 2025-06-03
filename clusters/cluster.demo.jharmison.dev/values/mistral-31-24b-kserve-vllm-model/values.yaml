@@ -4,6 +4,6 @@ fullnameOverride: mistral-31-24b
 model:
   extraArgs:
   - --max-model-len=65536
-  uri: oci://redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
+  uri: oci://quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
 scaling:
   progressDeadline: 60m

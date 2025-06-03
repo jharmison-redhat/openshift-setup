@@ -41,7 +41,7 @@ applications:
       fullnameOverride: mistral-31-24b
       displaynameOverride: Mistral Small 3.1 24B FP8
       model:
-        uri: oci://redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
+        uri: oci://quay.io/jharmison/models:redhatai--mistral-small-3_1-24b-instruct-2503-fp8-dynamic-modelcar
         extraArgs:
           - --max-model-len=65536
       scaling:
