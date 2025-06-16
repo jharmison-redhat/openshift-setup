@@ -1,0 +1,4 @@
+---
+instanceType: g6e.48xlarge
+aws:
+  az: us-east-2c
