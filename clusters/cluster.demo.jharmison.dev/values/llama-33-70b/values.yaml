@@ -6,6 +6,8 @@ vllm:
       - '8'
     cache:
       size: 600Gi
+    modelStorage:
+      size: 600Gi
   route:
     enabled: true
     subdomain: llama-33-70b
