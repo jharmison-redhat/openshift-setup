@@ -1,0 +1,24 @@
+vllm:
+  configuration:
+    modelReference: meta-llama/Llama-3.3-70B-Instruct
+    extraArgs:
+      - --tensor-parallel-size
+      - '8'
+    cache:
+      size: 600Gi
+  route:
+    enabled: true
+    subdomain: llama-33-70b
+  resources:
+    limits:
+      cpu: 96
+      memory: 1024Gi
+      nvidia.com/gpu: 8
+    requests:
+      cpu: 48
+      memory: 768Gi
+      nvidia.com/gpu: 8
+  nodeSelector:
+    beta.kubernetes.io/instance-type: g6e.48xlarge
+  startupProbe:
+    failureThreshold: 720
