@@ -22,6 +22,8 @@ spec:
       - ../../clusters/cluster.demo.jharmison.dev/values/llama-33-70b/values.yaml
       - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.demo.jharmison.dev/values/llama-33-70b/secrets.enc.yaml
   syncPolicy:
+    syncOptions:
+    - RespectIgnoreDifferences=true
     automated:
       prune: true
       selfHeal: true
@@ -31,3 +33,8 @@ spec:
         duration: 10s
         factor: 3
         maxDuration: 60m
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas
