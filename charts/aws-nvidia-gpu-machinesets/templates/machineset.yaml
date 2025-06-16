@@ -41,7 +41,7 @@ spec:
                 iops: 0
                 kmsKey:
                   arn: ""
-                volumeSize: 120
+                volumeSize: {{ .Values.rootDeviceSizeGB }}
                 volumeType: gp3
           credentialsSecret:
             name: aws-cloud-credentials

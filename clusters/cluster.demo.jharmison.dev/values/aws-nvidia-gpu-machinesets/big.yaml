@@ -1,4 +1,5 @@
 ---
 instanceType: g6e.48xlarge
+rootDeviceSizeGB: 1024
 aws:
   az: us-east-2c
