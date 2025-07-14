@@ -1,0 +1,10 @@
+{{- range .Values.acceleratorProfiles }}
+---
+apiVersion: dashboard.opendatahub.io/v1
+kind: AcceleratorProfile
+metadata:
+  name: {{ .name }}
+  namespace: redhat-ods-applications
+spec:
+  {{- omit . "name" | toYaml | nindent 2 }}
+{{- end }}
