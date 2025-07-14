@@ -1,0 +1,11 @@
+{{- with .Values.dataScienceClusterInitialization }}
+apiVersion: dscinitialization.opendatahub.io/v1
+kind: DSCInitialization
+metadata:
+  name: default-dsci
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  {{- toYaml . | nindent 2 }}
+{{- end }}

@@ -1,0 +1,17 @@
+---
+channel: fast
+dataScienceCluster:
+  components:
+    codeflare:
+      managementState: Removed
+    ray:
+      managementState: Removed
+    kserve:
+      defaultDeploymentMode: RawDeployment
+      rawDeploymentServiceConfig: Headed
+      serving:
+        managementState: Removed
+
+dataScienceClusterInitialization:
+  serviceMesh:
+    managementState: Removed

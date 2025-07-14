@@ -6,41 +6,62 @@ enableUserTelemetry: false
 # If set, will override the dashboard deployment replica count
 dashboardReplicas: null
 
-dataScienceClusterComponents:
-  codeflare:
-    managementState: Managed
-  kserve:
-    managementState: Managed
-    nim:
+dataScienceCluster:
+  create: true
+  components:
+    codeflare:
       managementState: Managed
-    rawDeploymentServiceConfig: Headless
-    serving:
-      ingressGateway:
-        certificate:
-          type: OpenshiftDefaultIngress
+    kserve:
       managementState: Managed
-      name: knative-serving
-  modelregistry:
-    managementState: Removed
-    registriesNamespace: rhoai-model-registries
-  trustyai:
-    managementState: Managed
-  ray:
-    managementState: Managed
-  kueue:
-    managementState: Managed
-  workbenches:
-    managementState: Managed
-  dashboard:
-    managementState: Managed
-  modelmeshserving:
-    managementState: Removed
-  datasciencepipelines:
-    managementState: Managed
-  trainingoperator:
-    managementState: Managed
-  codeflare:
-    managementState: Managed
+      nim:
+        managementState: Managed
+      rawDeploymentServiceConfig: Headless
+      serving:
+        ingressGateway:
+          certificate:
+            type: OpenshiftDefaultIngress
+        managementState: Managed
+        name: knative-serving
+    modelregistry:
+      managementState: Removed
+      registriesNamespace: rhoai-model-registries
+    trustyai:
+      managementState: Managed
+    ray:
+      managementState: Managed
+    kueue:
+      managementState: Managed
+    workbenches:
+      managementState: Managed
+      workbenchNamespace: rhods-notebooks
+    dashboard:
+      managementState: Managed
+    modelmeshserving:
+      managementState: Removed
+    datasciencepipelines:
+      managementState: Managed
+    trainingoperator:
+      managementState: Managed
+    codeflare:
+      managementState: Managed
+
+dataScienceClusterInitialization: {}
+# applicationsNamespace: redhat-ods-applications
+# monitoring:
+#   managementState: Managed
+#   namespace: redhat-ods-monitoring
+# serviceMesh:
+#   auth:
+#     audiences:
+#       - 'https://kubernetes.default.svc'
+#   controlPlane:
+#     metricsCollection: Istio
+#     name: data-science-smcp
+#     namespace: istio-system
+#   managementState: Managed
+# trustedCABundle:
+#   customCABundle: ''
+#   managementState: Managed
 
 admins: []
 userGroups:
