@@ -1,0 +1,14 @@
+---
+desiredUpdate:
+  version: 4.18.19
+cluster:
+  name: cluster
+  baseDomain: internal.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 6
+  agePublicKey: age13839dp4zl9evxx0ytw4zza234xm0myahj34zfl3lvfxxhar9g3tqwdsu7n
+  infraID: cluster-nkx7z
+aws:
+  region: us-east-2
+  azs: ["us-east-2a","us-east-2b","us-east-2c"]
+  ami: ami-078e26f293629fe91
