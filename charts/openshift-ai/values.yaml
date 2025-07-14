@@ -38,6 +38,8 @@ dataScienceCluster:
       managementState: Managed
     modelmeshserving:
       managementState: Removed
+    modelregistry:
+      managementState: Managed
     datasciencepipelines:
       managementState: Managed
     trainingoperator:
