@@ -117,11 +117,11 @@ spec:
         command: [sh, -c]
         env:
           - name: HELM_SECRETS_VERSION
-            value: 4.6.4
+            value: 4.6.5
           - name: SOPS_VERSION
             value: 3.10.2
           - name: KUBECTL_VERSION
-            value: 1.31.7
+            value: 1.31.9
         args:
           - |
             mkdir -p /custom-tools/helm-plugins
