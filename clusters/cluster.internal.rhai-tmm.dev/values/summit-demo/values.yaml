@@ -1,0 +1,6 @@
+---
+models:
+- maxTokens: 131072
+  model: llama-32-3b
+  url: https://llama-32-3b-model-serving.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain
+    }}/v1

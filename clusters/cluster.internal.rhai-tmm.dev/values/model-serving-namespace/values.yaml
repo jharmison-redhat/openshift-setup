@@ -1,0 +1,7 @@
+---
+annotations:
+  openshift.io/description: Project for housing model servers
+  openshift.io/display-name: Model Serving
+labels:
+  opendatahub.io/dashboard: 'true'
+name: model-serving
