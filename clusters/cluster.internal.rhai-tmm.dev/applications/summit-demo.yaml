@@ -17,6 +17,7 @@ spec:
       valueFiles:
       - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
       - ../../clusters/cluster.internal.rhai-tmm.dev/values/summit-demo/values.yaml
+      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.internal.rhai-tmm.dev/values/summit-demo/secrets.enc.yaml
     path: charts/summit-demo
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
