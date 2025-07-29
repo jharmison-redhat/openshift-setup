@@ -1,6 +1,8 @@
 ---
 providers:
-  htpasswd: null
+  htpasswd:
+    admin: null
+    developer: null
   github:
     organizations:
       - rhai-code
@@ -14,3 +16,4 @@ admins:
   - FrankLaVigne
   - aliciavcao
   - lkerriso
+  - derek
