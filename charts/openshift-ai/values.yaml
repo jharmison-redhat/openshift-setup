@@ -23,7 +23,7 @@ dataScienceCluster:
         managementState: Managed
         name: knative-serving
     modelregistry:
-      managementState: Removed
+      managementState: Managed
       registriesNamespace: rhoai-model-registries
     trustyai:
       managementState: Managed
@@ -91,8 +91,9 @@ dashboardConfig:
   disableKServe: false
   disableKServeAuth: false
   disableKServeMetrics: true
-  disableModelMesh: false
-  disableModelRegistry: true
+  disableModelMesh: true
+  disableModelRegistry: false
+  disableModelCatalog: false
   disableModelServing: false
   disablePerformanceMetrics: false
   disablePipelines: false
