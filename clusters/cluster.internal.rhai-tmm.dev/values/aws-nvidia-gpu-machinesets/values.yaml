@@ -2,7 +2,7 @@
 instanceType: g6e.2xlarge
 autoscaling:
   enabled: true
-  minReplicas: 0
+  minReplicas: 1
   maxReplicas: 3
   scaleDown:
     delayAfterAdd: 90m
