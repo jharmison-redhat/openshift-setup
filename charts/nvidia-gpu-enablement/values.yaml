@@ -1,6 +1,11 @@
 nfd:
   channel: stable
-  image: registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9@sha256:b0f786e21798c27905c6fdf189bd91cae1f5ddd58ad101a28dbb8b5de92069ce
+  operand:
+    servicePort: 12000
+    imagePullPolicy: IfNotPresent
+    # image: registry.redhat.io/openshift4/ose-node-feature-discovery-rhel9@sha256:b0f786e21798c27905c6fdf189bd91cae1f5ddd58ad101a28dbb8b5de92069ce
+  prunerOnDelete: true
+  topologyUpdater: false
   configData:
     core:
       sleepInterval: 60s

@@ -8,11 +8,12 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   instance: ""
+  {{- with .Values.nfd.operand }}
   operand:
-    image: {{ .Values.nfd.image }}
-    servicePort: 12000
-  prunerOnDelete: false
-  topologyUpdater: false
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  prunerOnDelete: {{ .Values.nfd.prunerOnDelete }}
+  topologyUpdater: {{ .Values.nfd.topologyUpdater }}
   workerConfig:
     configData: |-
       {{- toYaml .Values.nfd.configData | nindent 6 }}
