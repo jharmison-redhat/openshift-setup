@@ -11,7 +11,15 @@ dataScienceCluster:
       rawDeploymentServiceConfig: Headed
       serving:
         managementState: Removed
+    llamastackoperator:
+      managementState: Managed
 
 dataScienceClusterInitialization:
   serviceMesh:
     managementState: Removed
+
+dashboardConfig:
+  disableModelCatalog: false
+  disableKueue: false
+  disableLMEval: false
+  disableFineTuning: false

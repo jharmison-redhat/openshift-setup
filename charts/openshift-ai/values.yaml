@@ -46,6 +46,9 @@ dataScienceCluster:
       managementState: Managed
     codeflare:
       managementState: Managed
+    feastoperator: {}
+    llamastackoperator:
+      managementState: Removed
 
 dataScienceClusterInitialization: {}
 # applicationsNamespace: redhat-ods-applications
@@ -81,6 +84,7 @@ userGroups:
 
 dashboardConfig:
   disableAcceleratorProfiles: false
+  disableHardwareProfiles: false
   disableBYONImageStream: false
   disableClusterManager: false
   disableCustomServingRuntimes: false
@@ -90,10 +94,9 @@ dashboardConfig:
   disableInfo: false
   disableKServe: false
   disableKServeAuth: false
-  disableKServeMetrics: true
+  disableKServeMetrics: false
   disableModelMesh: true
   disableModelRegistry: false
-  disableModelCatalog: false
   disableModelServing: false
   disablePerformanceMetrics: false
   disablePipelines: false
@@ -102,6 +105,11 @@ dashboardConfig:
   disableSupport: false
   disableTracking: true
   enablement: true
+  # tech preview
+  disableModelCatalog: true
+  disableKueue: true
+  disableLMEval: true
+  disableFineTuning: true
 
 defaultWorkbenchPvcSize: 20Gi
 showJupyterInEnabledApplications: true
