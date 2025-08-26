@@ -2,7 +2,7 @@ providers:
   htpasswd: null
   github:
     organizations:
-      - 
+      - rhai-code
 
 admins:
   - jharmison-redhat
