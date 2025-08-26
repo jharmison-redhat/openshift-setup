@@ -5,6 +5,8 @@ kind: AcceleratorProfile
 metadata:
   name: {{ .name }}
   namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   {{- omit . "name" | toYaml | nindent 2 }}
 {{- end }}
