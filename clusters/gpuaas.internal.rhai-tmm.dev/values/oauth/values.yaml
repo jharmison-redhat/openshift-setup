@@ -1,0 +1,8 @@
+providers:
+  htpasswd: null
+  github:
+    organizations:
+      - 
+
+admins:
+  - jharmison-redhat
