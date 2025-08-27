@@ -3,8 +3,9 @@ channel: stable
 
 enableUserTelemetry: false
 
-# If set, will override the dashboard deployment replica count
-dashboardReplicas: null
+# If set, will override the deployment replica counts
+dashboardReplicas: 1
+operatorReplicas: 1
 
 dataScienceCluster:
   create: true
