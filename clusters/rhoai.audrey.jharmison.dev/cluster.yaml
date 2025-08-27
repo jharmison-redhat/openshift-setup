@@ -1,0 +1,13 @@
+desiredUpdate:
+  version: 4.18.21
+cluster:
+  name: rhoai
+  baseDomain: internal.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1mgfhwawhw53x3662ns7a0mx05v399j89jfda7j62ptzy9vslhsvsdwepm5
+  infraID: rhoai-f2lrk
+aws:
+  region: us-east-1
+  azs: ["us-east-1a","us-east-1b","us-east-1c","us-east-1d","us-east-1f"]
+  ami: ami-08f1807771f4e468b
