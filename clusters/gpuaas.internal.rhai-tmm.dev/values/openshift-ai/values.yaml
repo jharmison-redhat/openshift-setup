@@ -15,6 +15,7 @@ dataScienceClusterInitialization:
     managementState: Removed
 
 dashboardConfig:
+  disableHardwareProfiles: false
   disableModelCatalog: false
   disableKueue: false
   disableLMEval: false

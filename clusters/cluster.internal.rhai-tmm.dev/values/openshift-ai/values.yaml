@@ -20,6 +20,5 @@ dataScienceClusterInitialization:
 
 dashboardConfig:
   disableModelCatalog: false
-  disableKueue: false
   disableLMEval: false
   disableFineTuning: false

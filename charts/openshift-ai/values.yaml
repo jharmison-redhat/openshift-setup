@@ -84,7 +84,6 @@ userGroups:
 
 dashboardConfig:
   disableAcceleratorProfiles: false
-  disableHardwareProfiles: false
   disableBYONImageStream: false
   disableClusterManager: false
   disableCustomServingRuntimes: false
@@ -106,6 +105,7 @@ dashboardConfig:
   disableTracking: true
   enablement: true
   # tech preview
+  disableHardwareProfiles: true
   disableModelCatalog: true
   disableKueue: true
   disableLMEval: true
