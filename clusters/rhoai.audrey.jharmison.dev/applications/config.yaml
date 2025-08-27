@@ -3,24 +3,20 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '2'
+    argocd.argoproj.io/sync-wave: '0'
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-  name: aws-nvidia-gpu-machinesets
+  name: config
 spec:
   destination:
     name: in-cluster
-    namespace: openshift-machine-api
-  ignoreDifferences:
-  - group: machine.openshift.io
-    jsonPointers:
-    - /spec/replicas
-    kind: MachineSet
+    namespace: default
   project: default
   source:
     helm:
-      valueFiles: []
-    path: charts/aws-nvidia-gpu-machinesets
+      valueFiles:
+      - ../../clusters/rhoai.audrey.jharmison.dev/cluster.yaml
+    path: charts/config
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
   syncPolicy:
@@ -33,5 +29,3 @@ spec:
         factor: 3
         maxDuration: 30m
       limit: 10
-    syncOptions:
-    - RespectIgnoreDifferences=true

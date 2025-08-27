@@ -14,7 +14,8 @@ spec:
   project: default
   source:
     helm:
-      valueFiles: []
+      valueFiles:
+      - ../../clusters/rhoai.audrey.jharmison.dev/cluster.yaml
     path: charts/nvidia-gpu-enablement
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD

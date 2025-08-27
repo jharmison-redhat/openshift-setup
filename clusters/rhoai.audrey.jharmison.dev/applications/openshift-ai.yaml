@@ -3,19 +3,20 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '1'
+    argocd.argoproj.io/sync-wave: '4'
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-  name: cert-manager
+  name: openshift-ai
 spec:
   destination:
     name: in-cluster
-    namespace: cert-manager-operator
+    namespace: redhat-ods-operator
   project: default
   source:
     helm:
-      valueFiles: []
-    path: charts/cert-manager
+      valueFiles:
+      - ../../clusters/rhoai.audrey.jharmison.dev/cluster.yaml
+    path: charts/openshift-ai
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
   syncPolicy:

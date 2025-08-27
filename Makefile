@@ -1,7 +1,7 @@
 -include .env
 
 CLUSTER_NAME ?= cluster
-BASE_DOMAIN ?= demo.jharmison.dev
+BASE_DOMAIN ?= internal.rhai-tmm.dev
 AWS_REGION ?= us-west-2
 CONTROL_PLANE_TYPE ?= m6i.2xlarge
 CONTROL_PLANE_COUNT ?= 3
