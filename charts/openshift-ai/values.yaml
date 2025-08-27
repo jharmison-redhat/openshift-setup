@@ -111,9 +111,9 @@ dashboardConfig:
   # tech preview
   disableHardwareProfiles: true
   disableModelCatalog: true
-  disableKueue: true
-  disableLMEval: true
-  disableFineTuning: true
+  #disableKueue: true
+  #disableLMEval: true
+  #disableFineTuning: true
 
 defaultWorkbenchPvcSize: 20Gi
 showJupyterInEnabledApplications: true
