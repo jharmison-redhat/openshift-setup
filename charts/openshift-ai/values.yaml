@@ -32,8 +32,6 @@ dataScienceCluster:
     ray:
       managementState: Managed
     kueue:
-      defaultClusterQueueName: default
-      defaultLocalQueueName: default
       managementState: Removed
     workbenches:
       managementState: Managed

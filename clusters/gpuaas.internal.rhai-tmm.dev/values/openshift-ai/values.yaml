@@ -6,6 +6,9 @@ dataScienceCluster:
       managementState: Managed
     kueue:
       managementState: Managed
+      defaultClusterQueueName: default
+      defaultLocalQueueName: default
+
 
 acceleratorProfiles: []
 
