@@ -2,17 +2,12 @@
 channel: fast
 dataScienceCluster:
   components:
-    kserve:
-      defaultDeploymentMode: RawDeployment
-      rawDeploymentServiceConfig: Headed
-      serving:
-        managementState: Removed
     llamastackoperator:
       managementState: Managed
+    kueue:
+      managementState: Managed
 
-dataScienceClusterInitialization:
-  serviceMesh:
-    managementState: Removed
+acceleratorProfiles: []
 
 dashboardConfig:
   disableHardwareProfiles: false

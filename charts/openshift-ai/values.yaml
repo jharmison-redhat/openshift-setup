@@ -15,12 +15,13 @@ dataScienceCluster:
       managementState: Managed
       nim:
         managementState: Managed
-      rawDeploymentServiceConfig: Headless
+      defaultDeploymentMode: RawDeployment
+      rawDeploymentServiceConfig: Headed
       serving:
         ingressGateway:
           certificate:
             type: OpenshiftDefaultIngress
-        managementState: Managed
+        managementState: Removed
         name: knative-serving
     modelregistry:
       managementState: Managed
@@ -30,7 +31,9 @@ dataScienceCluster:
     ray:
       managementState: Managed
     kueue:
-      managementState: Managed
+      defaultClusterQueueName: default
+      defaultLocalQueueName: default
+      managementState: Removed
     workbenches:
       managementState: Managed
       workbenchNamespace: rhods-notebooks
@@ -50,7 +53,9 @@ dataScienceCluster:
     llamastackoperator:
       managementState: Removed
 
-dataScienceClusterInitialization: {}
+dataScienceClusterInitialization:
+  serviceMesh:
+    managementState: Removed
 # applicationsNamespace: redhat-ods-applications
 # monitoring:
 #   managementState: Managed

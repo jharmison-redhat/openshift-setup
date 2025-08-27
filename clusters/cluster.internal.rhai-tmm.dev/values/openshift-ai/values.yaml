@@ -6,17 +6,8 @@ dataScienceCluster:
       managementState: Removed
     ray:
       managementState: Removed
-    kserve:
-      defaultDeploymentMode: RawDeployment
-      rawDeploymentServiceConfig: Headed
-      serving:
-        managementState: Removed
     llamastackoperator:
       managementState: Managed
-
-dataScienceClusterInitialization:
-  serviceMesh:
-    managementState: Removed
 
 dashboardConfig:
   disableModelCatalog: false
