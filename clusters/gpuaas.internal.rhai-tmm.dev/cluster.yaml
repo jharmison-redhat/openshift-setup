@@ -5,8 +5,8 @@ cluster:
   baseDomain: internal.rhai-tmm.dev
   controlPlaneNodes: 3
   workerNodes: 6
-  agePublicKey: age10al906g8v95gz0jjuxp40kwjkaule4cpan67rrhydexng98lspdq34vzvm
-  infraID: gpuaas-762pg
+  agePublicKey: age19t8zhqm8063ktxz8wp9l8rtam5avtu3t5f4wlcet7e7wve2avpns8cmvrk
+  infraID: gpuaas-8dqg8
 aws:
   region: us-west-2
   azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
