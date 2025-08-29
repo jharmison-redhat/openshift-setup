@@ -1,12 +1,12 @@
 desiredUpdate:
-  version: 4.19.7
+  version: 
 cluster:
   name: gpuaas
   baseDomain: internal.rhai-tmm.dev
-  controlPlaneNodes: 3
+  controlPlaneNodes: 
   workerNodes: 6
-  agePublicKey: age19t8zhqm8063ktxz8wp9l8rtam5avtu3t5f4wlcet7e7wve2avpns8cmvrk
-  infraID: gpuaas-8dqg8
+  agePublicKey: age127l83kpjv2wdyzfupppkdkpr64daywtu85dpqd3krcffvcrc0esssetzlw
+  infraID: gpuaas-d2cff
 aws:
   region: us-west-2
   azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
