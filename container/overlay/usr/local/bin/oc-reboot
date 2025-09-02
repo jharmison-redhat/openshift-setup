@@ -1,0 +1,75 @@
+#!/bin/bash
+
+set -e
+
+node="$1"
+
+if [ "$node" = "all" ] || [ "$node" = "" ]; then
+	ret=0
+	for node in $(oc get node -oname | cut -d/ -f2); do
+		"$0" "$node" || :
+		ret=$((ret + $?))
+		echo
+		echo
+	done
+	exit $ret
+fi
+
+if ! oc get node "$node" >/dev/null 2>&1; then
+	echo "Unable to identify node $node with context:" >&2
+	oc whoami --show-context >&2
+	exit 1
+fi
+
+function _spaces {
+	printf '%*s' "$1"
+}
+function repeat_char {
+	_spaces "$2" | tr ' ' "${1}"
+}
+function center_border_text {
+	count=$(($(echo -n "$*" | wc -c) + 4))
+	stars=$(repeat_char \* $count)
+	if [ $count -lt 80 ]; then
+		spaces=$(_spaces $(((80 - count) / 2)))
+	else
+		spaces=''
+	fi
+	echo "$spaces$stars"
+	echo "$spaces* ${*} *"
+	echo "$spaces$stars"
+}
+function node_ready {
+	local ready
+	ready=$(oc get node "$1" -ojsonpath='{.status.conditions[?(@.type=="Ready")].status}')
+	if [ "$ready" = "True" ]; then
+		return 0
+	fi
+	return 1
+}
+
+center_border_text Draining node "$node"
+oc adm drain "$node" --ignore-daemonsets=true --delete-emptydir-data --force
+echo
+echo
+
+center_border_text Rebooting node "$node" via debug pod
+oc debug "node/$node" -- chroot /host systemctl reboot >/dev/null 2>&1 &
+reboot_debug=$!
+sleep 5
+echo -n 'Waiting for node to finish rebooting..'
+while node_ready "$node"; do
+	echo -n '.'
+	sleep 5
+done
+kill -9 $reboot_debug >/dev/null 2>&1 || :
+wait $reboot_debug >/dev/null 2>&1 || :
+while ! node_ready "$node"; do
+	echo -n '.'
+	sleep 5
+done
+echo
+echo
+
+center_border_text Marking node "$node" as schedulable
+oc adm uncordon "$node"
