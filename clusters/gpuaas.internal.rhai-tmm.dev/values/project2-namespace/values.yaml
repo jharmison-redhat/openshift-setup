@@ -1,0 +1,7 @@
+---
+annotations:
+  openshift.io/description: Project for resources for Internal AI Project 2
+  openshift.io/display-name: Project 2
+labels:
+  opendatahub.io/dashboard: 'true'
+name: project2

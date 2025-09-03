@@ -1,0 +1,64 @@
+---
+clusterQueues:
+- localQueues:
+  - namespace: project1
+  name: l40s
+  resourceGroups:
+  - coveredResources:
+    - cpu
+    - memory
+    flavors:
+    - name: default
+      resources:
+      - name: cpu
+        nominalQuota: 16
+      - name: memory
+        nominalQuota: 64Gi
+  - coveredResources:
+    - nvidia.com/gpu
+    flavors:
+    - name: l40s
+      resources:
+      - name: nvidia.com/gpu
+        nominalQuota: 2
+- localQueues:
+  - namespace: project2
+  name: t4
+  resourceGroups:
+  - coveredResources:
+    - cpu
+    - memory
+    flavors:
+    - name: default
+      resources:
+      - name: cpu
+        nominalQuota: 16
+      - name: memory
+        nominalQuota: 64Gi
+  - coveredResources:
+    - nvidia.com/gpu
+    flavors:
+    - name: t4
+      resources:
+      - name: nvidia.com/gpu
+        nominalQuota: 2
+resourceFlavors:
+- name: default
+- name: l40s
+  spec:
+    nodeLabels:
+      jharmison.dev/gpu-type: l40s
+    tolerations:
+    - effect: NoSchedule
+      key: nvidia.com/gpu
+      operator: Equals
+      value: l40s
+- name: t4
+  spec:
+    nodeLabels:
+      jharmison.dev/gpu-type: t4
+    tolerations:
+    - effect: NoSchedule
+      key: nvidia.com/gpu
+      operator: Equals
+      value: t4

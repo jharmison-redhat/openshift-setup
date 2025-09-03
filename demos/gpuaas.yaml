@@ -1,5 +1,17 @@
 ---
-namespaces: []
+namespaces:
+  - name: project1
+    labels:
+      opendatahub.io/dashboard: "true"
+    annotations:
+      openshift.io/description: Project for resources for Internal AI Project 1
+      openshift.io/display-name: Project 1
+  - name: project2
+    labels:
+      opendatahub.io/dashboard: "true"
+    annotations:
+      openshift.io/description: Project for resources for Internal AI Project 2
+      openshift.io/display-name: Project 2
 applications:
   - name: monitoring
   - name: aws-nvidia-gpu-machinesets
@@ -72,3 +84,62 @@ applications:
               key: nvidia.com/gpu
               operator: Equals
               value: t4
+  - name: kueue
+    values:
+      resourceFlavors:
+        - name: default
+        - name: l40s
+          spec:
+            nodeLabels:
+              jharmison.dev/gpu-type: l40s
+            tolerations:
+              - effect: NoSchedule
+                key: nvidia.com/gpu
+                operator: Equals
+                value: l40s
+        - name: t4
+          spec:
+            nodeLabels:
+              jharmison.dev/gpu-type: t4
+            tolerations:
+              - effect: NoSchedule
+                key: nvidia.com/gpu
+                operator: Equals
+                value: t4
+      clusterQueues:
+        - name: l40s
+          resourceGroups:
+            - coveredResources: ["cpu", "memory"]
+              flavors:
+                - name: default
+                  resources:
+                    - name: cpu
+                      nominalQuota: 16
+                    - name: memory
+                      nominalQuota: 64Gi
+            - coveredResources: ["nvidia.com/gpu"]
+              flavors:
+                - name: l40s
+                  resources:
+                    - name: nvidia.com/gpu
+                      nominalQuota: 2
+          localQueues:
+            - namespace: project1
+        - name: t4
+          resourceGroups:
+            - coveredResources: ["cpu", "memory"]
+              flavors:
+                - name: default
+                  resources:
+                    - name: cpu
+                      nominalQuota: 16
+                    - name: memory
+                      nominalQuota: 64Gi
+            - coveredResources: ["nvidia.com/gpu"]
+              flavors:
+                - name: t4
+                  resources:
+                    - name: nvidia.com/gpu
+                      nominalQuota: 2
+          localQueues:
+            - namespace: project2
