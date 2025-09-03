@@ -1,0 +1,20 @@
+---
+resourceFlavors:
+  - name: default
+
+clusterQueues:
+  - name: default
+    resourceGroups:
+      - coveredResources: ["cpu", "memory"]
+        flavors:
+          - name: default
+            resources:
+              - name: cpu
+                nominalQuota: 32
+              - name: memory
+                nominalQuota: 128Gi
+    localQueues: []
+    # - nameSuffix: example
+    #   namespace: example-kueue
+    #   stopPolicy: None # one of None, Hold, HoldAndDrain
+    # - namespace: example-kueue2

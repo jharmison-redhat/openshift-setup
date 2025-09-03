@@ -1,0 +1,15 @@
+{{- range $clusterQueue := .Values.clusterQueues }}
+{{- range $localQueue := .localQueues }}
+---
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: LocalQueue
+metadata:
+  name: {{ $clusterQueue.name }}{{ with $localQueue.nameSuffix }}-{{ . }}{{ end }}
+  namespace: {{ $localQueue.namespace }}
+spec:
+  clusterQueue: {{ $clusterQueue.name }}
+  {{- with $localQueue.stopPolicy }}
+  stopPolicy: {{ quote . }}
+  {{- end }}
+{{- end }}
+{{- end }}

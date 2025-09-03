@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: kueue
+description: >
+  A helm chart to manage Kueue ClusterQueues, LocalQueues, and related resources
+type: application
+version: 0.1.0
+appVersion: 0.1.0

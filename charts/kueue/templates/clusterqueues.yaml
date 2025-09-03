@@ -1,0 +1,18 @@
+{{- range .Values.clusterQueues }}
+---
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ClusterQueue
+metadata:
+  name: {{ .name }}
+spec:
+  {{- if .namespaceSelector }}
+  namespaceSelector:
+    {{- toYaml .namespaceSelector | nindent 4 }}
+  {{- else }}
+  namespaceSelector: {}
+  {{- end }}
+  {{- with .resourceGroups }}
+  resourceGroups:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
