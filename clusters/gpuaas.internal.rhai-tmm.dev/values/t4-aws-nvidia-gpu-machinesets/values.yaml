@@ -9,3 +9,5 @@ taints:
 - effect: NoSchedule
   key: nvidia.com/gpu
   value: t4
+aws:
+  az: us-west-2b
