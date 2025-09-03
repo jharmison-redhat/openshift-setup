@@ -25,6 +25,8 @@ IMAGE ?= registry.jharmison.com/library/openshift-setup:latest
 CONTAINER_MAKE_ARGS ?= bootstrap
 RUNTIME_ARGS := run --rm -it --security-opt=label=disable --privileged -v "$${PWD}:/workdir" -v ~/.config:/root/.config $(subst .env,--env-file .env,$(wildcard .env)) $(subst $(INSTALL_DIR).env,--env-file $(INSTALL_DIR).env,$(wildcard $(INSTALL_DIR).env)) --env HOME=/root --env EDITOR=vi --env CLUSTER_NAME=$(CLUSTER_NAME) --env BASE_DOMAIN=$(BASE_DOMAIN) --env CLUSTER_URL=$(CLUSTER_URL) --env CLUSTER_DIR=$(CLUSTER_DIR) --env INSTALL_DIR=$(INSTALL_DIR) --env XDG_CONFIG_HOME=/root/.config --env XDG_DATA_HOME=/workdir/$(INSTALL_DIR)/.data --pull=newer
 
+DEMO_FILE ?= demos/gpuaas.yaml
+
 -include $(INSTALL_DIR).env
 
 export
@@ -136,6 +138,10 @@ container:
 .PHONY: shell
 shell: $(INSTALL_DIR)/kubectl
 	@$(RUNTIME) $(RUNTIME_ARGS) --entrypoint /bin/bash $(IMAGE) -li
+
+.PHONY: demo
+demo: $(CLUSTER_DIR)/cluster.yaml $(INSTALL_DIR)/kubectl
+	openshift-setup demo process $(DEMO_FILE)
 
 .PHONY: test-model
 test-model:
