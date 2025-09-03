@@ -3,7 +3,7 @@ namespaces: []
 applications:
   - name: monitoring
   - name: aws-nvidia-gpu-machinesets
-    fileprefix: machineset-l40s
+    fileprefix: l40s
     rewrite:
       metadata:
         name: machineset-l40s
@@ -19,7 +19,7 @@ applications:
         node-role.kubernetes.io/gpu: ""
         jharmison.dev/gpu-type: l40s
   - name: aws-nvidia-gpu-machinesets
-    fileprefix: machineset-t4
+    fileprefix: t4
     rewrite:
       metadata:
         name: machineset-t4
