@@ -1,0 +1,36 @@
+---
+acceleratorProfiles:
+- displayName: NVIDIA L40s
+  enabled: true
+  identifier: nvidia.com/gpu
+  name: l40s
+  tolerations:
+  - effect: NoSchedule
+    key: nvidia.com/gpu
+    operator: Equals
+    value: l40s
+- displayName: NVIDIA T4
+  enabled: true
+  identifier: nvidia.com/gpu
+  name: t4
+  tolerations:
+  - effect: NoSchedule
+    key: nvidia.com/gpu
+    operator: Equals
+    value: t4
+channel: fast
+dashboardConfig:
+  disableFineTuning: false
+  disableKueue: false
+  disableLMEval: false
+  disableModelCatalog: false
+dataScienceCluster:
+  components:
+    codeflare:
+      managementState: Removed
+    kueue:
+      managementState: Managed
+    llamastackoperator:
+      managementState: Managed
+    ray:
+      managementState: Removed
