@@ -3,7 +3,7 @@ kind: MachineSet
 metadata:
   labels:
     machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
-  name: {{ .Values.cluster.infraID }}-gpu-worker-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+  name: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
 spec:
   {{- if and (.Values.desiredReplicas) (not .Values.autoscaling.enabled) }}
   replicas: {{ .Values.desiredReplicas }}
@@ -20,13 +20,15 @@ spec:
         machine.openshift.io/cluster-api-machine-type: worker
         machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-gpu-worker-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
     spec:
+      {{- with .Values.nodeLabels }}
       metadata:
         labels:
-          node-role.kubernetes.io/gpu: ""
+          {{- toYaml . | nindent 10 }}
+      {{- end }}
+      {{- with .Values.taints }}
       taints:
-        - key: nvidia.com/gpu
-          value: ""
-          effect: NoSchedule
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       providerSpec:
         value:
           apiVersion: machine.openshift.io/v1beta1

@@ -1,0 +1,74 @@
+---
+namespaces: []
+applications:
+  - name: monitoring
+  - name: aws-nvidia-gpu-machinesets
+    fileprefix: machineset-l40s
+    rewrite:
+      metadata:
+        name: machineset-l40s
+    values:
+      instanceType: g6e.2xlarge
+      desiredReplicas: 2
+      baseName: worker-l40s
+      taints:
+        - key: nvidia.com/gpu
+          value: l40s
+          effect: NoSchedule
+      nodeLabels:
+        node-role.kubernetes.io/gpu: ""
+        jharmison.dev/gpu-type: l40s
+  - name: aws-nvidia-gpu-machinesets
+    fileprefix: machineset-t4
+    rewrite:
+      metadata:
+        name: machineset-t4
+    values:
+      instanceType: g4dn.2xlarge
+      desiredReplicas: 2
+      baseName: worker-t4
+      taints:
+        - key: nvidia.com/gpu
+          value: t4
+          effect: NoSchedule
+      nodeLabels:
+        node-role.kubernetes.io/gpu: ""
+        jharmison.dev/gpu-type: t4
+  - name: nvidia-gpu-enablement
+  - name: openshift-ai
+    values:
+      channel: fast
+      dataScienceCluster:
+        components:
+          kueue:
+            managementState: Managed
+          codeflare:
+            managementState: Removed
+          ray:
+            managementState: Removed
+          llamastackoperator:
+            managementState: Managed
+      dashboardConfig:
+        disableModelCatalog: false
+        disableLMEval: false
+        disableFineTuning: false
+        disableKueue: false
+      acceleratorProfiles:
+        - name: l40s
+          displayName: NVIDIA L40s
+          enabled: true
+          identifier: nvidia.com/gpu
+          tolerations:
+            - effect: NoSchedule
+              key: nvidia.com/gpu
+              operator: Equals
+              value: l40s
+        - name: t4
+          displayName: NVIDIA T4
+          enabled: true
+          identifier: nvidia.com/gpu
+          tolerations:
+            - effect: NoSchedule
+              key: nvidia.com/gpu
+              operator: Equals
+              value: t4

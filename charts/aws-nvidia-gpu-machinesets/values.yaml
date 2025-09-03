@@ -2,6 +2,7 @@
 # https://aws.amazon.com/ec2/instance-types/#Accelerated_Computing
 instanceType: g6.2xlarge
 desiredReplicas: 1
+baseName: gpu-worker
 rootDeviceSizeGB: 120
 autoscaling:
   enabled: false
@@ -14,6 +15,14 @@ autoscaling:
     delayAfterFailure: 30s
     unneededTime: 15m
     utilizationThreshold: "0.7"
+
+taints:
+  - key: nvidia.com/gpu
+    value: ""
+    effect: NoSchedule
+
+nodeLabels:
+  node-role.kubernetes.io/gpu: ""
 
 cluster: # This needs updated based on your existing cluster name
   infraID: cluster-9w6jz
