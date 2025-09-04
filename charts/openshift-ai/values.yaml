@@ -11,7 +11,7 @@ dataScienceCluster:
   create: true
   components:
     codeflare:
-      managementState: Managed
+      managementState: Removed
     kserve:
       managementState: Managed
       nim:
@@ -30,7 +30,7 @@ dataScienceCluster:
     trustyai:
       managementState: Managed
     ray:
-      managementState: Managed
+      managementState: Removed
     kueue:
       managementState: Removed
     workbenches:
@@ -40,13 +40,9 @@ dataScienceCluster:
       managementState: Managed
     modelmeshserving:
       managementState: Removed
-    modelregistry:
-      managementState: Managed
     datasciencepipelines:
       managementState: Managed
     trainingoperator:
-      managementState: Managed
-    codeflare:
       managementState: Managed
     feastoperator: {}
     llamastackoperator:
