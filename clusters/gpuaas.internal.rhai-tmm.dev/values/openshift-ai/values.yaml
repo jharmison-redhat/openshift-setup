@@ -21,7 +21,6 @@ acceleratorProfiles:
 channel: fast
 dashboardConfig:
   disableFineTuning: false
-  disableKueue: false
   disableLMEval: false
   disableModelCatalog: false
 dataScienceCluster:

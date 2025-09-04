@@ -61,7 +61,6 @@ applications:
         disableModelCatalog: false
         disableLMEval: false
         disableFineTuning: false
-        disableKueue: false
       acceleratorProfiles:
         - name: l40s
           displayName: NVIDIA L40s
