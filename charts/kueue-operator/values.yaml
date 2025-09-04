@@ -18,7 +18,7 @@ config:
   preemption:
     preemptionPolicy: FairSharing
   workloadManagement:
-    labelPolicy: None
+    labelPolicy: ""
 
 logLevel: Normal
 operatorLogLevel: Normal
