@@ -26,11 +26,7 @@ dashboardConfig:
   disableModelCatalog: false
 dataScienceCluster:
   components:
-    codeflare:
-      managementState: Removed
-    kueue:
-      managementState: Removed
     llamastackoperator:
       managementState: Managed
     ray:
-      managementState: Removed
+      managementState: Managed

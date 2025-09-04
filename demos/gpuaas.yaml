@@ -47,17 +47,14 @@ applications:
         node-role.kubernetes.io/gpu: ""
         jharmison.dev/gpu-type: t4
   - name: nvidia-gpu-enablement
+  - name: kueue-operator
   - name: openshift-ai
     values:
       channel: fast
       dataScienceCluster:
         components:
-          kueue:
-            managementState: Managed
-          codeflare:
-            managementState: Removed
           ray:
-            managementState: Removed
+            managementState: Managed
           llamastackoperator:
             managementState: Managed
       dashboardConfig:
