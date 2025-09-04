@@ -29,7 +29,7 @@ dataScienceCluster:
     codeflare:
       managementState: Removed
     kueue:
-      managementState: Managed
+      managementState: Removed
     llamastackoperator:
       managementState: Managed
     ray:
