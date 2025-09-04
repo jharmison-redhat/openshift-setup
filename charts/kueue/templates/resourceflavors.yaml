@@ -6,7 +6,7 @@ metadata:
   name: {{ .name }}
 {{- if .spec }}
 spec:
-  {{- toYaml . | nindent 2 }}
+  {{- toYaml .spec | nindent 2 }}
 {{- else }}
 spec: {}
 {{- end }}
