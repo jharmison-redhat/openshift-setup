@@ -1,0 +1,13 @@
+apiVersion: kueue.openshift.io/v1
+kind: Kueue
+metadata:
+  name: cluster
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  config:
+    {{- toYaml .Values.config | nindent 4 }}
+  logLevel: {{ .Values.logLevel }}
+  operatorLogLevel: {{ .Values.operatorLogLevel }}
+  managementState: Managed

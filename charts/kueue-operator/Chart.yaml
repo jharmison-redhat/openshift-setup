@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: kueue-operator
+description: >
+  A helm chart to deploy the Red Hat Build of Kueue operator
+type: application
+version: 0.1.0
+appVersion: 0.1.0

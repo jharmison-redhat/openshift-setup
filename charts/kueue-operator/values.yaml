@@ -1,0 +1,24 @@
+---
+channel: stable-v1.0
+
+config:
+  gangScheduling:
+    byWorkload:
+      admission: Sequential
+    policy: ByWorkload
+  integrations:
+    frameworks:
+      - BatchJob
+      - RayJob
+      - RayCluster
+      - PyTorchJob
+      - Pod
+      - Deployment
+      - LeaderWorkerSet
+  preemption:
+    preemptionPolicy: FairSharing
+  workloadManagement:
+    labelPolicy: None
+
+logLevel: Normal
+operatorLogLevel: Normal
