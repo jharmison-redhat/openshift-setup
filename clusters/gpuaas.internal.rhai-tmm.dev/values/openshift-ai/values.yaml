@@ -13,6 +13,22 @@ dataScienceCluster:
     ray:
       managementState: Managed
 hardwareProfiles:
+- displayName: Default (CPU only)
+  global: true
+  identifiers:
+  - defaultCount: 2
+    displayName: CPU
+    identifier: cpu
+    maxCount: 6
+    minCount: 1
+    rescourceType: CPU
+  - defaultCount: 4Gi
+    displayName: Memory
+    identifier: memory
+    maxCount: 24Gi
+    minCount: 2Gi
+    resourceType: Memory
+  name: default
 - displayName: NVIDIA L40s
   global: true
   identifiers:
@@ -75,3 +91,5 @@ hardwareProfiles:
         operator: Equal
         value: t4
     type: Node
+modelServerSizes: []
+notebookSizes: []

@@ -63,7 +63,25 @@ applications:
         disableLMEval: false
         disableFineTuning: false
       acceleratorProfiles: []
+      modelServerSizes: []
+      notebookSizes: []
       hardwareProfiles:
+        - name: default
+          displayName: Default (CPU only)
+          global: true
+          identifiers:
+            - defaultCount: 2
+              displayName: CPU
+              identifier: cpu
+              maxCount: 6
+              minCount: 1
+              rescourceType: CPU
+            - defaultCount: 4Gi
+              displayName: Memory
+              identifier: memory
+              maxCount: 24Gi
+              minCount: 2Gi
+              resourceType: Memory
         - name: l40s
           displayName: NVIDIA L40s
           global: true
