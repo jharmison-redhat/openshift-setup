@@ -6,6 +6,10 @@ kind: LocalQueue
 metadata:
   name: {{ $clusterQueue.name }}{{ with $localQueue.nameSuffix }}-{{ . }}{{ end }}
   namespace: {{ $localQueue.namespace }}
+  {{- with $localQueue.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   clusterQueue: {{ $clusterQueue.name }}
   {{- with $localQueue.stopPolicy }}

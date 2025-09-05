@@ -3,5 +3,6 @@ annotations:
   openshift.io/description: Project for resources for Internal AI Project 1
   openshift.io/display-name: Project 1
 labels:
+  kueue.openshift.io/managed: 'true'
   opendatahub.io/dashboard: 'true'
 name: project1

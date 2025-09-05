@@ -3,12 +3,14 @@ namespaces:
   - name: project1
     labels:
       opendatahub.io/dashboard: "true"
+      kueue.openshift.io/managed: "true"
     annotations:
       openshift.io/description: Project for resources for Internal AI Project 1
       openshift.io/display-name: Project 1
   - name: project2
     labels:
       opendatahub.io/dashboard: "true"
+      kueue.openshift.io/managed: "true"
     annotations:
       openshift.io/description: Project for resources for Internal AI Project 2
       openshift.io/display-name: Project 2
@@ -185,6 +187,8 @@ applications:
                       nominalQuota: 2
           localQueues:
             - namespace: project1
+              annotations:
+                kueue.x-k8s.io/default-queue: "true"
         - name: t4
           resourceGroups:
             - coveredResources: ["cpu", "memory"]
@@ -203,3 +207,5 @@ applications:
                       nominalQuota: 2
           localQueues:
             - namespace: project2
+              annotations:
+                kueue.x-k8s.io/default-queue: "true"
