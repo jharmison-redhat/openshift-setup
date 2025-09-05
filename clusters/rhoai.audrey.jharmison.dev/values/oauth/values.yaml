@@ -1,9 +1,0 @@
-providers:
-  htpasswd: null
-  github:
-    organizations:
-      - redhat-na-ssa
-
-admins:
-  - jharmison-redhat
-  - adrezni
