@@ -1,23 +1,5 @@
 ---
-acceleratorProfiles:
-- displayName: NVIDIA L40s
-  enabled: true
-  identifier: nvidia.com/gpu
-  name: l40s
-  tolerations:
-  - effect: NoSchedule
-    key: nvidia.com/gpu
-    operator: Equal
-    value: l40s
-- displayName: NVIDIA T4
-  enabled: true
-  identifier: nvidia.com/gpu
-  name: t4
-  tolerations:
-  - effect: NoSchedule
-    key: nvidia.com/gpu
-    operator: Equal
-    value: t4
+acceleratorProfiles: []
 channel: fast
 dashboardConfig:
   disableFineTuning: false
@@ -30,3 +12,66 @@ dataScienceCluster:
       managementState: Managed
     ray:
       managementState: Managed
+hardwareProfiles:
+- displayName: NVIDIA L40s
+  global: true
+  identifiers:
+  - defaultCount: 4
+    displayName: CPU
+    identifier: cpu
+    maxCount: 6
+    minCount: 1
+    resourceType: CPU
+  - defaultCount: 8Gi
+    displayName: Memory
+    identifier: memory
+    maxCount: 24Gi
+    minCount: 4Gi
+    resourceType: Memory
+  - defaultCount: 1
+    displayName: NVIDIA L40s
+    identifier: nvidia.com/gpu
+    maxCount: 1
+    minCount: 1
+  name: l40s
+  scheduling:
+    node:
+      nodeSelector:
+        jharmison.dev/gpu-type: l40s
+      tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Equal
+        value: l40s
+    type: Node
+- displayName: NVIDIA T4
+  global: true
+  identifiers:
+  - defaultCount: 2
+    displayName: CPU
+    identifier: cpu
+    maxCount: 6
+    minCount: 1
+    resourceType: CPU
+  - defaultCount: 4Gi
+    displayName: Memory
+    identifier: memory
+    maxCount: 16Gi
+    minCount: 4Gi
+    resourceType: Memory
+  - defaultCount: 1
+    displayName: NVIDIA T4
+    identifier: nvidia.com/gpu
+    maxCount: 1
+    minCount: 1
+  name: t4
+  scheduling:
+    node:
+      nodeSelector:
+        jharmison.dev/gpu-type: t4
+      tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Equal
+        value: t4
+    type: Node

@@ -62,25 +62,70 @@ applications:
         disableHardwareProfiles: false
         disableLMEval: false
         disableFineTuning: false
-      acceleratorProfiles:
+      acceleratorProfiles: []
+      hardwareProfiles:
         - name: l40s
           displayName: NVIDIA L40s
-          enabled: true
-          identifier: nvidia.com/gpu
-          tolerations:
-            - effect: NoSchedule
-              key: nvidia.com/gpu
-              operator: Equal
-              value: l40s
+          global: true
+          identifiers:
+            - defaultCount: 4
+              displayName: CPU
+              identifier: cpu
+              maxCount: 6
+              minCount: 1
+              resourceType: CPU
+            - defaultCount: 8Gi
+              displayName: Memory
+              identifier: memory
+              maxCount: 24Gi
+              minCount: 4Gi
+              resourceType: Memory
+            - defaultCount: 1
+              displayName: NVIDIA L40s
+              identifier: nvidia.com/gpu
+              maxCount: 1
+              minCount: 1
+          scheduling:
+            type: Node
+            node:
+              nodeSelector:
+                jharmison.dev/gpu-type: l40s
+              tolerations:
+                - effect: NoSchedule
+                  key: nvidia.com/gpu
+                  operator: Equal
+                  value: l40s
         - name: t4
           displayName: NVIDIA T4
-          enabled: true
-          identifier: nvidia.com/gpu
-          tolerations:
-            - effect: NoSchedule
-              key: nvidia.com/gpu
-              operator: Equal
-              value: t4
+          global: true
+          identifiers:
+            - defaultCount: 2
+              displayName: CPU
+              identifier: cpu
+              maxCount: 6
+              minCount: 1
+              resourceType: CPU
+            - defaultCount: 4Gi
+              displayName: Memory
+              identifier: memory
+              maxCount: 16Gi
+              minCount: 4Gi
+              resourceType: Memory
+            - defaultCount: 1
+              displayName: NVIDIA T4
+              identifier: nvidia.com/gpu
+              maxCount: 1
+              minCount: 1
+          scheduling:
+            type: Node
+            node:
+              nodeSelector:
+                jharmison.dev/gpu-type: t4
+              tolerations:
+                - effect: NoSchedule
+                  key: nvidia.com/gpu
+                  operator: Equal
+                  value: t4
   - name: kueue
     values:
       resourceFlavors:

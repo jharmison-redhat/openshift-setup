@@ -1,0 +1,21 @@
+{{- range .Values.hardwareProfiles }}
+---
+apiVersion: infrastructure.opendatahub.io/v1alpha1
+kind: HardwareProfile
+metadata:
+  name: {{ .name }}
+  namespace: {{ if .global }}redhat-ods-applications{{ else }}{{ .namespace }}{{ end }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    opendatahub.io/disabled: 'false'
+    opendatahub.io/display-name: {{ .displayName }}
+spec:
+  {{- with .identifiers }}
+  identifiers:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .scheduling }}
+  scheduling:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

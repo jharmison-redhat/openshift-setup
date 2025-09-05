@@ -77,6 +77,7 @@ acceleratorProfiles:
       - effect: NoSchedule
         key: nvidia.com/gpu
         operator: Exists
+hardwareProfiles: []
 
 admins: []
 userGroups:
