@@ -59,6 +59,7 @@ applications:
             managementState: Managed
       dashboardConfig:
         disableModelCatalog: false
+        disableHardwareProfiles: false
         disableLMEval: false
         disableFineTuning: false
       acceleratorProfiles:
