@@ -4,7 +4,10 @@
 apiVersion: kueue.x-k8s.io/v1beta1
 kind: LocalQueue
 metadata:
-  name: {{ $clusterQueue.name }}{{ with $localQueue.nameSuffix }}-{{ . }}{{ end }}
+  name:
+    {{- if $localQueue.name }} {{ $localQueue.name }}
+    {{- else }} {{ $clusterQueue.name }}{{ with $localQueue.nameSuffix }}-{{ . }}{{ end }}
+    {{- end }}
   namespace: {{ $localQueue.namespace }}
   {{- with $localQueue.annotations }}
   annotations:

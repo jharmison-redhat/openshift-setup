@@ -189,8 +189,7 @@ applications:
                       nominalQuota: 2
           localQueues:
             - namespace: project1
-              annotations:
-                kueue.x-k8s.io/default-queue: "true"
+              name: default
         - name: t4
           resourceGroups:
             - coveredResources: ["cpu", "memory"]
@@ -209,5 +208,4 @@ applications:
                       nominalQuota: 2
           localQueues:
             - namespace: project2
-              annotations:
-                kueue.x-k8s.io/default-queue: "true"
+              name: default

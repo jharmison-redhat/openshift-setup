@@ -1,8 +1,7 @@
 ---
 clusterQueues:
 - localQueues:
-  - annotations:
-      kueue.x-k8s.io/default-queue: 'true'
+  - name: default
     namespace: project1
   name: l40s
   resourceGroups:
@@ -24,8 +23,7 @@ clusterQueues:
       - name: nvidia.com/gpu
         nominalQuota: 2
 - localQueues:
-  - annotations:
-      kueue.x-k8s.io/default-queue: 'true'
+  - name: default
     namespace: project2
   name: t4
   resourceGroups:
