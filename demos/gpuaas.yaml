@@ -77,7 +77,7 @@ applications:
               identifier: cpu
               maxCount: 6
               minCount: 1
-              rescourceType: CPU
+              resourceType: CPU
             - defaultCount: 4Gi
               displayName: Memory
               identifier: memory
@@ -86,7 +86,7 @@ applications:
               resourceType: Memory
         - name: l40s
           displayName: NVIDIA L40s
-          global: true
+          namespace: project1
           identifiers:
             - defaultCount: 4
               displayName: CPU
@@ -105,6 +105,7 @@ applications:
               identifier: nvidia.com/gpu
               maxCount: 1
               minCount: 1
+              resourceType: Accelerator
           scheduling:
             type: Node
             node:
@@ -117,7 +118,7 @@ applications:
                   value: l40s
         - name: t4
           displayName: NVIDIA T4
-          global: true
+          namespace: project2
           identifiers:
             - defaultCount: 2
               displayName: CPU
@@ -134,6 +135,7 @@ applications:
             - defaultCount: 1
               displayName: NVIDIA T4
               identifier: nvidia.com/gpu
+              resourceType: Accelerator
               maxCount: 1
               minCount: 1
           scheduling:
