@@ -17,3 +17,6 @@ admins:
   - aliciavcao
   - lkerriso
   - derek
+
+clusterReaders:
+  - steve
