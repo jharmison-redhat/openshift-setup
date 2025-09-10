@@ -4,6 +4,7 @@ channel: fast
 dashboardConfig:
   disableFineTuning: false
   disableHardwareProfiles: false
+  disableKueue: false
   disableLMEval: false
   disableModelCatalog: false
 dataScienceCluster:

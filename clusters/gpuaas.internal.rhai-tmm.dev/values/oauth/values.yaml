@@ -1,8 +1,11 @@
 providers:
-  htpasswd: null
   github:
     organizations:
       - rhai-code
-
 admins:
   - jharmison-redhat
+
+removeDefaultSelfProvisioner: true
+selfProvisioners:
+  - name: project1user
+  - name: project2user

@@ -64,6 +64,7 @@ applications:
         disableHardwareProfiles: false
         disableLMEval: false
         disableFineTuning: false
+        disableKueue: false
       acceleratorProfiles: []
       modelServerSizes: []
       notebookSizes: []
