@@ -9,6 +9,8 @@ dashboardConfig:
   disableModelCatalog: false
 dataScienceCluster:
   components:
+    kueue:
+      managementState: Unmanaged
     llamastackoperator:
       managementState: Managed
     ray:

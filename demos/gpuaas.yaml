@@ -65,6 +65,8 @@ applications:
             managementState: Managed
           llamastackoperator:
             managementState: Managed
+          kueue:
+            managementState: Unmanaged
       dashboardConfig:
         disableModelCatalog: false
         disableHardwareProfiles: false
