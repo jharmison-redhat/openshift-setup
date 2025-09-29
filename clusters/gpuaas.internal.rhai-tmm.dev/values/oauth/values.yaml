@@ -6,6 +6,3 @@ admins:
   - jharmison-redhat
 
 removeDefaultSelfProvisioner: true
-selfProvisioners:
-  - name: project1user
-  - name: project2user
