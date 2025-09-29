@@ -1,0 +1,11 @@
+{{- range .Values.clusterRoleBindings }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .name }}
+roleRef:
+  {{- toYaml .roleRef | nindent 2 }}
+subjects:
+  {{- toYaml .subjects | nindent 2 }}
+{{- end }}

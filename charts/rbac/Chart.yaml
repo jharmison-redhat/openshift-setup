@@ -1,0 +1,7 @@
+---
+apiVersion: v2
+name: rbac
+description: A helm chart to deploy RBAC for various reasons for OpenShift
+type: application
+version: 0.1.0
+appVersion: 0.1.0

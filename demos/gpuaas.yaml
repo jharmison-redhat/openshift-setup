@@ -49,6 +49,12 @@ applications:
         node-role.kubernetes.io/gpu: ""
         jharmison.dev/gpu-type: t4
   - name: nvidia-gpu-enablement
+  - name: oauth
+    secrets:
+      providers:
+        htpasswd:
+          project1user: openshift
+          project2user: openshift
   - name: kueue-operator
   - name: openshift-ai
     values:
@@ -210,3 +216,83 @@ applications:
           localQueues:
             - namespace: project2
               name: default
+  - name: rbac
+    values:
+      clusterRoleBindings:
+        - name: project1user-clusterqueue-viewer
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: kueue-clusterqueue-viewer-role
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project1user
+        - name: project1user-resourceflavor-viewer
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: kueue-resourceflavor-viewer-role
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project1user
+        - name: project2user-clusterqueue-viewer
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: kueue-clusterqueue-viewer-role
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
+        - name: project2user-resourceflavor-viewer
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: kueue-resourceflavor-viewer-role
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
+      roleBindings:
+        - name: project1user-edit
+          namespace: project1
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: edit
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project1user
+        - name: project1user-kueue-user
+          namespace: project1
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: kueue-batch-user-role
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project1user
+        - name: project2user-edit
+          namespace: project2
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: edit
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
+        - name: project2user-kueue-user
+          namespace: project2
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: kueue-batch-user-role
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
