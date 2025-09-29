@@ -116,15 +116,10 @@ applications:
               minCount: 1
               resourceType: Accelerator
           scheduling:
-            type: Node
-            node:
-              nodeSelector:
-                jharmison.dev/gpu-type: l40s
-              tolerations:
-                - effect: NoSchedule
-                  key: nvidia.com/gpu
-                  operator: Equal
-                  value: l40s
+            type: Queue
+            kueue:
+              localQueueName: default
+              priorityClass: None
         - name: t4
           displayName: NVIDIA T4
           namespace: project2
@@ -148,15 +143,10 @@ applications:
               maxCount: 1
               minCount: 1
           scheduling:
-            type: Node
-            node:
-              nodeSelector:
-                jharmison.dev/gpu-type: t4
-              tolerations:
-                - effect: NoSchedule
-                  key: nvidia.com/gpu
-                  operator: Equal
-                  value: t4
+            type: Queue
+            kueue:
+              localQueueName: default
+              priorityClass: None
   - name: kueue
     values:
       resourceFlavors:
