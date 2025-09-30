@@ -293,3 +293,16 @@ applications:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
               name: project2user
+        - name: rhoai-users
+          namespace: redhat-ods-applications
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: view
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project1user
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
