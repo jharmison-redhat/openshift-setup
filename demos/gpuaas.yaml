@@ -237,8 +237,18 @@ applications:
                 - get
                 - list
                 - watch
+        - name: accelerator-profiles-viewer
+          rules:
+            - apiGroups:
+                - dashboard.opendatahub.io
+              resources:
+                - acceleratorprofiles
+              verbs:
+                - get
+                - list
+                - watch
       clusterRoleBindings:
-        - name: project1user-clusterqueue-viewer
+        - name: clusterqueue-viewer
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
@@ -247,7 +257,10 @@ applications:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
               name: project1user
-        - name: project1user-resourceflavor-viewer
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
+        - name: resourceflavor-viewer
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
@@ -256,7 +269,10 @@ applications:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
               name: project1user
-        - name: project1user-clusterrole-viewer
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
+        - name: clusterrole-viewer
           roleRef:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
@@ -265,30 +281,6 @@ applications:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
               name: project1user
-        - name: project2user-clusterqueue-viewer
-          roleRef:
-            apiGroup: rbac.authorization.k8s.io
-            kind: ClusterRole
-            name: kueue-clusterqueue-viewer-role
-          subjects:
-            - apiGroup: rbac.authorization.k8s.io
-              kind: User
-              name: project2user
-        - name: project2user-resourceflavor-viewer
-          roleRef:
-            apiGroup: rbac.authorization.k8s.io
-            kind: ClusterRole
-            name: kueue-resourceflavor-viewer-role
-          subjects:
-            - apiGroup: rbac.authorization.k8s.io
-              kind: User
-              name: project2user
-        - name: project2user-clusterrole-viewer
-          roleRef:
-            apiGroup: rbac.authorization.k8s.io
-            kind: ClusterRole
-            name: rbac-viewer-cluster
-          subjects:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
               name: project2user
@@ -323,6 +315,16 @@ applications:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
               name: project1user
+        - name: project1user-acceleratorprofile-viewer
+          namespace: project1
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: accelerator-profiles-viewer
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project1user
         - name: project2user-edit
           namespace: project2
           roleRef:
@@ -349,6 +351,16 @@ applications:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
             name: rbac-viewer-namespaced
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
+        - name: project2user-acceleratorprofile-viewer
+          namespace: project2
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: accelerator-profiles-viewer
           subjects:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
