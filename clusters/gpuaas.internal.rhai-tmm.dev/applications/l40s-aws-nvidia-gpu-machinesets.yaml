@@ -15,6 +15,7 @@ spec:
   - group: machine.openshift.io
     jsonPointers:
     - /spec/replicas
+    - /spec/template/spec/providerSpec/value/ami/id
     kind: MachineSet
   project: default
   source:

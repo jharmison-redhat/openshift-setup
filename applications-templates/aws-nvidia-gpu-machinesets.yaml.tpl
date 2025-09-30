@@ -35,3 +35,4 @@ spec:
       kind: MachineSet
       jsonPointers:
         - /spec/replicas
+        - /spec/template/spec/providerSpec/value/ami/id
