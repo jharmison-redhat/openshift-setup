@@ -93,6 +93,11 @@ applications:
               maxCount: 24Gi
               minCount: 2Gi
               resourceType: Memory
+          scheduling:
+            type: Queue
+            kueue:
+              localQueueName: default
+              priorityClass: None
         - name: l40s
           displayName: NVIDIA L40s
           namespace: project1

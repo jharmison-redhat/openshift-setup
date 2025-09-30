@@ -32,6 +32,11 @@ hardwareProfiles:
     minCount: 2Gi
     resourceType: Memory
   name: default
+  scheduling:
+    kueue:
+      localQueueName: default
+      priorityClass: None
+    type: Queue
 - displayName: NVIDIA L40s
   identifiers:
   - defaultCount: 4
