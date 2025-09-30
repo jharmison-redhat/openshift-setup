@@ -215,6 +215,28 @@ applications:
               name: default
   - name: rbac
     values:
+      clusterRoles:
+        - name: rbac-viewer-namespaced
+          rules:
+            - apiGroups:
+                - rbac.authorization.k8s.io
+              resources:
+                - rolebindings
+                - roles
+              verbs:
+                - get
+                - list
+                - watch
+        - name: rbac-viewer-cluster
+          rules:
+            - apiGroups:
+                - rbac.authorization.k8s.io
+              resources:
+                - clusterroles
+              verbs:
+                - get
+                - list
+                - watch
       clusterRoleBindings:
         - name: project1user-clusterqueue-viewer
           roleRef:
@@ -234,6 +256,15 @@ applications:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
               name: project1user
+        - name: project1user-clusterrole-viewer
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: rbac-viewer-cluster
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project1user
         - name: project2user-clusterqueue-viewer
           roleRef:
             apiGroup: rbac.authorization.k8s.io
@@ -248,6 +279,15 @@ applications:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
             name: kueue-resourceflavor-viewer-role
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
+        - name: project2user-clusterrole-viewer
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: rbac-viewer-cluster
           subjects:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
@@ -273,6 +313,16 @@ applications:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
               name: project1user
+        - name: project1user-rbac-viewer
+          namespace: project1
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: rbac-viewer-namespaced
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project1user
         - name: project2user-edit
           namespace: project2
           roleRef:
@@ -289,6 +339,16 @@ applications:
             apiGroup: rbac.authorization.k8s.io
             kind: ClusterRole
             name: kueue-batch-user-role
+          subjects:
+            - apiGroup: rbac.authorization.k8s.io
+              kind: User
+              name: project2user
+        - name: project2user-rbac-viewer
+          namespace: project2
+          roleRef:
+            apiGroup: rbac.authorization.k8s.io
+            kind: ClusterRole
+            name: rbac-viewer-namespaced
           subjects:
             - apiGroup: rbac.authorization.k8s.io
               kind: User
