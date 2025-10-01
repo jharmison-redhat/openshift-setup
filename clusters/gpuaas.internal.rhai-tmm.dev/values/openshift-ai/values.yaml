@@ -48,7 +48,7 @@ hardwareProfiles:
   - defaultCount: 8Gi
     displayName: Memory
     identifier: memory
-    maxCount: 24Gi
+    maxCount: 48Gi
     minCount: 4Gi
     resourceType: Memory
   - defaultCount: 1
@@ -72,10 +72,10 @@ hardwareProfiles:
     maxCount: 6
     minCount: 1
     resourceType: CPU
-  - defaultCount: 4Gi
+  - defaultCount: 8Gi
     displayName: Memory
     identifier: memory
-    maxCount: 16Gi
+    maxCount: 24Gi
     minCount: 4Gi
     resourceType: Memory
   - defaultCount: 1
