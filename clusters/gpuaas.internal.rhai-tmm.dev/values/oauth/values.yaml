@@ -1,8 +1,0 @@
-providers:
-  github:
-    organizations:
-      - rhai-code
-admins:
-  - jharmison-redhat
-
-removeDefaultSelfProvisioner: true
