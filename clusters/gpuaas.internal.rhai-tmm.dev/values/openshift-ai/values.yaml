@@ -1,0 +1,95 @@
+---
+acceleratorProfiles: []
+channel: fast
+dashboardConfig:
+  disableFineTuning: false
+  disableHardwareProfiles: false
+  disableKueue: false
+  disableLMEval: false
+  disableModelCatalog: false
+dataScienceCluster:
+  components:
+    kueue:
+      managementState: Unmanaged
+    llamastackoperator:
+      managementState: Managed
+    ray:
+      managementState: Managed
+hardwareProfiles:
+- displayName: Default (CPU only)
+  global: true
+  identifiers:
+  - defaultCount: 2
+    displayName: CPU
+    identifier: cpu
+    maxCount: 6
+    minCount: 1
+    resourceType: CPU
+  - defaultCount: 4Gi
+    displayName: Memory
+    identifier: memory
+    maxCount: 24Gi
+    minCount: 2Gi
+    resourceType: Memory
+  name: default
+  scheduling:
+    kueue:
+      localQueueName: default
+      priorityClass: None
+    type: Queue
+- displayName: NVIDIA L40s
+  identifiers:
+  - defaultCount: 4
+    displayName: CPU
+    identifier: cpu
+    maxCount: 6
+    minCount: 1
+    resourceType: CPU
+  - defaultCount: 8Gi
+    displayName: Memory
+    identifier: memory
+    maxCount: 24Gi
+    minCount: 4Gi
+    resourceType: Memory
+  - defaultCount: 1
+    displayName: NVIDIA L40s
+    identifier: nvidia.com/gpu
+    maxCount: 1
+    minCount: 1
+    resourceType: Accelerator
+  name: l40s
+  namespace: project1
+  scheduling:
+    kueue:
+      localQueueName: default
+      priorityClass: None
+    type: Queue
+- displayName: NVIDIA T4
+  identifiers:
+  - defaultCount: 2
+    displayName: CPU
+    identifier: cpu
+    maxCount: 6
+    minCount: 1
+    resourceType: CPU
+  - defaultCount: 4Gi
+    displayName: Memory
+    identifier: memory
+    maxCount: 16Gi
+    minCount: 4Gi
+    resourceType: Memory
+  - defaultCount: 1
+    displayName: NVIDIA T4
+    identifier: nvidia.com/gpu
+    maxCount: 1
+    minCount: 1
+    resourceType: Accelerator
+  name: t4
+  namespace: project2
+  scheduling:
+    kueue:
+      localQueueName: default
+      priorityClass: None
+    type: Queue
+modelServerSizes: []
+notebookSizes: []

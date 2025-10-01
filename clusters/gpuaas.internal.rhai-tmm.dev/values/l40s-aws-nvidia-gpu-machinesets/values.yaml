@@ -1,0 +1,11 @@
+---
+baseName: worker-l40s
+desiredReplicas: 2
+instanceType: g6e.2xlarge
+nodeLabels:
+  jharmison.dev/gpu-type: l40s
+  node-role.kubernetes.io/gpu: ''
+taints:
+- effect: NoSchedule
+  key: nvidia.com/gpu
+  value: l40s

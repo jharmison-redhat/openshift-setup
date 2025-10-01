@@ -1,0 +1,40 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '2'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: machineset-l40s
+spec:
+  destination:
+    name: in-cluster
+    namespace: openshift-machine-api
+  ignoreDifferences:
+  - group: machine.openshift.io
+    jsonPointers:
+    - /spec/replicas
+    - /spec/template/spec/providerSpec/value/ami/id
+    kind: MachineSet
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - ../../clusters/gpuaas.internal.rhai-tmm.dev/cluster.yaml
+      - ../../clusters/gpuaas.internal.rhai-tmm.dev/values/l40s-aws-nvidia-gpu-machinesets/values.yaml
+    path: charts/aws-nvidia-gpu-machinesets
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
+      limit: 10
+    syncOptions:
+    - RespectIgnoreDifferences=true

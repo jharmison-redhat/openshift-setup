@@ -1,0 +1,13 @@
+desiredUpdate:
+  version: 4.19.13
+cluster:
+  name: gpuaas
+  baseDomain: internal.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 4
+  agePublicKey: age1244v50yq3k4lpjprw5zvwx44h6pec8rs59gp0sltx3ldtr425ggsa86lm2
+  infraID: gpuaas-4snwj
+aws:
+  region: us-west-2
+  azs: ["us-west-2b","us-west-2c","us-west-2d","us-west-2a"]
+  ami: ami-000b42519a25cacc5
