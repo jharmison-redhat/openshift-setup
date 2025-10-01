@@ -35,4 +35,4 @@ envs+=(
 exec ${RUNTIME:-podman} run --rm -it --security-opt=label=disable --privileged \
 	--pull=newer --name "openshift-setup-${CLUSTER_URL//\./-}" --replace \
 	--entrypoint /bin/bash -v "$PWD:/workdir" -v ~/.config:/root/.config "${envs[@]}" \
-	"${IMAGE:-registry.jharmison.com/library/openshift-setup:latest}" -li
+	"${IMAGE:-quay.io/jharmison/openshift-setup:latest}" -li

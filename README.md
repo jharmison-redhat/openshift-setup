@@ -125,7 +125,7 @@ The following environment variables influence invocation of `openshift-setup.sh`
 - `RUNTIME` (default: `podman`)
   - Used to determine which container runtime is used in invocation. Literally
     only tested with `podman` on Linux. Might work with `docker`.
-- `IMAGE` (default: `registry.jharmison.com/library/openshift-setup:latest`)
+- `IMAGE` (default: `quay.io/jharmison/openshift-setup:latest`)
   - The container image that is pulled and entered to provide your access to the
     tooling.
 
