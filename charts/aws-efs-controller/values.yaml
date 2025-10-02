@@ -8,6 +8,7 @@ enableLeaderElection: true
 logLevel: info
 enableDevelopmentLogging: false
 
+createOperatorGroup: true
 installExtraCrds: true
 
 credentials:
