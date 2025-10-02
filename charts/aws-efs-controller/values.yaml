@@ -1,0 +1,13 @@
+---
+channel: alpha
+
+awsEndpointURL: ""
+resourceTags: ack-efs-managed
+maxConcurrentSyncs: 1
+enableLeaderElection: true
+logLevel: info
+enableDevelopmentLogging: false
+
+credentials:
+  AWS_ACCESS_KEY_ID: ""
+  AWS_SECRET_ACCESS_KEY: ""

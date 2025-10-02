@@ -1,0 +1,37 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: aws-efs-controller
+spec:
+  destination:
+    name: in-cluster
+    namespace: ack-system
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
+      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.internal.rhai-tmm.dev/values/aws-efs-controller/secrets.enc.yaml
+    path: charts/aws-efs-controller
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+    retry:
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
+      limit: 10
+    syncOptions:
+    - CreateNamespace=true
