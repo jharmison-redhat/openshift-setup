@@ -14,7 +14,7 @@ echo
 echo "Creating StorageClass"
 
 fs_id=$(target_filesystem -ojsonpath='{.status.fileSystemID}')
-cat << EOF | oc apply -f
+cat << EOF | oc apply -f-
 $(cat /mnt/create-sc-without-id.yaml)
   fileSystemId: ${fs_id}
 EOF
