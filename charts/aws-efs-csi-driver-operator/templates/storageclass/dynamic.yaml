@@ -59,7 +59,7 @@ spec:
           imagePullPolicy: IfNotPresent
           command: ["/bin/sh"]
           args:
-            - -xe
+            - -e
             - /mnt/create-sc.sh
           volumeMounts:
             - name: create-sc-script
