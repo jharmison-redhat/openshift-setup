@@ -5,7 +5,7 @@ function target_filesystem {
 }
 
 echo -n "Waiting for filesystem to be available"
-while [ $(target_filesystem -ojsonpath='{.status.fileSystemID}') != "available" ]; do
+while [ $(target_filesystem -ojsonpath='{.status.lifeCycleState}') != "available" ]; do
     sleep 1
     echo -n .
 done
