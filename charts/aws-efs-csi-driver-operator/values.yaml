@@ -1,2 +1,4 @@
 ---
 channel: stable
+
+createDriver: true

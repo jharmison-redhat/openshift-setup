@@ -1,0 +1,8 @@
+{{- if .Values.createDriver }}
+apiVersion: operator.openshift.io/v1
+kind: ClusterCSIDriver
+metadata:
+    name: efs.csi.aws.com
+spec:
+  managementState: Managed
+{{- end }}
