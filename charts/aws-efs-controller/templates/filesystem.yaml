@@ -1,0 +1,16 @@
+{{- range .Values.filesystems }}
+---
+apiVersion: efs.services.k8s.aws/v1alpha1
+kind: FileSystem
+metadata:
+  name: {{ .name  }}
+  {{- with .namespace }}
+  namespace: {{ . }}
+  {{- end }}
+{{- if .spec }}
+spec:
+  {{- toYaml .spec | nindent 2 }}
+{{- else }}
+spec: {}
+{{- end }}
+{{- end }}
