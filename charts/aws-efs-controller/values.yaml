@@ -8,6 +8,8 @@ enableLeaderElection: true
 logLevel: info
 enableDevelopmentLogging: false
 
+installExtraCrds: true
+
 credentials:
   AWS_ACCESS_KEY_ID: ""
   AWS_SECRET_ACCESS_KEY: ""
