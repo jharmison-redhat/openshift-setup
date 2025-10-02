@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ .Values.storageClass.name }}
+provisioner: efs.csi.aws.com
+{{- with .Values.storageClass.parameters }}
+parameters:
+  {{- toYaml . | nindent 4 }}
+{{- end }}

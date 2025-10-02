@@ -1,0 +1,72 @@
+{{- if and .Values.storageClass.create .Values.storageClass.dynamicFromAck.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+  namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+  namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+roleRef:
+  apiGroup: rbac.authorzation.k8s.io
+  kind: Role
+  name: ack-efs-reader
+subjects:
+  - kind: ServiceAccount
+    name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+roleRef:
+  apiGroup: rbac.authorzation.k8s.io
+  kind: ClusterRole
+  name: storage-admin
+subjects:
+  - kind: ServiceAccount
+    name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+    namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: create-sc-script
+  namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+data:
+{{ tpl (.Files.Glob "files/create-sc*").AsConfig $ | indent 2 }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+  namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 6
+  template:
+    spec:
+      serviceAccountName: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+      restartPolicy: Never
+      containers:
+        - name: create-storageclass
+          image: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh"]
+          args:
+            - -xe
+            - /mnt/create-sc.sh
+          volumeMounts:
+            - name: create-sc-script
+              mountPath: /mnt
+      volumes:
+        - name: create-sc-script
+          configMap:
+            name: create-sc-script
+            defaultMode: 493
+{{- end }}
