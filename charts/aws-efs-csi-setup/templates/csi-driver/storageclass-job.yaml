@@ -2,48 +2,48 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
-  namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+  name: create-{{ .Values.ack.efs.filesystem.name }}-storageclass
+  namespace: ack-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
-  namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+  name: create-{{ .Values.ack.efs.filesystem.name }}-storageclass
+  namespace: ack-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: ack-efs-reader
 subjects:
   - kind: ServiceAccount
-    name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+    name: create-{{ .Values.ack.efs.filesystem.name }}-storageclass
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+  name: create-{{ .Values.ack.efs.filesystem.name }}-storageclass
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: storage-admin
 subjects:
   - kind: ServiceAccount
-    name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
-    namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+    name: create-{{ .Values.ack.efs.filesystem.name }}-storageclass
+    namespace: ack-system
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: create-sc-script
-  namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+  namespace: ack-system
 data:
 {{ tpl (.Files.Glob "files/create-sc*").AsConfig $ | indent 2 }}
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
-  namespace: {{ .Values.storageClass.dynamicFromAck.filesystem.namespace }}
+  name: create-{{ .Values.ack.efs.filesystem.name }}-storageclass
+  namespace: ack-system
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
@@ -51,7 +51,7 @@ spec:
   backoffLimit: 6
   template:
     spec:
-      serviceAccountName: create-{{.Values.storageClass.dynamicFromAck.filesystem.name }}-storageclass
+      serviceAccountName: create-{{ .Values.ack.efs.filesystem.name }}-storageclass
       restartPolicy: Never
       containers:
         - name: create-storageclass

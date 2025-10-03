@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ack-ec2-user-config
+  namespace: ack-system
+data:
+  ACK_ENABLE_DEVELOPMENT_LOGGING: {{ default .Values.ack.enableDevelopmentLogging .Values.ack.ec2.enableDevelopmentLogging | quote }}
+  ACK_LOG_LEVEL: {{ default .Values.ack.logLevel .Values.ack.ec2.logLevel | quote }}
+  ACK_WATCH_NAMESPACE: ""
+  AWS_REGION: {{ .Values.aws.region }}
+  AWS_ENDPOINT_URL: {{ default .Values.ack.awsEndpointURL .Values.ack.ec2.awsEndpointURL | quote }}
+  ACK_RESOURCE_TAGS: {{ default .Values.ack.resourceTags .Values.ack.ec2.resourceTags | quote }}
+  ENABLE_LEADER_ELECTION: {{ default .Values.ack.enableLeaderElection .Values.ack.ec2.enableLeaderElection | quote }}
+  LEADER_ELECTION_NAMESPACE: ""
+  RECONCILE_DEFAULT_MAX_CONCURRENT_SYNCS: {{ default .Values.ack.maxConcurrentSyncs .Values.ack.ec2.maxConcurrentSyncs | quote }}
+  FEATURE_FLAGS: {{ default .Values.ack.featureFlags .Values.ack.ec2.featureFlags | quote }}
+  FEATURE_GATES: {{ default .Values.ack.featureGates .Values.ack.ec2.featureGates | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ack-efs-user-config
+  namespace: ack-system
+data:
+  ACK_ENABLE_DEVELOPMENT_LOGGING: {{ default .Values.ack.enableDevelopmentLogging .Values.ack.efs.enableDevelopmentLogging | quote }}
+  ACK_LOG_LEVEL: {{ default .Values.ack.logLevel .Values.ack.efs.logLevel | quote }}
+  ACK_WATCH_NAMESPACE: ""
+  AWS_REGION: {{ .Values.aws.region }}
+  AWS_ENDPOINT_URL: {{ default .Values.ack.awsEndpointURL .Values.ack.efs.awsEndpointURL | quote }}
+  ACK_RESOURCE_TAGS: {{ default .Values.ack.resourceTags .Values.ack.efs.resourceTags | quote }}
+  ENABLE_LEADER_ELECTION: {{ default .Values.ack.enableLeaderElection .Values.ack.efs.enableLeaderElection | quote }}
+  LEADER_ELECTION_NAMESPACE: ""
+  RECONCILE_DEFAULT_MAX_CONCURRENT_SYNCS: {{ default .Values.ack.maxConcurrentSyncs .Values.ack.efs.maxConcurrentSyncs | quote }}
+  FEATURE_FLAGS: {{ default .Values.ack.featureFlags .Values.ack.efs.featureFlags | quote }}
+  FEATURE_GATES: {{ default .Values.ack.featureGates .Values.ack.efs.featureGates | quote }}

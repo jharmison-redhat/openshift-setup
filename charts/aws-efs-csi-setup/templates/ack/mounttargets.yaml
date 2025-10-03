@@ -1,0 +1,20 @@
+{{- range $subnet := .Values.aws.subnets }}
+---
+apiVersion: efs.services.k8s.aws/v1alpha1
+kind: MountTarget
+metadata:
+  name: {{ $.Values.ack.efs.filesystem.name }}-{{ $subnet }}
+  namepsace: ack-system
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  fileSystemRef:
+    from:
+      name: {{ $.Values.ack.efs.filesystem.name }}
+      namespace: ack-system
+  securityGroupRefs:
+    - from:
+        name: {{ $.Values.cluster.infraID }}-efs-sg
+        namespace: ack-system
+  subnetID: {{ $subnet }}
+{{- end }}

@@ -1,0 +1,56 @@
+---
+ack:
+  channel: alpha
+  awsEndpointURL: ""
+  maxConcurrentSyncs: 1
+  enableLeaderElection: true
+  logLevel: info
+  enableDevelopmentLogging: false
+  resourceTags: ack-managed
+  featureFlags: ""
+  featureGates: ""
+
+  createOperatorGroup: true
+  installExtraCrds: true
+
+  credentials:
+    AWS_ACCESS_KEY_ID: ""
+    AWS_SECRET_ACCESS_KEY: ""
+
+  efs:
+    resourceTags: ""
+    credentials: {}
+    filesystem:
+      create: true
+      name: efs-csi
+  ec2:
+    resourceTags: ""
+    credentials: {}
+    securityGroup:
+      create: true
+
+channel: stable
+
+createDriver: true
+
+storageClass:
+  create: true
+  name: efs-sc
+  dynamicFromAck:
+    enabled: true
+  parameters:
+    provisioningMode: efs-ap
+    directoryPerms: "700"
+    gidRangeStart: "1000"
+    gidRangeEnd: "2000"
+    basePath: "/dynamic_provisioning"
+
+cluster:
+  infraID: cluster-fake
+
+aws:
+  subnets:
+    - subnet-fakefakefake1
+    - subnet-fakefakefake2
+  nodeSg: sg-fakefakefake
+  vpcId: vpc-fakefakefake

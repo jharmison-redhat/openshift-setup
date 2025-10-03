@@ -1,7 +1,7 @@
 #!/bin/sh
 
 function target_filesystem {
-    oc get filesystem.efs.services.k8s.aws {{ .Values.storageClass.dynamicFromAck.filesystem.name }} "${@}"
+    oc get filesystem.efs.services.k8s.aws {{ .Values.ack.efs.filesystem.name }} "${@}"
 }
 
 echo -n "Waiting for filesystem to be available"

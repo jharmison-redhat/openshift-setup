@@ -1,8 +1,0 @@
----
-apiVersion: v2
-name: aws-efs-controller
-description: >
-  A helm chart to deploy the AWS Controller for Kubernetes for the EFS Service
-type: application
-version: 0.1.0
-appVersion: 0.1.0

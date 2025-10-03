@@ -1,8 +1,0 @@
----
-apiVersion: v2
-name: aws-efs-csi-driver-operator
-description: >
-  A helm chart to deploy the Red Hat support AWS EFS CSI Driver Operator
-type: application
-version: 0.1.0
-appVersion: 0.1.0

@@ -3,6 +3,7 @@ apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: ack-system
+  namespace: ack-system
 spec:
   upgradeStrategy: Default
 {{- end }}

@@ -1,0 +1,10 @@
+{{- if .Values.ack.efs.filesystem.create }}
+apiVersion: efs.services.k8s.aws/v1alpha1
+kind: FileSystem
+metadata:
+  name: {{ .Values.ack.efs.filesystem.name  }}
+  namespace: ack-system
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec: {}
+{{- end }}

@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aws-efs-csi-driver-operator
+  name: aws-efs-csi-setup
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
@@ -13,7 +13,7 @@ spec:
     namespace: openshift-cluster-csi-drivers
   project: default
   source:
-    path: charts/aws-efs-csi-driver-operator
+    path: charts/aws-efs-csi-setup
     repoURL: ${ARGO_GIT_URL}
     targetRevision: ${ARGO_GIT_REVISION}
     helm:

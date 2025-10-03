@@ -1,0 +1,24 @@
+apiVersion: ec2.services.k8s.aws/v1alpha1
+kind: SecurityGroup
+metadata:
+  name: {{ .Values.cluster.infraID }}-efs-sg
+  namespace: ack-system
+spec:
+  name: {{ .Values.cluster.infraID }}-efs-sg
+  description: Security Group used for EFS mounts for CSI storage
+  egressRules:
+    - ipProtocol: all
+      ipRanges:
+        - cidrIP: 0.0.0.0/0
+          description: Allow all egress
+  ingressRules:
+    - fromPort: 2049
+      ipProtocol: tcp
+      toPort: 2049
+      userIDGroupPairs:
+        - description: Allow NFS ingress from nodes
+          groupID: {{ .Values.aws.nodeSg }}
+  tags:
+    - key: Name
+      value: {{ .Values.cluster.infraID }}-efs-sg
+  vpcID: {{ .Values.aws.vpcId }}
