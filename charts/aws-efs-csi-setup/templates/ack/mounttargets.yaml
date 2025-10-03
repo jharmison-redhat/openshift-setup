@@ -4,7 +4,7 @@ apiVersion: efs.services.k8s.aws/v1alpha1
 kind: MountTarget
 metadata:
   name: {{ $.Values.ack.efs.filesystem.name }}-{{ $subnet }}
-  namepsace: ack-system
+  namespace: ack-system
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
