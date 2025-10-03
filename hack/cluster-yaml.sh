@@ -19,6 +19,7 @@ if cluster_validate && (! metadata_validate >/dev/null 2>&1); then # We are adop
 			ami="$(AWS_REGION=$region aws ec2 describe-instances "${filter[@]}" | jq -r '.Reservations[].Instances[].ImageId' | head -1)"
             subnets="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}" | jq -c '[.Subnets[].SubnetId]')"
             sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
+            vpc_id="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].VpcId')"
 		fi
 		CONTROL_PLANE_COUNT="$(oc get machine -n openshift-machine-api -l machine.openshift.io/cluster-api-machine-role=master --no-headers 2>/dev/null | wc -l)"
 		export CONTROL_PLANE_COUNT
@@ -32,10 +33,13 @@ elif metadata_validate; then # We are provisioning an AWS cluster
 	region="$(jq -r '.aws.region' "${INSTALL_DIR}/metadata.json")"
 	azs="$(jq -c '.aws_worker_availability_zones' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
 	ami="$(jq -r '.aws_ami' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
-    subnet_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$infraID,Values=owned")
-    sg_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$infraID-node")
-    subnets="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}" | jq -c '[.Subnets[].SubnetId]')"
-    sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
+    if aws_validate_functional; then
+        subnet_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$infraID,Values=owned")
+        sg_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$infraID-node")
+        subnets="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}" | jq -c '[.Subnets[].SubnetId]')"
+        sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
+        vpc_id="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].VpcId')"
+    fi
 else
 	echo Unable to generate cluster.yaml >&2
 	exit 1
@@ -153,6 +157,7 @@ aws:
   ami: $ami
   subnets: $subnets
   nodeSg: $sg
+  vpcId: $vpc_id
 EOF
 
 fi
