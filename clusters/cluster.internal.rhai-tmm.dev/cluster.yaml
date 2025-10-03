@@ -11,3 +11,5 @@ aws:
   region: us-east-2
   azs: ["us-east-2a","us-east-2b","us-east-2c"]
   ami: ami-078e26f293629fe91
+  subnets: ["subnet-0ba707484c8ae25d2","subnet-02c5520d42b51adad","subnet-0c8b3f8807850d197"]
+  nodeSg: sg-04d671592a7b8c824

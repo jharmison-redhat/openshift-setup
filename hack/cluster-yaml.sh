@@ -13,8 +13,12 @@ if cluster_validate && (! metadata_validate >/dev/null 2>&1); then # We are adop
 		region="$(infra_get '.status.platformStatus.aws.region')"
 		if aws_validate_functional; then # we have valid AWS creds to query with
 			filter=(--filters "Name=tag-key,Values=kubernetes.io/cluster/$infraID")
+            subnet_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$infraID,Values=owned")
+            sg_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$infraID-node")
 			azs="$(AWS_REGION=$region aws ec2 describe-subnets "${filter[@]}" | jq -c '[.Subnets[].AvailabilityZone] | unique')"
 			ami="$(AWS_REGION=$region aws ec2 describe-instances "${filter[@]}" | jq -r '.Reservations[].Instances[].ImageId' | head -1)"
+            subnets="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}" | jq -c '[.Subnets[].SubnetId]')"
+            sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
 		fi
 		CONTROL_PLANE_COUNT="$(oc get machine -n openshift-machine-api -l machine.openshift.io/cluster-api-machine-role=master --no-headers 2>/dev/null | wc -l)"
 		export CONTROL_PLANE_COUNT
@@ -23,11 +27,15 @@ if cluster_validate && (! metadata_validate >/dev/null 2>&1); then # We are adop
 		CLUSTER_VERSION="$(oc get clusterversion version -ojsonpath='{.status.desired.version}')"
 		export CLUSTER_VERSION
 	fi
-elif metadata_validate; then
+elif metadata_validate; then # We are provisioning an AWS cluster
 	infraID="$(jq -r '.infraID' "${INSTALL_DIR}/metadata.json")"
 	region="$(jq -r '.aws.region' "${INSTALL_DIR}/metadata.json")"
 	azs="$(jq -c '.aws_worker_availability_zones' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
 	ami="$(jq -r '.aws_ami' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
+    subnet_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$infraID,Values=owned")
+    sg_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$infraID-node")
+    subnets="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}" | jq -c '[.Subnets[].SubnetId]')"
+    sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
 else
 	echo Unable to generate cluster.yaml >&2
 	exit 1
@@ -143,5 +151,8 @@ aws:
   region: $region
   azs: $azs
   ami: $ami
+  subnets: $subnets
+  nodeSg: $sg
 EOF
+
 fi
