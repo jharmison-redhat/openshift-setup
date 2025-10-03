@@ -16,6 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
+      - ../../clusters/cluster.internal.rhai-tmm.dev/values/aws-ec2-controller/values.yaml
       - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.internal.rhai-tmm.dev/values/aws-ec2-controller/secrets.enc.yaml
     path: charts/aws-ec2-controller
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
