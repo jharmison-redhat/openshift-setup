@@ -68,15 +68,15 @@ dataScienceClusterInitialization:
 #   customCABundle: ''
 #   managementState: Managed
 
-acceleratorProfiles:
-  - name: migrated-gpu
-    displayName: NVIDIA GPU
-    enabled: true
-    identifier: nvidia.com/gpu
-    tolerations:
-      - effect: NoSchedule
-        key: nvidia.com/gpu
-        operator: Exists
+acceleratorProfiles: []
+# - name: migrated-gpu
+#   displayName: NVIDIA GPU
+#   enabled: true
+#   identifier: nvidia.com/gpu
+#   tolerations:
+#     - effect: NoSchedule
+#       key: nvidia.com/gpu
+#       operator: Exists
 hardwareProfiles: []
 
 admins: []
