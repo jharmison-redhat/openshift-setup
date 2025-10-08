@@ -83,34 +83,34 @@ admins: []
 userGroups:
   - system:authenticated
 
-dashboardConfig:
-  disableAcceleratorProfiles: false
-  disableBYONImageStream: false
-  disableClusterManager: false
-  disableCustomServingRuntimes: false
-  disableDistributedWorkloads: false
-  disableHome: false
-  disableISVBadges: false
-  disableInfo: false
-  disableKServe: false
-  disableKServeAuth: false
-  disableKServeMetrics: false
-  disableModelMesh: true
-  disableModelRegistry: false
-  disableModelServing: false
-  disablePerformanceMetrics: false
-  disablePipelines: false
-  disableProjectSharing: false
-  disableProjects: false
-  disableSupport: false
-  disableTracking: true
-  enablement: true
+dashboardConfig: {}
+# disableAcceleratorProfiles: false
+# disableBYONImageStream: false
+# disableClusterManager: false
+# disableCustomServingRuntimes: false
+# disableDistributedWorkloads: false
+# disableHome: false
+# disableISVBadges: false
+# disableInfo: false
+# disableKServe: false
+# disableKServeAuth: false
+# disableKServeMetrics: false
+# disableModelMesh: true
+# disableModelRegistry: false
+# disableModelServing: false
+# disablePerformanceMetrics: false
+# disablePipelines: false
+# disableProjectSharing: false
+# disableProjects: false
+# disableSupport: false
+# disableTracking: true
+# enablement: true
   # tech preview
-  disableHardwareProfiles: true
-  disableModelCatalog: true
-  #disableKueue: true
-  #disableLMEval: true
-  #disableFineTuning: true
+# disableHardwareProfiles: true
+# disableModelCatalog: true
+# #disableKueue: true
+# #disableLMEval: true
+# #disableFineTuning: true
 
 defaultWorkbenchPvcSize: 20Gi
 showJupyterInEnabledApplications: true
