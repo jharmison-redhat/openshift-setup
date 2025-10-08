@@ -14,3 +14,6 @@ dashboardConfig:
   disableLMEval: false
   disableFineTuning: false
   disableHardwareProfiles: false
+
+modelServerSizes: []
+notebookSizes: []
