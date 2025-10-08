@@ -13,7 +13,4 @@ dashboardConfig:
   disableModelCatalog: false
   disableLMEval: false
   disableFineTuning: false
-  disableHardwareProfiles: false
-
-modelServerSizes: []
-notebookSizes: []
+  disableHardwareProfiles: true
