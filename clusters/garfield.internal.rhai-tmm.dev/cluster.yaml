@@ -1,0 +1,16 @@
+desiredUpdate:
+  version: 4.19.15
+cluster:
+  name: garfield
+  baseDomain: internal.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 4
+  agePublicKey: age1hyhcykdly48uz3vxtx54l9a8qjpsm7sj94ayar9e6zekpp2fk34sxzfmmj
+  infraID: garfield-9pxjl
+aws:
+  region: us-west-2
+  azs: ["us-west-2c","us-west-2d","us-west-2a","us-west-2b"]
+  ami: ami-000b42519a25cacc5
+  subnets: ["subnet-080b6af6de0a77780","subnet-09efd835e8534822f","subnet-0a9e1e31e79fa9ec2","subnet-0a07a2bf5be553466"]
+  nodeSg: sg-0e62e6522bd3e356d
+  vpcId: vpc-0396b13dcb4425b72
