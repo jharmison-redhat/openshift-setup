@@ -1,0 +1,8 @@
+---
+annotations:
+  openshift.io/description: Project for resources for Internal AI Project (Demo)
+  openshift.io/display-name: Demo Project
+labels:
+  kueue.openshift.io/managed: 'true'
+  opendatahub.io/dashboard: 'true'
+name: demo-project

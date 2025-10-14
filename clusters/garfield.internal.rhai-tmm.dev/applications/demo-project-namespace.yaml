@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '0'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: demo-project-namespace
+spec:
+  destination:
+    name: in-cluster
+    namespace: default
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - ../../clusters/garfield.internal.rhai-tmm.dev/cluster.yaml
+      - ../../clusters/garfield.internal.rhai-tmm.dev/values/demo-project-namespace/values.yaml
+    path: charts/namespace
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
