@@ -1,5 +1,5 @@
 ---
-channel: stable-v1.0
+channel: stable-v1.1
 
 config:
   gangScheduling:
@@ -14,6 +14,7 @@ config:
       - PyTorchJob
       - Pod
       - Deployment
+      - StatefulSet
       - LeaderWorkerSet
   preemption:
     preemptionPolicy: FairSharing
