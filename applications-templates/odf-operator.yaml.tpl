@@ -34,3 +34,5 @@ spec:
       labels:
         argocd.argoproj.io/managed-by: openshift-gitops
         openshift.io/cluster-monitoring: "true"
+      annotations:
+        openshift.io/node-selector: ""

@@ -1,6 +1,7 @@
 ---
-channel: stable-4.17
+channel: stable-4.19
 enableCephTools: true
+createStorageSystem: false
 storageDeviceSets: []
 disks: []
 enableConsolePlugin: true
