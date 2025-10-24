@@ -3,6 +3,8 @@ clusterQueues:
 - localQueues:
   - name: default
     namespace: demo-project
+  - name: default
+    namespace: rbac-test
   name: l40s
   resourceGroups:
   - coveredResources:
@@ -12,16 +14,16 @@ clusterQueues:
     - name: default
       resources:
       - name: cpu
-        nominalQuota: 16
+        nominalQuota: 48
       - name: memory
-        nominalQuota: 64Gi
+        nominalQuota: 256Gi
   - coveredResources:
     - nvidia.com/gpu
     flavors:
     - name: l40s
       resources:
       - name: nvidia.com/gpu
-        nominalQuota: 1
+        nominalQuota: 4
 resourceFlavors:
 - name: default
 - name: l40s

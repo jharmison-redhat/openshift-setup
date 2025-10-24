@@ -1,0 +1,8 @@
+---
+annotations:
+  openshift.io/description: Project for testing RBAC of models
+  openshift.io/display-name: RBAC Test
+labels:
+  kueue.openshift.io/managed: 'true'
+  opendatahub.io/dashboard: 'true'
+name: rbac-test
