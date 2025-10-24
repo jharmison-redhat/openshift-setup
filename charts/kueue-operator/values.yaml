@@ -4,7 +4,7 @@ channel: stable-v1.1
 config:
   gangScheduling:
     byWorkload:
-      admission: Sequential
+      admission: Parallel
     policy: ByWorkload
   integrations:
     frameworks:
