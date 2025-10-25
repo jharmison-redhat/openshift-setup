@@ -1,6 +1,6 @@
 ---
 baseName: worker-l40s
-desiredReplicas: 4
+desiredReplicas: 1
 instanceType: g6e.2xlarge
 nodeLabels:
   jharmison.dev/gpu-type: l40s
