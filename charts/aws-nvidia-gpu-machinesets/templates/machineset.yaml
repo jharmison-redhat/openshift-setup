@@ -11,14 +11,14 @@ spec:
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
-      machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-gpu-worker-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+      machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
   template:
     metadata:
       labels:
         machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
         machine.openshift.io/cluster-api-machine-role: worker
         machine.openshift.io/cluster-api-machine-type: worker
-        machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-gpu-worker-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+        machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
     spec:
       {{- with .Values.nodeLabels }}
       metadata:
