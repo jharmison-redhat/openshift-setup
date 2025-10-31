@@ -78,7 +78,7 @@ dataScienceClusterInitialization:
       metricsCollection: Istio
       name: data-science-smcp
       namespace: istio-system
-    managementState: Removed
+    managementState: Unmanaged
   trustedCABundle:
     customCABundle: ''
     managementState: Managed
