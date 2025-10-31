@@ -1,0 +1,120 @@
+dashboardConfig:
+  disableBYONImageStream: false
+  disableClusterManager: false
+  disableISVBadges: false
+  disableInfo: false
+  disableSupport: false
+  disableTracking: false
+  enablement: true
+  disableProjects: false
+  disablePipelines: false
+  disableModelServing: false
+  disableProjectSharing: false
+  disableCustomServingRuntimes: false
+  disableTrustyBiasMetrics: true
+  disablePerformanceMetrics: false
+  disableAcceleratorProfiles: false
+  disableKServe: false
+  disableKServeAuth: false
+  disableModelMesh: false
+  disableDistributedWorkloads: false
+  disableModelRegistry: true
+  disableNIMModelServing: true
+
+modelServerSizes:
+  - name: Small
+    resources:
+      limits:
+        cpu: "2"
+        memory: 3Gi
+      requests:
+        cpu: "500m"
+        memory: 3Gi
+  - name: Medium
+    resources:
+      limits:
+        cpu: "4"
+        memory: 8Gi
+      requests:
+        cpu: "2"
+        memory: 8Gi
+
+notebookSizes:
+  - name: Small
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: "200m"
+      limits:
+        memory: 2Gi
+        cpu: "1"
+  - name: Medium
+    resources:
+      requests:
+        memory: 8Gi
+        cpu: "1"
+      limits:
+        memory: 8Gi
+        cpu: "2"
+  - name: Large
+    resources:
+      requests:
+        memory: 16Gi
+        cpu: "2"
+      limits:
+        memory: 16Gi
+        cpu: "4"
+
+dataScienceClusterInitialization:
+  applicationsNamespace: redhat-ods-applications
+  monitoring:
+    managementState: Managed
+    namespace: redhat-ods-monitoring
+  serviceMesh:
+    auth:
+      audiences:
+        - 'https://kubernetes.default.svc'
+    controlPlane:
+      metricsCollection: Istio
+      name: data-science-smcp
+      namespace: istio-system
+    managementState: Removed
+  trustedCABundle:
+    customCABundle: ''
+    managementState: Managed
+
+dataScienceCluster:
+  components:
+    codeflare:
+      managementState: Managed
+    kserve:
+      managementState: Managed
+      defaultDeploymentMode: RawDeployment
+      rawDeploymentServiceConfig: Headed
+      nim:
+        managementState: Removed
+      serving:
+        ingressGateway:
+          certificate:
+            type: OpenshiftDefaultIngress
+        managementState: Unmanaged
+        name: knative-serving
+    modelregistry:
+      managementState: Removed
+      registriesNamespace: rhoai-model-registries
+    trustyai:
+      managementState: Removed
+    ray:
+      managementState: Managed
+    kueue:
+      managementState: Removed
+    workbenches:
+      managementState: Managed
+    dashboard:
+      managementState: Managed
+    modelmeshserving:
+      managementState: Managed
+    datasciencepipelines:
+      managementState: Managed
+    trainingoperator:
+      managementState: Managed
