@@ -6,6 +6,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "0"
 spec:
   displayName: OpenShift AI Nightly Catalog
+  secrets:
+  - {{ .Chart.Name }}-pull-secret
   grpcPodConfig:
     extractContent:
       cacheDir: /tmp/cache
