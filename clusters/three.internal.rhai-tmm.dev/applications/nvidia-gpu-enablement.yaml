@@ -16,6 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/three.internal.rhai-tmm.dev/cluster.yaml
+      - ../../clusters/three.internal.rhai-tmm.dev/values/nvidia-gpu-enablement/values.yaml
     path: charts/nvidia-gpu-enablement
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
