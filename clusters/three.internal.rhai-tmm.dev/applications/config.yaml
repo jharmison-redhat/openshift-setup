@@ -16,6 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/three.internal.rhai-tmm.dev/cluster.yaml
+      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/three.internal.rhai-tmm.dev/values/config/secrets.enc.yaml
     path: charts/config
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD

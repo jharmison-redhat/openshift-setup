@@ -6,3 +6,5 @@ kubelet:
 desiredUpdate: {}
 
 techPreview: false
+
+pullSecret: {}
