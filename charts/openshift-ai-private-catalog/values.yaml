@@ -1,4 +1,5 @@
-catalogVersion: rhoai-3.0
+catalog:
+  tag: rhoai-3.0
 pullSecret: {}
 #   auths:
 #     quay.io:

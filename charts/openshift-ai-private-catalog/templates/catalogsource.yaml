@@ -32,7 +32,11 @@ spec:
       key: node.kubernetes.io/not-ready
       operator: Exists
       tolerationSeconds: 120
-  image: quay.io/rhoai/rhoai-fbc-fragment:{{ .Values.catalogVersion }}
+  {{- if .Values.catalog.manifestHash }}
+  image: quay.io/rhoai/rhoai-fbc-fragment@{{ .Values.catalog.manifestHash }}
+  {{- else }}
+  image: quay.io/rhoai/rhoai-fbc-fragment:{{ .Values.catalog.tag }}
+  {{- end }}
   priority: -400
   publisher: Red Hat
   sourceType: grpc
