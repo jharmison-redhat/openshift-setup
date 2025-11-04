@@ -1,4 +1,0 @@
-gpuOperator:
-  policy:
-    driver:
-      kernelModuleType: proprietary
