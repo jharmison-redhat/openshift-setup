@@ -1,0 +1,16 @@
+desiredUpdate:
+  version: 4.19.17
+cluster:
+  name: three
+  baseDomain: internal.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1gu0fww9hjg7j3xszsdfkgyjwcxd6ue69q394tqr8gmyas0fkkfwqqj97vg
+  infraID: three-46r75
+aws:
+  region: us-west-2
+  azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
+  ami: ami-000b42519a25cacc5
+  subnets: ["subnet-0e97cb9fad4848c46","subnet-0bd3c1c2aa183f3d7","subnet-0721513464ed9b958","subnet-0410e3a5b95eab3e3"]
+  nodeSg: sg-0597a051f18057b79
+  vpcId: vpc-0a56e048b630b3ffe
