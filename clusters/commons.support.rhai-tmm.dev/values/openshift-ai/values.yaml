@@ -1,0 +1,13 @@
+---
+dataScienceCluster:
+  components:
+    modelregistry:
+      managementState: Removed
+    trustyai:
+      managementState: Removed
+    workbenches:
+      managementState: Removed
+    datasciencepipelines:
+      managementState: Removed
+    trainingoperator:
+      managementState: Removed
