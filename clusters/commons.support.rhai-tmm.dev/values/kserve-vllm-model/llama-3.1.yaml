@@ -1,0 +1,10 @@
+model:
+  uri: oci://quay.io/jharmison/models:meta-llama--llama-3_1-8b-instruct-modelcar
+
+resources:
+  limits:
+    cpu: "6"
+    memory: 48Gi
+  requests:
+    cpu: "4"
+    memory: 32Gi

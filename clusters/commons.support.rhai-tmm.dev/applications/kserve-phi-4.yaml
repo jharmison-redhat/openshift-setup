@@ -1,0 +1,40 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kserve-phi-4
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  destination:
+    name: in-cluster
+    namespace: shared-models
+  project: default
+  source:
+    path: charts/kserve-vllm-model
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+      - ../../clusters/commons.support.rhai-tmm.dev/cluster.yaml
+      - ../../clusters/commons.support.rhai-tmm.dev/values/kserve-vllm-model/phi-4.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 60m
+    syncOptions:
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: serving.kserve.io
+      kind: InferenceService
+      jsonPointers:
+        - /spec/predictor/maxReplicas
+        - /spec/predictor/minReplicas
