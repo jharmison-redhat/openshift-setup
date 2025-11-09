@@ -17,6 +17,16 @@ spec:
     - /spec/replicas
     - /spec/template/spec/providerSpec/value/ami/id
     kind: MachineSet
+  - group: autoscaling.openshift.io
+    jsonPointers:
+    - /spec/minReplicas
+    - /spec/maxReplicas
+    kind: MachineAutoscaler
+  - group: autoscaling.openshift.io
+    jsonPointers:
+    - /spec/resourceLimits/gpus/0/min
+    - /spec/resourceLimits/gpus/0/max
+    kind: ClusterAutoscaler
   project: default
   source:
     helm:
