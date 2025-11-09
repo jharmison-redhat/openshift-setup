@@ -1,24 +1,29 @@
+{{- range $az := .Values.aws.azs }}
+{{- with $ }}
+---
 apiVersion: machine.openshift.io/v1beta1
 kind: MachineSet
 metadata:
   labels:
     machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
-  name: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+  name: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ $az }}
 spec:
-  {{- if and (.Values.desiredReplicas) (not .Values.autoscaling.enabled) }}
+  {{- if and (and (.Values.desiredReplicas) (not .Values.autoscaling.enabled)) (eq $az (include "aws-nvidia-gpu-machinesets.az" $)) }}
   replicas: {{ .Values.desiredReplicas }}
+  {{- else if not .Values.autoscaling.enabled }}
+  replicas: 0
   {{- end }}
   selector:
     matchLabels:
       machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
-      machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+      machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ $az }}
   template:
     metadata:
       labels:
         machine.openshift.io/cluster-api-cluster: {{ .Values.cluster.infraID }}
         machine.openshift.io/cluster-api-machine-role: worker
         machine.openshift.io/cluster-api-machine-type: worker
-        machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+        machine.openshift.io/cluster-api-machineset: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ $az }}
     spec:
       {{- with .Values.nodeLabels }}
       metadata:
@@ -52,7 +57,7 @@ spec:
             id: {{ .Values.cluster.infraID }}-worker-profile
           instanceType: {{ .Values.instanceType }}
           placement:
-            availabilityZone: {{ include "aws-nvidia-gpu-machinesets.az" $ }}
+            availabilityZone: {{ $az }}
             region: {{ .Values.aws.region }}
           securityGroups:
             - filters:
@@ -67,9 +72,11 @@ spec:
             filters:
               - name: tag:Name
                 values:
-                  - {{ .Values.cluster.infraID }}-subnet-private-{{ include "aws-nvidia-gpu-machinesets.az" $ }}
+                  - {{ .Values.cluster.infraID }}-subnet-private-{{ $az }}
           tags:
             - name: kubernetes.io/cluster/{{ .Values.cluster.infraID }}
               value: owned
           userDataSecret:
             name: worker-user-data
+{{- end }}
+{{- end }}

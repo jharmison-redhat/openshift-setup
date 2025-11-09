@@ -36,3 +36,13 @@ spec:
       jsonPointers:
         - /spec/replicas
         - /spec/template/spec/providerSpec/value/ami/id
+    - group: autoscaling.openshift.io
+      kind: MachineAutoscaler
+      jsonPointers:
+        - /spec/minReplicas
+        - /spec/maxReplicas
+    - group: autoscaling.openshift.io
+      kind: ClusterAutoscaler
+      jsonPointers:
+        - /spec/resourceLimits/gpus/0/min
+        - /spec/resourceLimits/gpus/0/max
