@@ -29,3 +29,11 @@ spec:
         duration: 10s
         factor: 3
         maxDuration: 60m
+    syncOptions:
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: serving.kserve.io
+      kind: InferenceService
+      jsonPointers:
+        - /spec/predictor/maxReplicas
+        - /spec/predictor/minReplicas

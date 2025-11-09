@@ -2,7 +2,7 @@
 apiVersion: v2
 name: kserve-vllm-model
 description: >
-  A helm chart to deploy a model using KServe and vLLM
+  A helm chart to deploy a model using KServe and vLLM from Red Hat AI Inference Server
 type: application
 version: 0.1.0
-appVersion: 0.8.5.0_cu128
+appVersion: 3.2.3
