@@ -20,10 +20,6 @@ dataScienceCluster:
           permitCodeExecution: deny
           permitOnline: deny
       managementState: Managed
-    aipipelines:
-      argoWorkflowsControllers:
-        managementState: Managed
-      managementState: Managed
     ray:
       managementState: Managed
     kueue:
