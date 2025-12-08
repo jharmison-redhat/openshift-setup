@@ -4,12 +4,7 @@ dataScienceClusterInitialization: null
 
 dataScienceCluster:
   components:
-    datasciencepipelines: null
-    codeflare: null
-    modelmeshserving: null
     kserve:
-      serving: null
-      defaultDeploymentMode: null
       nim:
         managementState: Removed
       rawDeploymentServiceConfig: Headed

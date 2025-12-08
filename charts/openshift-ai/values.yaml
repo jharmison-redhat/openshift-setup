@@ -10,20 +10,11 @@ operatorReplicas: 1
 dataScienceCluster:
   create: true
   components:
-    codeflare:
-      managementState: Removed
     kserve:
       managementState: Managed
       nim:
         managementState: Managed
-      defaultDeploymentMode: RawDeployment
       rawDeploymentServiceConfig: Headed
-      serving:
-        ingressGateway:
-          certificate:
-            type: OpenshiftDefaultIngress
-        managementState: Removed
-        name: knative-serving
     modelregistry:
       managementState: Managed
       registriesNamespace: rhoai-model-registries
@@ -37,10 +28,6 @@ dataScienceCluster:
       managementState: Managed
       workbenchNamespace: rhods-notebooks
     dashboard:
-      managementState: Managed
-    modelmeshserving:
-      managementState: Removed
-    datasciencepipelines:
       managementState: Managed
     trainingoperator:
       managementState: Managed
