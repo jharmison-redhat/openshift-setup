@@ -3,7 +3,7 @@ providers:
   htpasswd: null
   github:
     organizations:
-      - rhai-cod
+      - rhai-code
 
 admins:
   - taylorjordanNC
