@@ -10,21 +10,21 @@ metadata:
   name: odh-dashboard-config
   namespace: redhat-ods-applications
 spec:
+  {{- with .Values.dashboardConfig }}
   dashboardConfig:
-    {{- with .Values.dashboardConfig }}
     {{- toYaml . | nindent 4 }}
-    {{- end }}
+  {{- end }}
   groupsConfig:
     adminGroups: rhods-admins
     allowedGroups: {{ join "," .Values.userGroups }}
+  {{- with .Values.modelServerSizes }}
   modelServerSizes:
-    {{- with .Values.modelServerSizes }}
     {{- toYaml . | nindent 4 }}
-    {{- end }}
+  {{- end }}
+  {{- with .Values.notebookSizes }}
   notebookSizes:
-    {{- with .Values.notebookSizes }}
     {{- toYaml . | nindent 4 }}
-    {{- end }}
+  {{- end }}
   notebookController:
     enabled: {{ .Values.showJupyterInEnabledApplications }}
     notebookNamespace: rhods-notebooks
