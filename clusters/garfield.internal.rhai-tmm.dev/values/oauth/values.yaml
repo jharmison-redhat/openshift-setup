@@ -1,0 +1,10 @@
+---
+providers:
+  htpasswd: null
+  github:
+    organizations:
+      - rhai-cod
+
+admins:
+  - taylorjordanNC
+  - jharmison-redhat
