@@ -8,9 +8,11 @@ dataScienceCluster:
     codeflare: null
     modelmeshserving: null
     kserve:
+      serving: null
+      defaultDeploymentMode: null
       nim:
         managementState: Removed
-      rawDeploymentServiceConfig: Headless
+      rawDeploymentServiceConfig: Headed
       managementState: Managed
     modelregistry:
       registriesNamespace: rhoai-model-registries
