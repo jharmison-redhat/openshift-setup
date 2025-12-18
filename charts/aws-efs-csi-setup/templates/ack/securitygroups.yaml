@@ -3,6 +3,8 @@ kind: SecurityGroup
 metadata:
   name: {{ .Values.cluster.infraID }}-efs-sg
   namespace: ack-system
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   name: {{ .Values.cluster.infraID }}-efs-sg
   description: Security Group used for EFS mounts for CSI storage
