@@ -15,6 +15,7 @@ data:
   RECONCILE_DEFAULT_MAX_CONCURRENT_SYNCS: {{ default .Values.ack.maxConcurrentSyncs .Values.ack.ec2.maxConcurrentSyncs | quote }}
   FEATURE_FLAGS: {{ default .Values.ack.featureFlags .Values.ack.ec2.featureFlags | quote }}
   FEATURE_GATES: {{ default .Values.ack.featureGates .Values.ack.ec2.featureGates | quote }}
+  ENABLE_CARM: {{ default .Values.ack.enableCarm .Values.ack.ec2.enableCarm | quote }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -33,3 +34,4 @@ data:
   RECONCILE_DEFAULT_MAX_CONCURRENT_SYNCS: {{ default .Values.ack.maxConcurrentSyncs .Values.ack.efs.maxConcurrentSyncs | quote }}
   FEATURE_FLAGS: {{ default .Values.ack.featureFlags .Values.ack.efs.featureFlags | quote }}
   FEATURE_GATES: {{ default .Values.ack.featureGates .Values.ack.efs.featureGates | quote }}
+  ENABLE_CARM: {{ default .Values.ack.enableCarm .Values.ack.efs.enableCarm | quote }}

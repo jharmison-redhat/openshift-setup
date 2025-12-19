@@ -9,6 +9,7 @@ ack:
   resourceTags: ack-managed
   featureFlags: ""
   featureGates: ""
+  enableCarm: false
 
   createOperatorGroup: true
   installExtraCrds: true
