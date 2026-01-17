@@ -1,0 +1,35 @@
+---
+applications:
+  - name: aws-nvidia-gpu-machinesets
+    fileprefix: h100
+    rewrite:
+      metadata:
+        name: machineset-h100
+    values:
+      instanceType: p5.4xlarge
+      desiredReplicas: 1
+      baseName: worker-h100
+      taints:
+        - key: nvidia.com/gpu
+          value: h100
+          effect: NoSchedule
+      nodeLabels:
+        node-role.kubernetes.io/gpu: ""
+        jharmison.dev/gpu-type: h100
+  - name: aws-nvidia-gpu-machinesets
+    fileprefix: l40s
+    rewrite:
+      metadata:
+        name: machineset-l40s
+    values:
+      instanceType: g6e.2xlarge
+      desiredReplicas: 1
+      baseName: worker-l40s
+      taints:
+        - key: nvidia.com/gpu
+          value: l40s
+          effect: NoSchedule
+      nodeLabels:
+        node-role.kubernetes.io/gpu: ""
+        jharmison.dev/gpu-type: l40s
+  - name: nvidia-gpu-enablement
