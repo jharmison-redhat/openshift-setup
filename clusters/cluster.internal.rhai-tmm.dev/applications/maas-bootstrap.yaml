@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     path: bootstrap/applications
-    repoURL: https://github.com/rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
+    repoURL: git@github.com:rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
     targetRevision: feat/initial-prep-pass
     helm:
       valuesFiles:
