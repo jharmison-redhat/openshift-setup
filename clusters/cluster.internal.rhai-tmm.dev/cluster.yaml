@@ -1,0 +1,16 @@
+desiredUpdate:
+  version: 4.20.8
+cluster:
+  name: cluster
+  baseDomain: internal.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age150pyavn0r9hrqtjqwpml0wsapkq6h6gs99rfk64dd5f5puhef90s3mz03s
+  infraID: cluster-7xs8l
+aws:
+  region: us-east-2
+  azs: ["us-east-2c","us-east-2a","us-east-2b"]
+  ami: ami-0bc8dda494f111572
+  subnets: ["subnet-0e70fb90bfb6f0480","subnet-0e17736b4a5680ff0","subnet-07396d1fae25db39a"]
+  nodeSg: sg-0f62eac7f387f7dd6
+  vpcId: vpc-069b3f6ad113d39fc
