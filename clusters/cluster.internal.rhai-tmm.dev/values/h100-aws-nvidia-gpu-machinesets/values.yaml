@@ -4,8 +4,9 @@ desiredReplicas: 1
 instanceType: p5.4xlarge
 nodeLabels:
   jharmison.dev/gpu-type: h100
-  node-role.kubernetes.io/gpu: ''
+  node-role.kubernetes.io/gpu: ""
+  gpu-class: large
 taints:
-- effect: NoSchedule
-  key: nvidia.com/gpu
-  value: h100
+  - effect: NoSchedule
+    key: nvidia.com/gpu
+    value: h100
