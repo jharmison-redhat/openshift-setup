@@ -15,7 +15,7 @@ spec:
     repoURL: git@github.com:rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
     targetRevision: feat/initial-prep-pass
     helm:
-      valuesFiles:
+      valueFiles:
         - ../../clusters/cluster.internal.rhai-tmm.dev/values/maas-bootstrap/values.yaml
   syncPolicy:
     automated:
