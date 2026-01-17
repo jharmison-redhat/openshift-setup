@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: maas-bootstrap
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: openshift-gitops
+    name: in-cluster
+  project: default
+  source:
+    path: bootstrap/applications
+    repoURL: https://github.com/rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
+    targetRevision: feat/initial-prep-pass
+    helm:
+      valuesFiles:
+        - ../../clusters/cluster.internal.rhai-tmm.dev/values/maas-bootstrap/values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
