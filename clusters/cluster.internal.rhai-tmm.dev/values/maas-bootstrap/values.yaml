@@ -8,7 +8,7 @@ bootstrap:
 slackMcpSecret:
   enabled: false
 
-valuesObject:
-  deployer:
-    apiUrl: https://api.cluster.internal.rhai-tmm.dev:6443
-    domain: apps.cluster.internal.rhai-tmm.dev
+deployer:
+  apiUrl: https://api.cluster.internal.rhai-tmm.dev:6443
+  domain: apps.cluster.internal.rhai-tmm.dev
+  wildcardCertName: router-cert
