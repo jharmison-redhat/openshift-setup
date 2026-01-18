@@ -2,6 +2,7 @@ user:
   count: 2
 
 bootstrap:
+  repoURL: git@github.com:rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
   targetRevision: feat/initial-prep-pass
 
 slackMcpSecret:
