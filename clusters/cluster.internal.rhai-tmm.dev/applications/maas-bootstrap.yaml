@@ -10,13 +10,16 @@ spec:
     namespace: openshift-gitops
     name: in-cluster
   project: default
-  source:
-    path: bootstrap/applications
-    repoURL: git@github.com:rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
-    targetRevision: feat/initial-prep-pass
-    helm:
-      valueFiles:
-        - ../../clusters/cluster.internal.rhai-tmm.dev/values/maas-bootstrap/values.yaml
+  sources:
+    - path: bootstrap/applications
+      repoURL: git@github.com:rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
+      targetRevision: feat/initial-prep-pass
+      helm:
+        valueFiles:
+          - $values/clusters/cluster.internal.rhai-tmm.dev/values/maas-bootstrap/values.yaml
+    - repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+      targetRevision: HEAD
+      ref: values
   syncPolicy:
     automated:
       prune: true
