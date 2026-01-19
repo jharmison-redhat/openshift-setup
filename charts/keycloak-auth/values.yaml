@@ -1,15 +1,24 @@
 channel: stable-v26.2
 
+name: keycloak
+instances: 1
+realm:
+  name: sso
+  openshiftClientId: ocp-idp
+  openshiftClientSecret: abcdefghijkl
+  admin:
+    username: admin
+    password: openshift
+  user:
+    prefix: user
+    count: 5
+    password: openshift
+
+cluster:
+  name: cluster
+  baseDomain: example.com
+
 cloudnative-pg:
   enabled: true
   clusters:
     - name: keycloak
-
-admin:
-  username: admin
-  password: openshift
-
-user:
-  prefix: user
-  count: 5
-  password: openshift

@@ -1,0 +1,16 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Values.name }}
+spec:
+  host: {{ .Values.name }}.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+  to:
+    kind: Service
+    name: {{ .Values.name }}-service
+    weight: 100
+  port:
+    targetPort: https
+  tls:
+    termination: reencrypt
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

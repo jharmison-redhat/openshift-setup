@@ -1,0 +1,32 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: {{ .Values.name }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  db:
+    vendor: postgres
+    database: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}
+    host: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}-rw
+    usernameSecret:
+      name: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}-app
+      key: username
+    passwordSecret:
+      name: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}-app
+      key: password
+  hostname:
+    hostname: sso.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    strict: false
+    strictBackchannel: false
+  http:
+    httpEnabled: False
+    tlsSecret: {{ .Values.name }}-internal-tls
+  ingress:
+    enabled: false
+  instances: {{ .Values.instances }}
+  transaction:
+    xaEnabled: true
+  additionalOptions:
+    - name: enable-recovery
+      value: 'true'
