@@ -24,4 +24,4 @@ cluster:
 cloudnative-pg:
   enabled: true
   clusters:
-    - name: keycloak
+    - name: keycloak-postgres
