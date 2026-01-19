@@ -1,24 +1,24 @@
 apiVersion: k8s.keycloak.org/v2alpha1
 kind: KeycloakRealmImport
 metadata:
-  name: {{ .Values.realm.name }}
+  name: {{ $.Values.realm.name }}
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  keycloakCRName: {{ .Values.name }}
+  keycloakCRName: {{ $.Values.name }}
   realm:
-    id: {{ .Values.realm.name }}
-    realm: {{ .Values.realm.name }}
+    id: {{ $.Values.realm.name }}
+    realm: {{ $.Values.realm.name }}
     enabled: true
     sslRequired: external
     registrationAllowed: false
     loginWithEmailAllowed: true
     duplicateEmailsAllowed: false
     clients:
-      - clientId: {{ .Values.realm.openshiftClientId }}
+      - clientId: {{ $.Values.realm.openshiftClientId }}
         enabled: true
         clientAuthenticatorType: client-secret
-        secret: {{ .Values.realm.openshiftClientSecret }}
+        secret: {{ $.Values.realm.openshiftClientSecret }}
         publicClient: false
         redirectUris:
         - "*"
@@ -34,8 +34,8 @@ spec:
         - name: admin
           description: "Administrator role"
     users:
-      {{- range $i := seq .Values.realm.user.count }}
-      {{- $username := cat .Values.realm.user.prefix (toString $i) }}
+      {{- range $i := until (int $.Values.realm.user.count) }}
+      {{- $username := printf "%s%s" $.Values.realm.user.prefix (toString (add 1 $i)) }}
       - username: {{ $username }}
         enabled: true
         emailVerified: true
@@ -44,20 +44,20 @@ spec:
         lastName: Demo
         credentials:
           - type: password
-            value: {{ .Values.realm.user.password }}
+            value: {{ $.Values.realm.user.password }}
             temporary: false
         realmRoles:
           - user
       {{- end }}
-      - username: {{ .Values.realm.admin.username }}
+      - username: {{ $.Values.realm.admin.username }}
         enabled: true
         emailVerified: true
-        email: {{ .Values.realm.admin.username }}@demo.redhat.com
-        firstName: {{ title .Values.realm.admin.username }}
+        email: {{ $.Values.realm.admin.username }}@demo.redhat.com
+        firstName: {{ title $.Values.realm.admin.username }}
         lastName: Demo
         credentials:
           - type: password
-            value: {{ .Values.realm.admin.password }}
+            value: {{ $.Values.realm.admin.password }}
             temporary: false
         realmRoles:
           - admin
