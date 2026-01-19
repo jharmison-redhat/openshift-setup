@@ -3,37 +3,29 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '1'
+    argocd.argoproj.io/sync-wave: '2'
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-  name: keycloak-auth
+  name: nvidia-gpu-enablement
 spec:
   destination:
     name: in-cluster
-    namespace: keycloak
+    namespace: default
   project: default
   source:
     helm:
       valueFiles:
       - ../../clusters/cluster.maas.rhai-tmm.dev/cluster.yaml
-      - ../../clusters/cluster.maas.rhai-tmm.dev/values/keycloak-auth/values.yaml
-      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.maas.rhai-tmm.dev/values/keycloak-auth/secrets.enc.yaml
-    path: charts/keycloak-auth
+    path: charts/nvidia-gpu-enablement
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    managedNamespaceMetadata:
-      labels:
-        argocd.argoproj.io/managed-by: openshift-gitops
-        openshift.io/cluster-monitoring: 'true'
     retry:
       backoff:
         duration: 10s
         factor: 3
         maxDuration: 30m
       limit: 10
-    syncOptions:
-    - CreateNamespace=true

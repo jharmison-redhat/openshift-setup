@@ -1,0 +1,34 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  aanotations:
+    argocd.argoproj.io/sync-wave: '3'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: maas-bootstrap
+spec:
+  destination:
+    name: in-cluster
+    namespace: openshift-gitops
+  project: default
+  sources:
+  - helm:
+      valueFiles:
+      - $values/clusters/cluster.maas.rhai-tmm.dev/values/maas-bootstrap/values.yaml
+    path: bootstrap/applications
+    repoURL: git@github.com:rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
+    targetRevision: feat/initial-prep-pass
+  - ref: values
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
+      limit: 10
