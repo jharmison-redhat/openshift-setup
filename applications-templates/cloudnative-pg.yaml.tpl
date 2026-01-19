@@ -1,20 +1,19 @@
-# NOTE: Please update this application's name and namespace - it is intended only to scaffold.
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: database
+  name: cloudnative-pg
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
     name: in-cluster
-    namespace: default
+    namespace: openshift-operators
   project: default
   source:
-    path: charts/database
+    path: charts/cloudnative-pg
     repoURL: ${ARGO_GIT_URL}
     targetRevision: ${ARGO_GIT_REVISION}
     helm:
@@ -29,9 +28,3 @@ spec:
         duration: 10s
         factor: 3
         maxDuration: 30m
-    syncOptions:
-      - RespectIgnoreDifferences=true
-    ignoreDifferences:
-      - kind: Secret
-        jsonPointers:
-          - /data/password

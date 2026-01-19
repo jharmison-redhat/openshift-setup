@@ -1,11 +1,12 @@
----
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  name: crunchy-postgres-operator
+  name: rhbk-operator
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
   channel: {{ .Values.channel }}
   installPlanApproval: Automatic
-  name: crunchy-postgres-operator
-  source: certified-operators
+  name: rhbk-operator
+  source: redhat-operators
   sourceNamespace: openshift-marketplace

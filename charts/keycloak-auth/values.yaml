@@ -1,0 +1,15 @@
+channel: stable-v26.2
+
+cloudnative-pg:
+  enabled: true
+  clusters:
+    - name: keycloak
+
+admin:
+  username: admin
+  password: openshift
+
+user:
+  prefix: user
+  count: 5
+  password: openshift

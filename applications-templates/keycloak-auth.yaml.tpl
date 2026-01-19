@@ -2,18 +2,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crunchydata-postgres-operator
+  name: keycloak-auth
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   annotations:
-    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   destination:
     name: in-cluster
-    namespace: openshift-operators
+    namespace: keycloak
   project: default
   source:
-    path: charts/crunchydata-postgres-operator
+    path: charts/keycloak-auth
     repoURL: ${ARGO_GIT_URL}
     targetRevision: ${ARGO_GIT_REVISION}
     helm:
@@ -28,3 +28,9 @@ spec:
         duration: 10s
         factor: 3
         maxDuration: 30m
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+        openshift.io/cluster-monitoring: "true"

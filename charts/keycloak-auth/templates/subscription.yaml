@@ -1,0 +1,12 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: rhbk-operator
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+spec:
+  channel: {{ .Values.channel }}
+  installPlanApproval: Automatic
+  name: rhbk-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace

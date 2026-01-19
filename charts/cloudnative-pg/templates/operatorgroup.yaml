@@ -1,0 +1,12 @@
+{{- if and .Values.operatorGroup.enabled (not (eq .Release.Namespace "openshift-operators")) }}
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: cloudnative-pg
+spec:
+  upgradeStrategy: Default
+  {{- if .Values.operatorGroup.namespaced }}
+  targetNamespaces:
+    - {{ .Release.Namespace }}
+  {{- end }}
+{{- end }}

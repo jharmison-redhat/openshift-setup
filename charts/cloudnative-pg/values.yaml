@@ -1,0 +1,7 @@
+channel: stable-v1
+
+clusters: []
+
+operatorGroup:
+  enabled: false
+  namespaced: true

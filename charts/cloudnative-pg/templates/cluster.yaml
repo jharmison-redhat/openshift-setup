@@ -1,0 +1,24 @@
+{{- range $cluster := .Values.clusters }}
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ $cluster.name }}
+  {{- with $cluster.namespace }}
+  namespace: {{ . }}
+  {{- end }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  instances: {{ $cluster.instances | default 1 }}
+  storage:
+    {{- toYaml ($cluster.storage | default ("{\"size\": \"1Gi\"}" | fromJson)) | nindent 4 }}
+  bootstrap:
+    initdb:
+      database: {{ $cluster.name }}
+      owner: {{ $cluster.name }}
+  {{- with $cluster.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
