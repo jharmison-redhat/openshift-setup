@@ -20,4 +20,4 @@ spec:
           name: openid-client-secret
         extraScopes: []
         issuer: >-
-          https://{{ .Values.name }}.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/realms/{{ .Values.realm.name }}
+          https://{{ .Values.name }}.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/realms/{{ .Values.realm.name }}
