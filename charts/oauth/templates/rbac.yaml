@@ -16,9 +16,9 @@ roleRef:
   kind: ClusterRole
   name: cluster-reader
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: cluster-readers
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: cluster-readers
 {{- end }}
 {{- with .Values.admins }}
 ---
@@ -38,9 +38,9 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: cluster-admins
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: cluster-admins
 {{- end }}
 {{- if .Values.removeDefaultSelfProvisioner }}
 ---
@@ -55,9 +55,9 @@ roleRef:
 {{- if .Values.selfProvisioners }}
 subjects:
 {{- range .Values.selfProvisioners }}
-- apiGroup: {{ .apiGroup | default "rbac.authorization.k8s.io" }}
-  kind: {{ .kind | default "User" }}
-  name: {{ .name }}
+  - apiGroup: {{ .apiGroup | default "rbac.authorization.k8s.io" }}
+    kind: {{ .kind | default "User" }}
+    name: {{ .name }}
 {{- end }}
 {{- else }}
 subjects: []

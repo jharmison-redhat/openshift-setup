@@ -21,7 +21,7 @@ spec:
         secret: {{ $.Values.realm.openshiftClientSecret }}
         publicClient: false
         redirectUris:
-        - "*"
+          - "*"
         standardFlowEnabled: true
         directAccessGrantsEnabled: true
         serviceAccountsEnabled: true

@@ -1,0 +1,23 @@
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+    - name: rhbk
+      type: OpenID
+      mappingMethod: claim
+      openID:
+        claims:
+          email:
+            - email
+          name:
+            - name
+          preferredUsername:
+            - preferred_username
+        clientID: {{ .Values.realm.openshiftClientId }}
+        clientSecret:
+          name: openid-client-secret
+        extraScopes: []
+        issuer: >-
+          https://sso.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/realms/{{ .Values.realm.name }}
