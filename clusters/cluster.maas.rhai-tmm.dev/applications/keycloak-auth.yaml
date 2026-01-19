@@ -1,0 +1,37 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '1'
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: keycloak-auth
+spec:
+  destination:
+    name: in-cluster
+    namespace: keycloak
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - ../../clusters/cluster.maas.rhai-tmm.dev/cluster.yaml
+    path: charts/keycloak-auth
+    repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+        openshift.io/cluster-monitoring: 'true'
+    retry:
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 30m
+      limit: 10
+    syncOptions:
+    - CreateNamespace=true

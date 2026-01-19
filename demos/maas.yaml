@@ -7,7 +7,7 @@ applications:
         name: machineset-h100
     values:
       instanceType: p5.4xlarge
-      desiredReplicas: 1
+      desiredReplicas: 0
       baseName: worker-h100
       taints:
         - key: nvidia.com/gpu
@@ -24,7 +24,7 @@ applications:
         name: machineset-l40s
     values:
       instanceType: g6e.2xlarge
-      desiredReplicas: 1
+      desiredReplicas: 2
       baseName: worker-l40s
       taints:
         - key: nvidia.com/gpu
@@ -35,3 +35,24 @@ applications:
         jharmison.dev/gpu-type: l40s
         gpu-class: medium
   - name: nvidia-gpu-enablement
+  - name: keycloak-auth
+rawApplications:
+  - name: maas-bootstrap
+    namespace: openshift-gitops
+    source:
+      path: bootstrap/applications
+      repoURL: git@github.com:rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
+      targetRevision: feat/initial-prep-pass
+    sync_wave: 3
+    values:
+      user:
+        count: 5
+      bootstrap:
+        repoURL: git@github.com:rh-aiservices-bu/nvidia-redhat-blueprint-maas.git
+        targetRevision: feat/initial-prep-pass
+      slackMcpSecret:
+        enabled: false
+      deployer:
+        apiUrl: https://api.${CLUSTER_URL}:6443
+        domain: apps.${CLUSTER_URL}
+        wildcardCertName: router-cert
