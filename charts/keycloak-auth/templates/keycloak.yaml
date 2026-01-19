@@ -16,7 +16,7 @@ spec:
       name: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}-app
       key: password
   hostname:
-    hostname: sso.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    hostname: {{ .Values.name }}.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
     strict: false
     strictBackchannel: false
   http:
