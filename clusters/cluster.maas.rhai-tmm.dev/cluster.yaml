@@ -1,0 +1,16 @@
+desiredUpdate:
+  version: 4.20.8
+cluster:
+  name: cluster
+  baseDomain: maas.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1p903apctme68vzrsek5drjyvd7xc62cl93klmh0djdv4ljrftyaqkfvrna
+  infraID: cluster-c7bpf
+aws:
+  region: us-west-2
+  azs: ["us-west-2c","us-west-2d","us-west-2a","us-west-2b"]
+  ami: ami-09a01afdd3a3a9e81
+  subnets: ["subnet-06eb634a38b811a53","subnet-0474031a6594d8813","subnet-0821e727c6fcb2022","subnet-0aa1af952d44d7926"]
+  nodeSg: sg-0ecd0469fdbc97635
+  vpcId: vpc-0e56b4a611f5eaf2e

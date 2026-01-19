@@ -15,7 +15,7 @@ spec:
   source:
     helm:
       valueFiles:
-      - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
+      - ../../clusters/cluster.maas.rhai-tmm.dev/cluster.yaml
     path: charts/config
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD

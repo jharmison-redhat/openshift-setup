@@ -15,9 +15,9 @@ spec:
   source:
     helm:
       valueFiles:
-      - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
-      - ../../clusters/cluster.internal.rhai-tmm.dev/values/cert-manager/values.yaml
-      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.internal.rhai-tmm.dev/values/cert-manager/secrets.enc.yaml
+      - ../../clusters/cluster.maas.rhai-tmm.dev/cluster.yaml
+      - ../../clusters/cluster.maas.rhai-tmm.dev/values/cert-manager/values.yaml
+      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.maas.rhai-tmm.dev/values/cert-manager/secrets.enc.yaml
     path: charts/cert-manager
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
