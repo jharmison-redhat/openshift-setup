@@ -1,0 +1,17 @@
+providers:
+  htpasswd: null
+  github:
+    organizations:
+      - rhai-code
+
+admins:
+  - jharmison-redhat
+  - aliciavcao
+  - cedricclyburn
+  - cnuland
+  - deewhyweb
+  - FrankLaVigne
+  - gshipley
+  - lkerriso
+  - RobbieJ
+  - taylorjordanNC
