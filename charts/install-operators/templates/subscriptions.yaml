@@ -1,0 +1,19 @@
+{{- range $operator, $config := .Values.operators }}
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: {{ $operator }}
+  namespace: {{ $config.namespace | default "openshift-operators" }}
+  labels:
+    {{- include "install-operators.labels" $ | nindent 4 }}
+spec:
+  channel: {{ $config.channel }}
+  installPlanApproval: {{ $config.installPlanApproval | default "Automatic" }}
+  name: {{ $operator }}
+  source: {{ $config.catalog | default "redhat-operators" }}
+  sourceNamespace: openshift-marketplace
+  {{- with $config.startingCSV }}
+  startingCSV: {{ . }}
+  {{- end }}
+{{- end }}

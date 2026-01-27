@@ -1,0 +1,16 @@
+global:
+  toolsImage: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+
+operators: {}
+# rhods-operator:
+#   enabled: true
+#   channel: fast-3.x
+#   installPlanApproval: Manual
+#   startingCSV: rhods-operator.3.2.0
+#   namespace: redhat-ods-operator
+#   operatorGroup:
+#     enabled: true
+# cloudnative-pg:
+#   enabled: true
+#   channel: stable-v1
+#   catalog: certified-operators

@@ -1,0 +1,18 @@
+{{- range $operator, $config := .Values.operators }}
+{{- if $config.namespace }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $config.namespace }}
+  labels:
+    {{- include "install-operators.labels" $ | nindent 4 }}
+  {{- with $config.namespaceLabels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $config.namespaceAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
