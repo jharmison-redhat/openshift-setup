@@ -1,0 +1,52 @@
+---
+channel: fast-3.x
+
+dataScienceCluster:
+  components:
+    aipipelines:
+      argoWorkflowsControllers:
+        managementState: Managed
+      managementState: Managed
+    dashboard:
+      managementState: Managed
+    feastoperator:
+      managementState: Managed
+    kserve:
+      nim:
+        managementState: Removed
+      rawDeploymentServiceConfig: Headless
+      managementState: Managed
+    kueue:
+      defaultClusterQueueName: default
+      defaultLocalQueueName: default
+      managementState: Removed
+    llamastackoperator:
+      managementState: Managed
+    mlflowoperator:
+      managementState: Removed
+    modelregistry:
+      registriesNamespace: rhoai-model-registries
+      managementState: Managed
+    ray:
+      managementState: Managed
+    trainingoperator:
+      managementState: Managed
+    trustyai:
+      eval:
+        lmeval:
+          permitCodeExecution: deny
+          permitOnline: deny
+      managementState: Managed
+    workbenches:
+      workbenchNamespace: rhods-notebooks
+      managementState: Managed
+
+dataScienceClusterInitialization: null
+dashboardConfig:
+  disableLMEval: false
+  disableFineTuning: false
+  genAiStudio: true
+  modelAsService: true
+
+modelServerSizes: null
+notebookSizes: null
