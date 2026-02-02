@@ -1,0 +1,15 @@
+---
+apiVersion: v2
+name: rhcl
+description: >
+  A helm chart to install and configure a basic Red Hat Connectivity Link deployment
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+
+dependencies:
+  - name: install-operators
+    version: 0.1.0
+    repository: file://../install-operators
+    alias: installRhclOperator
+    condition: installRhclOperator.enabled

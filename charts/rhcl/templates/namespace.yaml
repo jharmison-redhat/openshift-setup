@@ -1,0 +1,8 @@
+{{- if .Values.kuadrant.create }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.kuadrant.namespace }}
+  labels:
+    {{- include "rhcl.labels" . | nindent 4 }}
+{{- end }}

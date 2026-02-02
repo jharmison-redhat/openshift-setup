@@ -1,0 +1,12 @@
+global:
+  toolsImage: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
+
+installRhclOperator:
+  enabled: true
+  operators:
+    rhcl-operator:
+      channel: stable
+
+kuadrant:
+  create: true
+  namespace: kuadrant-system

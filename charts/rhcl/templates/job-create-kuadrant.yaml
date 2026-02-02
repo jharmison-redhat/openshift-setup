@@ -1,0 +1,33 @@
+{{- if .Values.kuadrant.create }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-kuadrant
+  namespace: {{ .Values.kuadrant.namespace }}
+  labels:
+    {{- include "rhcl.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccountName: create-kuadrant
+      restartPolicy: Never
+      containers:
+        - name: create-kuadrant
+          image: {{ .Values.global.toolsImage }}
+          imagePullPolicy: IfNotPresent
+          workingDir: /app
+          command: ["/app/create-kuadrant.sh"]
+          args: []
+          volumeMounts:
+            - name: create-kuadrant-script
+              mountPath: /app
+      volumes:
+        - name: create-kuadrant-script
+          configMap:
+            name: create-kuadrant-script
+            defaultMode: 493
+{{- end }}
