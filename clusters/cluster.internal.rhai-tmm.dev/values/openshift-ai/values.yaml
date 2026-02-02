@@ -3,10 +3,6 @@ channel: fast-3.x
 
 dataScienceCluster:
   components:
-    aipipelines:
-      argoWorkflowsControllers:
-        managementState: Managed
-      managementState: Managed
     dashboard:
       managementState: Managed
     feastoperator:
@@ -22,8 +18,6 @@ dataScienceCluster:
       managementState: Removed
     llamastackoperator:
       managementState: Managed
-    mlflowoperator:
-      managementState: Removed
     modelregistry:
       registriesNamespace: rhoai-model-registries
       managementState: Managed
