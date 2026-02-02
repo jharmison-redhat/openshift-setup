@@ -1,7 +1,0 @@
-catalog:
-  tag: rhoai-3.0
-pullSecret: {}
-#   auths:
-#     quay.io:
-#       auth: asdfasdfasdf
-#       email: asdf@example.com

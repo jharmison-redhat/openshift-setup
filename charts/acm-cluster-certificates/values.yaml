@@ -1,7 +1,0 @@
----
-clusterIssuer: zerossl
-
-cluster:
-  name: example-cluster
-  baseDomain: jharmison.dev
-  env: harmison-house

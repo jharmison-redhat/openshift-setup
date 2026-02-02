@@ -1,9 +1,0 @@
----
-apiVersion: v2
-name: infraenv
-description: >
-  A helm chart to define the necessary configurations for provisioning clusters
-  with the assisted-service discovery iso
-type: application
-version: 0.1.0
-appVersion: 0.1.0

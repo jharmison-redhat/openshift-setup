@@ -1,8 +1,0 @@
----
-apiVersion: v2
-name: openshift-pipelines
-description: >
-  A helm chart to deploy OpenShift Pipelines
-type: application
-version: 0.1.0
-appVersion: 0.1.0

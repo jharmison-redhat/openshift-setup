@@ -1,8 +1,0 @@
----
-apiVersion: v2
-name: summit-demo
-description: >
-  A helm chart to deploy The Rest of the Owl for the RH Summit autoscaling demo
-type: application
-version: 0.1.0
-appVersion: 0.1.0
