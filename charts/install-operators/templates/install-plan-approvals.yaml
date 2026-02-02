@@ -1,8 +1,13 @@
 {{- range $operator, $config := .Values.operators }}
-{{- if eq ($config.installPlanApproval | default "Automatic") "Manual" }}
+{{- $manualInstall := eq ($config.installPlanApproval | default "Automatic") "Manual" }}
+{{- $approveCSVs := $config.approveCSVs | default list }}
+{{- if $manualInstall }}
 {{- if not $config.startingCSV }}
 {{- fail "Manual approvals with this chart require pinning a specific CSV with startingCSV for the operator" }}
 {{- end }}
+{{- $approveCSVs = append $approveCSVs $config.startingCSV }}
+{{- end }}
+{{- if $approveCSVs }}
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -59,13 +64,6 @@ spec:
         image: {{ $.Values.global.toolsImage }}
         imagePullPolicy: IfNotPresent
         command: ["/mnt/approve-operator.sh"]
-        env:
-          - name: PACKAGE
-            value: {{ $operator }}
-          - name: PACKAGE_NAMESPACE
-            value: {{ $config.namespace | default "openshift-operators" }}
-          - name: CSV
-            value: {{ $config.startingCSV }}
         volumeMounts:
           - name: approve-operator-script
             mountPath: /mnt

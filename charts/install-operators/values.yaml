@@ -12,3 +12,7 @@ operators: {}
 # cloudnative-pg:
 #   channel: stable-v1
 #   catalog: certified-operators
+# rhcl-operator:
+#   channel: stable
+#   approveCSVs:
+#     - rhcl-operator.v1.2.1

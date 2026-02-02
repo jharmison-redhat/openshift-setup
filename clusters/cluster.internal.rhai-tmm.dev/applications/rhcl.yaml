@@ -16,6 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
+      - ../../clusters/cluster.internal.rhai-tmm.dev/values/rhcl/values.yaml
     path: charts/rhcl
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
