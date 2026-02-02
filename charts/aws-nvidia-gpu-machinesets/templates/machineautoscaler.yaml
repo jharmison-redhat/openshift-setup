@@ -1,18 +1,16 @@
 {{- if .Values.autoscaling.enabled }}
-{{- range $az := .Values.aws.azs }}
+{{- range $i, $az := .Values.aws.azs }}
 {{- with $ }}
+{{- $len := len .Values.aws.azs }}
 ---
 apiVersion: autoscaling.openshift.io/v1beta1
 kind: MachineAutoscaler
 metadata:
   name: {{ .Values.cluster.infraID }}-{{ .Values.baseName }}-{{ $az }}
 spec:
-  {{- if eq $az (include "aws-nvidia-gpu-machinesets.az" $) }}
-  minReplicas: {{ .Values.autoscaling.minReplicas }}
-  maxReplicas: {{ .Values.autoscaling.maxReplicas }}
-  {{- else }}
-  minReplicas: 0
-  maxReplicas: 0
+  {{- with .Values.autoscaling }}
+  minReplicas: {{ div .minReplicas $len }}
+  maxReplicas: {{ add (div .maxReplicas $len) 1 }}
   {{- end }}
   scaleTargetRef:
     apiVersion: machine.openshift.io/v1beta1
