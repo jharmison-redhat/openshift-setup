@@ -44,7 +44,6 @@ dataScienceCluster:
 dataScienceClusterInitialization: null
 dashboardConfig:
   disableLMEval: false
-  disableFineTuning: false
   genAiStudio: true
   modelAsService: true
 
