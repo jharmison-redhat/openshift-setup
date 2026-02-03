@@ -1,4 +1,4 @@
----
+{{- with .Values.enableCephTools }}
 apiVersion: ocs.openshift.io/v1
 kind: OCSInitialization
 metadata:
@@ -6,4 +6,5 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  enableCephTools: {{ .Values.enableCephTools }}
+  enableCephTools: {{ . }}
+{{- end }}

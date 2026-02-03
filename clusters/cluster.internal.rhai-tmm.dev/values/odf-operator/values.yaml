@@ -1,6 +1,6 @@
 ---
 channel: stable-4.20
-enableCephTools: false
+enableCephTools: null
 multiCloudGateway:
   dbStorageClassName: gp3-csi
   reconcileStrategy: standalone
