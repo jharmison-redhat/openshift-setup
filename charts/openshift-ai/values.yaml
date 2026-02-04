@@ -9,6 +9,7 @@ operatorReplicas: 1
 
 dataScienceCluster:
   create: true
+  version: v1
   components:
     kserve:
       managementState: Managed

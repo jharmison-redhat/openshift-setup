@@ -2,6 +2,7 @@
 channel: fast-3.x
 
 dataScienceCluster:
+  version: v2
   components:
     dashboard:
       managementState: Managed
