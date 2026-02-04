@@ -10,6 +10,10 @@ operatorReplicas: 1
 dataScienceCluster:
   create: true
   components:
+    aipipelines:
+      argoWorkflowsControllers:
+        managementState: Managed
+      managementState: Managed
     kserve:
       managementState: Managed
       nim:
