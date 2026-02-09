@@ -35,8 +35,6 @@ dataScienceCluster:
     feastoperator: {}
     llamastackoperator:
       managementState: Removed
-    mlflowoperator:
-      managementState: Removed
 
 dataScienceClusterInitialization:
   serviceMesh:
