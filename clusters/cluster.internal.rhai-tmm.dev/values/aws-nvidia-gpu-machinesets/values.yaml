@@ -11,7 +11,7 @@ nodeLabels:
 autoscaling:
   enabled: true
   minReplicas: 0
-  maxReplicas: 3
+  maxReplicas: 6
   scaleDown:
     delayAfterAdd: 60m
     delayAfterDelete: 30m
