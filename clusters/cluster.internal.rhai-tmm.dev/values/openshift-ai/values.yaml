@@ -31,8 +31,8 @@ dataScienceCluster:
     trustyai:
       eval:
         lmeval:
-          permitCodeExecution: deny
-          permitOnline: deny
+          permitCodeExecution: allow
+          permitOnline: allow
       managementState: Managed
     workbenches:
       workbenchNamespace: rhods-notebooks
