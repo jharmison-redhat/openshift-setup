@@ -1,0 +1,3 @@
+instanceType: g6e.12xlarge
+desiredReplicas: 2
+rootDeviceSizeGB: 500
