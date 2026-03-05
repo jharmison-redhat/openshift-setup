@@ -4,6 +4,9 @@ installOpenShiftAiOperator:
   operators:
     rhods-operator:
       channel: stable
+      namespace: redhat-ods-operator
+      operatorGroup:
+        enabled: true
 
 enableUserTelemetry: false
 
