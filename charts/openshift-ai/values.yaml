@@ -1,5 +1,9 @@
 ---
-channel: stable
+installOpenShiftAiOperator:
+  enabled: true
+  operators:
+    rhods-operator:
+      channel: stable
 
 enableUserTelemetry: false
 
