@@ -1,13 +1,4 @@
 ---
-installOpenShiftAiOperator:
-  enabled: true
-  operators:
-    rhods-operator:
-      channel: stable
-      namespace: redhat-ods-operator
-      operatorGroup:
-        enabled: true
-
 enableUserTelemetry: false
 
 # If set, will override the deployment replica counts
