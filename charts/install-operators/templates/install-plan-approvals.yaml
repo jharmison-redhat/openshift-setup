@@ -18,15 +18,34 @@ metadata:
     {{- include "install-operators.labels" $ | nindent 4 }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: Role
 metadata:
   name: approve-{{ $operator }}
+  namespace: {{ $config.namespace | default "openshift-operators" }}
+  labels:
+    {{- include "install-operators.labels" $ | nindent 4 }}
+rules:
+  - apiGroups:
+      - operators.coreos.com
+    resources:
+      - installplans
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: approve-{{ $operator }}
+  namespace: {{ $config.namespace | default "openshift-operators" }}
   labels:
     {{- include "install-operators.labels" $ | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-admin
+  kind: Role
+  name: approve-{{ $operator }}
 subjects:
 - kind: ServiceAccount
   name: approve-{{ $operator }}
@@ -40,7 +59,7 @@ metadata:
   labels:
     {{- include "install-operators.labels" $ | nindent 4 }}
 data:
-  approve-operator.sh: |
+  approve-operator.sh: |-
     {{- tpl ($.Files.Get "files/approve-operator.sh") (list $operator $config) | nindent 4 }}
 ---
 apiVersion: batch/v1

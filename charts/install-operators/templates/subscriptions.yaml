@@ -1,19 +1,95 @@
 {{- range $operator, $config := .Values.operators }}
+{{- $sub := dict "operator" $operator "config" $config "root" $ }}
+{{- if or (not (hasKey $config "ownSubscription")) $config.ownSubscription }}
 ---
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
+{{ include "install-operators.subscription" $sub }}
+{{- else }}
+---
+apiVersion: v1
+kind: ServiceAccount
 metadata:
-  name: {{ $operator }}
+  name: install-{{ $operator }}
   namespace: {{ $config.namespace | default "openshift-operators" }}
   labels:
     {{- include "install-operators.labels" $ | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: install-{{ $operator }}
+  namespace: {{ $config.namespace | default "openshift-operators" }}
+  labels:
+    {{- include "install-operators.labels" $ | nindent 4 }}
+rules:
+  - apiGroups:
+      - operators.coreos.com
+    resources:
+      - subscriptions
+    verbs:
+      - get
+      - list
+      - patch
+      - update
+      - create
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: install-{{ $operator }}
+  labels:
+    {{- include "install-operators.labels" $ | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: install-{{ $operator }}
+subjects:
+- kind: ServiceAccount
+  name: install-{{ $operator }}
+  namespace: {{ $config.namespace | default "openshift-operators" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: install-{{ $operator }}-script
+  namespace: {{ $config.namespace | default "openshift-operators" }}
+  labels:
+    {{- include "install-operators.labels" $ | nindent 4 }}
+data:
+  install-operator.sh: |-
+    {{- $.Files.Get "files/install-operator.sh" | nindent 4 }}
+  subscription.yaml: |-
+    {{- include "install-operators.subscription" $sub | indent 4 }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: install-{{ $operator }}
+  namespace: {{ $config.namespace | default "openshift-operators" }}
+  labels:
+    {{- include "install-operators.labels" $ | nindent 4 }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: before-hook-creation
+    helm.sh/hook-weight: "-1"
 spec:
-  channel: {{ $config.channel }}
-  installPlanApproval: {{ $config.installPlanApproval | default "Automatic" }}
-  name: {{ $operator }}
-  source: {{ $config.catalog | default "redhat-operators" }}
-  sourceNamespace: openshift-marketplace
-  {{- with $config.startingCSV }}
-  startingCSV: {{ . }}
-  {{- end }}
+  backoffLimit: 4
+  template:
+    spec:
+      serviceAccountName: install-{{ $operator }}
+      restartPolicy: Never
+      containers:
+      - name: install-operator
+        image: {{ $.Values.global.toolsImage }}
+        imagePullPolicy: IfNotPresent
+        command: ["/mnt/install-operator.sh"]
+        volumeMounts:
+          - name: install-operator-script
+            mountPath: /mnt
+      volumes:
+        - name: install-operator-script
+          configMap:
+            name: install-{{ $operator }}-script
+            defaultMode: 493
+{{- end }}
 {{- end }}

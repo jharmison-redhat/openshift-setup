@@ -49,3 +49,28 @@ Selector labels
 app.kubernetes.io/name: {{ include "install-operators.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{/*
+Subscription manifest
+*/}}
+{{- define "install-operators.subscription" -}}
+{{- $operator := .operator }}
+{{- $config := .config }}
+{{- $root := .root }}
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: {{ $operator }}
+  namespace: {{ $config.namespace | default "openshift-operators" }}
+  labels:
+    {{- include "install-operators.labels" $root | nindent 4 }}
+spec:
+  channel: {{ $config.channel }}
+  installPlanApproval: {{ $config.installPlanApproval | default "Automatic" }}
+  name: {{ $operator }}
+  source: {{ $config.catalog | default "redhat-operators" }}
+  sourceNamespace: openshift-marketplace
+  {{- with $config.startingCSV }}
+  startingCSV: {{ . }}
+  {{- end }}
+{{- end }}
