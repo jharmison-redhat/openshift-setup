@@ -5,12 +5,12 @@ cluster:
   baseDomain: code-assistant.rhai-tmm.dev
   controlPlaneNodes: 3
   workerNodes: 3
-  agePublicKey: age1rpwa6p76dtymj4k98750ehnf7hq5qamt36ua4fxeg49ptvcn8a4s92gwhh
-  infraID: cluster-fwwvv
+  agePublicKey: age1fnf94gydvr5zw09tp7teqn3xg38dlwhz4ylcf04vpnqk0t9dageqhts75r
+  infraID: cluster-8hz95
 aws:
   region: us-east-2
-  azs: ["us-east-2a","us-east-2b","us-east-2c"]
+  azs: ["us-east-2c","us-east-2a","us-east-2b"]
   ami: ami-0fd7c367ed8a90d52
-  subnets: ["subnet-032c4be2b41dd6116","subnet-0c8b4ba8c22ff5b6e","subnet-0bf7e617c085c0037"]
-  nodeSg: sg-06988d704282b2a89
-  vpcId: vpc-053dc9249ed6fff2b
+  subnets: ["subnet-0e55490117edf939b","subnet-0f131c9f15bb186eb","subnet-037a654c679c499e4"]
+  nodeSg: sg-0f8751ed71a005d89
+  vpcId: vpc-0512a378d244ae33c
