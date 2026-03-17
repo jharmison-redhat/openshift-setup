@@ -1,0 +1,16 @@
+desiredUpdate:
+  version: 4.20.15
+cluster:
+  name: cluster
+  baseDomain: code-assistant.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1rpwa6p76dtymj4k98750ehnf7hq5qamt36ua4fxeg49ptvcn8a4s92gwhh
+  infraID: cluster-fwwvv
+aws:
+  region: us-east-2
+  azs: ["us-east-2a","us-east-2b","us-east-2c"]
+  ami: ami-0fd7c367ed8a90d52
+  subnets: ["subnet-032c4be2b41dd6116","subnet-0c8b4ba8c22ff5b6e","subnet-0bf7e617c085c0037"]
+  nodeSg: sg-06988d704282b2a89
+  vpcId: vpc-053dc9249ed6fff2b
