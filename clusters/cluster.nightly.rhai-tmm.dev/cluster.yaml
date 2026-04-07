@@ -1,0 +1,16 @@
+desiredUpdate:
+  version: 4.20.15
+cluster:
+  name: cluster
+  baseDomain: nightly.rhai-tmm.dev
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1gu95zgdr3kxlvmtuckshf8wm5fkuzt92v259l7w5x2lh3aaugv0qzflx8c
+  infraID: cluster-8hvv9
+aws:
+  region: us-west-2
+  azs: ["us-west-2b","us-west-2c","us-west-2d","us-west-2a"]
+  ami: ami-02822b9d01e073e65
+  subnets: ["subnet-051fe43f87eb63b20","subnet-098420fc102657624","subnet-0e3e357ef65e49d48","subnet-0668077f98c4c7edd"]
+  nodeSg: sg-0745e8530a8391fbf
+  vpcId: vpc-0c22e455681eb3295
