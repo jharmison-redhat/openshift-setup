@@ -7,6 +7,7 @@ metadata:
   namespace: {{ if .global }}redhat-ods-applications{{ else }}{{ .namespace }}{{ end }}
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "2"
     opendatahub.io/disabled: 'false'
     opendatahub.io/display-name: {{ .displayName }}
 spec:

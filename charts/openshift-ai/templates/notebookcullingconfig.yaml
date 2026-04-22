@@ -3,10 +3,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  labels:
-    opendatahub.io/dashboard: "true"
   name: notebook-controller-culler-config
   namespace: redhat-ods-applications
+  labels:
+    opendatahub.io/dashboard: "true"
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 data:
   CULL_IDLE_TIME: "{{ .Values.notebookIdleCulling.timeoutInMinutes }}"
   ENABLE_CULLING: "true"

@@ -1,68 +1,81 @@
 ---
+install-operators:
+  enabled: true
+  operators:
+    rhods-operator:
+      channel: stable-3.3
+      namespace: redhat-ods-operator
+      operatorGroup:
+        enabled: true
+
 enableUserTelemetry: false
 
 # If set, will override the deployment replica counts
-dashboardReplicas: 1
-operatorReplicas: 1
+dashboardReplicas: null
+operatorReplicas: null
 
 dataScienceCluster:
   create: true
-  version: v1
+  version: v2
   components:
+    aipipelines:
+      managementState: Managed
+    dashboard:
+      managementState: Managed
+    feastoperator:
+      managementState: Managed
     kserve:
       managementState: Managed
+      modelsAsService:
+        managementState: Removed
       nim:
         managementState: Managed
       rawDeploymentServiceConfig: Headed
+    kueue:
+      defaultClusterQueueName: default
+      defaultLocalQueueName: default
+      managementState: Removed
+    llamastackoperator:
+      managementState: Managed
+    mlflowoperator:
+      managementState: Managed
     modelregistry:
       managementState: Managed
       registriesNamespace: rhoai-model-registries
-    trustyai:
-      managementState: Managed
     ray:
-      managementState: Removed
-    kueue:
-      managementState: Removed
-    workbenches:
       managementState: Managed
-      workbenchNamespace: rhods-notebooks
-    dashboard:
+    trainer:
       managementState: Managed
     trainingoperator:
       managementState: Managed
-    feastoperator: {}
-    llamastackoperator:
-      managementState: Removed
+    trustyai:
+      eval:
+        lmeval:
+          permitCodeExecution: deny
+          permitOnline: deny
+      managementState: Managed
+    workbenches:
+      managementState: Managed
+      workbenchNamespace: rhods-notebooks
 
 dataScienceClusterInitialization:
-  serviceMesh:
-    managementState: Removed
+  monitoring:
+    managementState: Managed
+    namespace: redhat-ods-monitoring
+    metrics:
+      storage:
+        size: 5Gi
+        retention: 1d
+
 # applicationsNamespace: redhat-ods-applications
 # monitoring:
 #   managementState: Managed
 #   namespace: redhat-ods-monitoring
-# serviceMesh:
-#   auth:
-#     audiences:
-#       - 'https://kubernetes.default.svc'
-#   controlPlane:
-#     metricsCollection: Istio
-#     name: data-science-smcp
-#     namespace: istio-system
-#   managementState: Managed
+#   metrics: {}
 # trustedCABundle:
-#   customCABundle: ''
+#   customCABundle: ""
 #   managementState: Managed
 
-acceleratorProfiles: []
-# - name: migrated-gpu
-#   displayName: NVIDIA GPU
-#   enabled: true
-#   identifier: nvidia.com/gpu
-#   tolerations:
-#     - effect: NoSchedule
-#       key: nvidia.com/gpu
-#       operator: Exists
 hardwareProfiles: []
 
 admins: []
@@ -103,63 +116,3 @@ showJupyterInEnabledApplications: true
 notebookIdleCulling:
   enabled: true
   timeoutInMinutes: 240
-
-modelServerSizes:
-  - name: Small
-    resources:
-      limits:
-        cpu: "2"
-        memory: 8Gi
-      requests:
-        cpu: "1"
-        memory: 4Gi
-  - name: Medium
-    resources:
-      limits:
-        cpu: "8"
-        memory: 10Gi
-      requests:
-        cpu: "4"
-        memory: 8Gi
-  - name: Large
-    resources:
-      limits:
-        cpu: "10"
-        memory: 20Gi
-      requests:
-        cpu: "6"
-        memory: 16Gi
-
-notebookSizes:
-  - name: Small
-    resources:
-      limits:
-        cpu: "2"
-        memory: 8Gi
-      requests:
-        cpu: "1"
-        memory: 8Gi
-  - name: Medium
-    resources:
-      limits:
-        cpu: "6"
-        memory: 24Gi
-      requests:
-        cpu: "3"
-        memory: 24Gi
-  - name: Large
-    resources:
-      limits:
-        cpu: "14"
-        memory: 56Gi
-      requests:
-        cpu: "7"
-        memory: 56Gi
-  - name: X Large
-    resources:
-      limits:
-        cpu: "30"
-        memory: 120Gi
-      requests:
-        cpu: "15"
-        memory: 120Gi

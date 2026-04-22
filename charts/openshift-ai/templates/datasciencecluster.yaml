@@ -6,6 +6,7 @@ metadata:
   name: default-dsc
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
 {{- if .Values.dataScienceCluster.components }}
 spec:
   components:
