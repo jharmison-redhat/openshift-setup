@@ -23,5 +23,3 @@ operators:
       - openshift-lws-operator
   opentelemetry-product:
     channel: stable
-  servicemeshoperator3:
-    channel: stable
