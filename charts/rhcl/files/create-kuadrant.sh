@@ -26,3 +26,8 @@ oc delete pod -n openshift-operators -l app=kuadrant,control-plane=controller-ma
 sleep 1
 oc rollout status -n openshift-operators deployment/kuadrant-operator-controller-manager
 oc apply -f kuadrant.yaml
+sleep 1
+oc wait --for=condition=Ready kuadrant kuadrant --timeout 15m0s
+sleep 1
+oc annotate service authorino-authorino-authorization service.beta.openshift.io/serving-cert-secret-name=authorino-server-cert --overwrite
+oc patch authorino authorino --type=merge --patch '{"spec": {"listener": {"tls": {"enabled": true, "certSecretRef": {"name": "authorino-server-cert"}}}}}'
