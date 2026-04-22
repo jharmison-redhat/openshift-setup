@@ -1,0 +1,27 @@
+operators:
+  cluster-observability-operator:
+    channel: stable
+    namespace: openshift-cluster-observability-operator
+    operatorGroup:
+      enabled: true
+  external-secrets-operator:
+    channel: stable
+    catalog: community-operators
+  job-set:
+    channel: stable-v1.0
+    namespace: openshift-jobset-operator
+    operatorGroup:
+      enabled: true
+    targetNamespaces:
+      - openshift-jobset-operator
+  leader-worker-set:
+    channel: stable-v1.0
+    namespace: openshift-lws-operator
+    operatorGroup:
+      enabled: true
+    targetNamespaces:
+      - openshift-lws-operator
+  opentelemetry-product:
+    channel: stable
+  servicemeshoperator3:
+    channel: stable

@@ -5,12 +5,12 @@ cluster:
   baseDomain: internal.rhai-tmm.dev
   controlPlaneNodes: 3
   workerNodes: 3
-  agePublicKey: age16e9v0gar5d7df8a6fjutpmhq6uvt06z9vc93qyw2wrmc5ag3hs7s9sxku0
-  infraID: nightly-fczb2
+  agePublicKey: age1nqm9wjaek89lsscrg3sxt7n8fu4736u4cpxgat4v4yeqzel57dtqu07nlx
+  infraID: nightly-qmqdf
 aws:
   region: us-west-2
-  azs: ["us-west-2c","us-west-2d","us-west-2a","us-west-2b"]
+  azs: ["us-west-2d","us-west-2a","us-west-2b","us-west-2c"]
   ami: ami-04941543f3e575579
-  subnets: ["subnet-0d94bdba426454472","subnet-0e2bb4f5c033ad22b","subnet-0add349fb765df762","subnet-07743286424da6ead"]
-  nodeSg: sg-0fc6475bae4f19da8
-  vpcId: vpc-049d073adbfddaf66
+  subnets: ["subnet-094d256f3da3b75db","subnet-042c9feb0a153f876","subnet-080df6da7d7c906b4","subnet-0947c2195d9e61e34"]
+  nodeSg: sg-09d2375abf9eb4d19
+  vpcId: vpc-0724eb1f5acb5da15
