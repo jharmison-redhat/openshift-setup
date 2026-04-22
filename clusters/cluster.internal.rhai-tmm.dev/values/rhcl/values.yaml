@@ -1,7 +1,0 @@
-installRhclOperator:
-  enabled: true
-  operators:
-    rhcl-operator:
-      channel: stable
-      approveCSVs:
-        - rhcl-operator.v1.2.1
