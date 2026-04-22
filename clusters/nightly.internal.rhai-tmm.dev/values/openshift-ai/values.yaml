@@ -1,0 +1,30 @@
+install-operators:
+  enabled: false
+
+dashboardReplicas: 1
+operatorReplicas: 1
+dataScienceCluster:
+  components:
+    kserve:
+      modelsAsService:
+        managementState: Managed
+
+hardwareProfiles:
+  l40s:
+    node:
+      tolerations:
+        - key: nvidia.com/gpu
+          effect: NoSchedule
+          operator: Exists
+    displayName: NVIDIA L40s
+    cpu:
+      min: 2
+      max: 7
+      default: 2
+    memory:
+      min: 2Gi
+      max: 48Gi
+      default: 16Gi
+    gpu:
+      nvidia.com/gpu:
+        displayName: NVIDIA L40s
