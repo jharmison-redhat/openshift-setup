@@ -10,7 +10,8 @@ WORKER_COUNT ?= 3
 ARGO_GIT_URL ?= git@github.com:jharmison-redhat/openshift-setup.git
 ARGO_GIT_REVISION ?= HEAD
 ARGO_APPLICATIONS ?= config oauth cert-manager monitoring
-CLUSTER_VERSION ?= 4.20.15
+# https://mirror.openshift.com/pub/openshift-v4/clients/ocp/
+CLUSTER_VERSION ?= 4.21.9
 ACME_EMAIL ?=
 ACME_DISABLE_ACCOUNT_KEY_GENERATION ?= true
 GH_REPO := $(word 1,$(subst ., ,$(word 2,$(subst :, ,$(ARGO_GIT_URL)))))
