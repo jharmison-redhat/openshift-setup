@@ -9,6 +9,13 @@ dataScienceCluster:
       modelsAsService:
         managementState: Managed
 
+dashboardConfig:
+  disableKServeMetrics: false
+  disableLMEval: false
+  genAiStudio: true
+  modelAsService: true
+  observabilityDashboard: true
+
 hardwareProfiles:
   l40s:
     node:
