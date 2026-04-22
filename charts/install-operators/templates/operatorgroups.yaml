@@ -11,14 +11,10 @@ metadata:
   labels:
     {{- include "install-operators.labels" $ | nindent 4 }}
 spec:
-  {{- if $config.operatorGroup }}
   upgradeStrategy: {{ $config.operatorGroup.upgradeStrategy | default "Default" }}
   {{- with $config.targetNamespaces }}
   targetNamespaces:
     {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- else }}
-  upgradeStrategy: Default
   {{- end }}
 {{- end }}
 {{- end }}
