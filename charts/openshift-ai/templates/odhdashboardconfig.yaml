@@ -30,5 +30,11 @@ spec:
     enabled: {{ .Values.showJupyterInEnabledApplications }}
     notebookNamespace: rhods-notebooks
     pvcSize: {{ .Values.defaultWorkbenchPvcSize }}
-  templateDisablement: []
-  templateOrder: []
+  {{- with .Values.templateDisablement }}
+  templateDisablement:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.templateOrder }}
+  templateOrder:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
