@@ -76,7 +76,28 @@ dataScienceClusterInitialization:
 #   customCABundle: ""
 #   managementState: Managed
 
-hardwareProfiles: []
+hardwareProfiles: {}
+
+# hardwareProfiles:
+#   l40s:
+#     node:
+#       tolerations:
+#         - key: nvidia.com/gpu
+#           effect: NoSchedule
+#           operator: Exists
+#     displayName: NVIDIA L40s
+#     cpu:
+#       min: 2
+#       max: 30
+#       default: 2
+#     memory:
+#       min: 2Gi
+#       max: 60Gi
+#       default: 16Gi
+#     gpu:
+#       nvidia.com/gpu:
+#         max: 4
+#         displayName: NVIDIA L40s
 
 admins: []
 userGroups:

@@ -1,22 +1,58 @@
-{{- range .Values.hardwareProfiles }}
+{{- range $name, $profile := .Values.hardwareProfiles }}
 ---
 apiVersion: infrastructure.opendatahub.io/v1alpha1
 kind: HardwareProfile
 metadata:
-  name: {{ .name }}
-  namespace: {{ if .global }}redhat-ods-applications{{ else }}{{ .namespace }}{{ end }}
+  name: {{ $name }}
+  namespace: {{ $profile.namespace | default "redhat-ods-applications" }}
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
     argocd.argoproj.io/sync-wave: "2"
     opendatahub.io/disabled: 'false'
-    opendatahub.io/display-name: {{ .displayName }}
+    opendatahub.io/display-name: {{ $profile.displayName | default (title $name) }}
 spec:
-  {{- with .identifiers }}
   identifiers:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- with .scheduling }}
+    {{- with ($profile.cpu | default dict) }}
+    - identifier: cpu
+      displayName: CPU
+      resourceType: CPU
+      minCount: {{ .min | default 1 }}
+      defaultCount: {{ .default | default 4 }}
+      maxCount: {{ .max | default 4 }}
+    {{- end }}
+    {{- with ($profile.memory | default dict) }}
+    - identifier: memory
+      displayName: Memory
+      resourceType: Memory
+      minCount: {{ .min | default "2Gi" }}
+      defaultCount: {{ .default | default "16Gi" }}
+      maxCount: {{ .max | default "16Gi" }}
+    {{- end }}
+    {{- range $k, $v := ($profile.gpu | default dict) }}
+    - identifier: {{ $k }}
+      resourceType: Accelerator
+      {{- with $v.displayName }}
+      displayName: {{ . }}
+      {{- end }}
+      minCount: {{ $v.min | default 1 }}
+      maxCount: {{ $v.max | default 1 }}
+      defaultCount: {{ $v.default | default 1 }}
+    {{- end }}
   scheduling:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    type: {{ $profile.type | default "Node" }}
+    {{- if eq $profile.type "Kueue" }}
+    kueue:
+    {{- if $profile.kueue }}
+      {{- toYaml $profile.kueue | nindent 6 }}
+    {{- else }}
+      localQueueName: default
+    {{- end }}
+    {{- else }}
+    {{- if $profile.node }}
+    node:
+      {{- toYaml $profile.node | nindent 6 }}
+    {{- else }}
+    node: {}
+    {{- end }}
+    {{- end }}
 {{- end }}
