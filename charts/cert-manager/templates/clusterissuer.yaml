@@ -38,18 +38,7 @@ spec:
     {{- end }}
 {{- end }}
 {{- if .Values.ca.enabled }}
----
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: ca-issuer
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-    argocd.argoproj.io/sync-wave: "2"
-spec:
-  {{- if and .Values.ca.tlsCrt .Values.ca.tlsKey }}
-  ca:
-    secretName: cert-manager-ca
+{{- if and .Values.ca.tlsCrt .Values.ca.tlsKey }}
 ---
 apiVersion: v1
 kind: Secret
@@ -63,7 +52,47 @@ stringData:
     {{- .Values.ca.tlsCrt | nindent 4 }}
   tls.key: |-
     {{- .Values.ca.tlsKey | nindent 4 }}
-  {{- else }}
+{{- else }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
+spec:
   selfSigned: {}
-  {{- end }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-ca
+  namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  isCA: true
+  commonName: selfsigned-ca
+  secretName: cert-manager-ca
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+{{- end }}
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: ca-issuer
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  ca:
+    secretName: cert-manager-ca
 {{- end }}
