@@ -22,6 +22,9 @@ spec:
     - path: components/operators/rhoai-operator
       repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
       targetRevision: 853a8a7280149a3b9bfda0fc872262b1ed9ef285
+    - path: components/instances/maas-observability/base
+      repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
+      targetRevision: 853a8a7280149a3b9bfda0fc872262b1ed9ef285
   syncPolicy:
     automated:
       prune: true
