@@ -1,0 +1,51 @@
+{{- if and .Values.ca.enabled -}}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: trust-ca
+  namespace: openshift-config
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: trust-ca
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: trust-ca
+  namespace: openshift-config
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: trust-cert-manager-ca
+  namespace: openshift-config
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: trust-ca
+      restartPolicy: Never
+      containers:
+      - name: trust-ca
+        image: {{ .Values.global.toolsImage }}
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args:
+        - -xc
+        - |-
+          ca=$(oc get secret cert-manager-ca -n cert-manager -ogo-template='{{ "{{" }}index .data "tls.crt" | base64decode{{ "}}" }}')
+          oc create configmap user-ca-bundle --from-literal=ca-bundle.crt="$ca" --dry-run=client -oyaml | oc apply -f-
+          oc patch proxy cluster --patch '{"spec": {"trustedCA": {"name": "user-ca-bundle"}}}' --type merge
+{{- end }}
