@@ -1,0 +1,97 @@
+{{- if (eq $.Values.dataScienceCluster.components.kserve.modelsAsService.managementState "Managed") }}
+{{- with .Values.gateways.maasDefaultGateway }}
+{{- $host := .hostname | default (printf "maas.apps.%s.%s" $.Values.cluster.name $.Values.cluster.baseDomain) }}
+{{- if .useRoute }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: maas-default-gateway-config
+  namespace: openshift-ingress
+data:
+  service: |
+    spec:
+      type: ClusterIP
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: maas-default-gateway
+  namespace: openshift-ingress
+spec:
+  host: {{ $host }}
+  port:
+    targetPort: 80
+  tls:
+    insecureEdgeTerminationPolicy: Allow
+    termination: edge
+  to:
+    kind: Service
+    name: maas-default-gateway-openshift-default
+    weight: 100
+  wildcardPolicy: None
+{{- else if .certificate.create }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: maas-default-gateway-certificate
+  namespace: openshift-ingress
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  dnsNames:
+    - {{ $host }}
+  issuerRef:
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: {{ .certificate.clusterIssuer }}
+  secretName: maas-default-gateway-cert
+{{- end }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: maas-default-gateway
+  namespace: openshift-ingress
+  labels:
+    opendatahub.io/managed: "false"
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+    opendatahub.io/managed: "false"
+    security.opendatahub.io/authorino-tls-bootstrap: "true"
+spec:
+  gatewayClassName: data-science-gateway-class
+  {{- if .useRoute }}
+  infrastructure:
+    parametersRef:
+      group: ""
+      kind: ConfigMap
+      name: maas-default-gateway-config
+  {{- end }}
+  listeners:
+    {{- if .useRoute }}
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: {{ $host }}
+      allowedRoutes:
+        namespaces:
+          from: All
+    {{- else }}
+    - name: https
+      port: 443
+      protocol: HTTPS
+      hostname: {{ $host }}
+      tls:
+        certificateRefs:
+        - group: ""
+          kind: Secret
+          name: maas-default-gateway-cert
+        mode: Terminate
+      allowedRoutes:
+        namespaces:
+          from: All
+    {{- end }}
+{{- end }}
+{{- end }}

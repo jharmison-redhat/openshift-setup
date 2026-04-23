@@ -2,6 +2,10 @@
 global:
   toolsImage: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
 
+cluster:
+  name: cluster
+  baseDomain: example.com
+
 install-operators:
   enabled: true
   operators:
@@ -10,6 +14,13 @@ install-operators:
       namespace: redhat-ods-operator
       operatorGroup:
         enabled: true
+
+gateways:
+  maasDefaultGateway:
+    useRoute: false
+    certificate:
+      create: true
+      clusterIssuer: letsencrypt
 
 enableUserTelemetry: false
 
