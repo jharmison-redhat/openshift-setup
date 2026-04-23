@@ -1,5 +1,6 @@
 install-operators:
   enabled: true
-  cloudnative-pg:
-    channel: stable-v1
-    catalog: certified-operators
+  operators:
+    cloudnative-pg:
+      channel: stable-v1
+      catalog: certified-operators
