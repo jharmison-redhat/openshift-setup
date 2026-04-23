@@ -1,4 +1,7 @@
 ---
+ca:
+  enabled: true
+
 acme: {}
 # zerossl:
 #   server: https://acme.zerossl.com/v2/DV90
@@ -53,7 +56,7 @@ acme: {}
 
 certificates:
   clusterIssuer: zerossl
-# clusterIssuer: letsencrypt
+  # clusterIssuer: letsencrypt
   api:
     managed: true
   router:
