@@ -12,3 +12,7 @@ dependencies:
     version: 0.1.0
     repository: file://../install-operators
     condition: install-operators.enabled
+  - name: postgres-cluster
+    version: 0.1.0
+    repository: file://../postgres-cluster
+    condition: postgres-cluster.enabled

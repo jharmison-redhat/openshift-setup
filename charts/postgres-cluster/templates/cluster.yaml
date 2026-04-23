@@ -1,0 +1,85 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ include "postgres-cluster.fullname" . }}
+  {{- with .Values.namespace }}
+  namespace: {{ . }}
+  {{- end }}
+  labels:
+    {{- include "postgres-cluster.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.image }}
+  imageName: {{ . }}
+  {{- end }}
+  instances: {{ .Values.instances }}
+  {{- if .Values.recovery }}
+  bootstrap:
+    recovery:
+      {{- toYaml .Values.recovery | nindent 6 }}
+  {{- else if .Values.databases }}
+  {{- $db := first .Values.databases }}
+  bootstrap:
+    initdb:
+      database: {{ $db.name }}
+      owner: {{ $db.user | default $db.name }}
+      {{- if $db.password }}
+      secret:
+        name: {{ include "postgres-cluster.fullname" $ }}-{{ $db.user | default $db.name }}-{{ $db.name }}
+      {{- end }}
+  {{- end }}
+  {{- with .Values.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.storage }}
+  storage:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.walStorage }}
+  walStorage:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if .Values.certificate.enabled }}
+  certificates:
+    serverTLSSecret: {{ include "postgres-cluster.certificate.secret.fullname" . }}
+    serverCASecret: {{ include "postgres-cluster.certificate.secret.fullname" . }}
+  {{- end }}
+  {{- $disabled := include "postgres-cluster.disabledServices" . }}
+  {{- if or (or (not (eq $disabled "[]")) .Values.managed) .Values.databases }}
+  managed:
+    {{- with .Values.managed }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- if not (eq $disabled "[]") }}
+    services:
+      disabledDefaultServices: {{ $disabled }}
+    {{- end }}
+    {{- if .Values.databases }}
+    roles:
+      {{- range $db := .Values.databases }}
+      - name: {{ $db.user | default $db.name }}
+        login: true
+        {{- if $db.password }}
+        passwordSecret:
+          name: {{ include "postgres-cluster.fullname" $ }}-{{ $db.user | default $db.name }}-{{ $db.name }}
+        {{- end }}
+        {{- with $db.extraRoleSpec }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if and .Values.backups.enabled (eq .Values.backups.method "volumeSnapshot") }}
+  backup:
+    volumeSnapshot:
+      className: {{ .Values.backups.volumeSnapshot.className }}
+  {{- else if .Values.backups.enabled }}
+    {{ fail "No methods implemented other than volumeSnapshot" }}
+  {{- end }}

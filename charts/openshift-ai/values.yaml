@@ -137,3 +137,11 @@ showJupyterInEnabledApplications: true
 notebookIdleCulling:
   enabled: true
   timeoutInMinutes: 240
+
+postgres-cluster:
+  enabled: false
+  nameOverride: maas
+  namespace: redhat-ods-applications
+  databases:
+    - name: maas
+      user: maas

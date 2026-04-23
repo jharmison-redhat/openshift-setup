@@ -2,7 +2,14 @@
 apiVersion: v2
 name: cloudnative-pg
 description: >
-  A helm chart to manage installation and operation of the cloudnative-pg operator from EnterpriseDB
+  A helm chart to manage installation and operation of the cloudnative-pg
+  operator from EnterpriseDB
 type: application
 version: 0.1.0
 appVersion: 0.1.0
+
+dependencies:
+  - name: install-operators
+    version: 0.1.0
+    repository: file://../install-operators
+    condition: install-operators.enabled

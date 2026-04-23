@@ -35,3 +35,6 @@ hardwareProfiles:
     gpu:
       nvidia.com/gpu:
         displayName: NVIDIA L40s
+
+postgres-cluster:
+  enabled: true
