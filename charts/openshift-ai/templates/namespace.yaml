@@ -1,0 +1,8 @@
+{{- with index .Values "postgres-cluster" }}
+{{- if .enabled }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .namespace }}
+{{- end }}
+{{- end }}

@@ -141,7 +141,7 @@ notebookIdleCulling:
 postgres-cluster:
   enabled: false
   nameOverride: maas
-  namespace: redhat-ods-applications
+  namespace: maas-db
   databases:
     - name: maas
       user: maas
