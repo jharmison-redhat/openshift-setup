@@ -1,0 +1,75 @@
+{{- with $db := index .Values "postgres-cluster" }}
+{{- if and $db.enabled (eq $.Values.dataScienceCluster.components.kserve.modelsAsService.managementState "Managed") }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: create-maas-db-config
+  namespace: {{ $db.namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: create-maas-db-config-edit
+  namespace: {{ $db.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+  - kind: ServiceAccount
+    name: create-maas-db-config
+    namespace: {{ $db.namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: create-maas-db-config-edit
+  namespace: redhat-ods-applications
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+  - kind: ServiceAccount
+    name: create-maas-db-config
+    namespace: {{ $db.namespace }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: create-maas-db-config-script
+  namespace: {{ $db.namespace }}
+data:
+{{ tpl ($.Files.Glob "files/*").AsConfig $ | indent 2 }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-maas-db-config
+  namespace: {{ $db.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: create-maas-db-config
+      restartPolicy: Never
+      containers:
+        - name: create-maas-db-config
+          image: {{ $.Values.global.toolsImage }}
+          imagePullPolicy: IfNotPresent
+          workingDir: /app
+          command: ["/app/create-maas-db-config.sh"]
+          args: []
+          volumeMounts:
+            - name: create-maas-db-config-script
+              mountPath: /app
+      volumes:
+        - name: create-maas-db-config-script
+          configMap:
+            name: create-maas-db-config-script
+            defaultMode: 493
+{{- end }}
+{{- end }}
