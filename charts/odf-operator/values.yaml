@@ -1,5 +1,15 @@
 ---
-channel: stable-4.19
+install-operators:
+  enabled: true
+  operators:
+    odf-operator:
+      channel: stable-4.20
+      namespace: openshift-storage
+      targetNamespaces:
+        - openshift-storage
+      operatorGroup:
+        enabled: true
+
 enableCephTools: true
 createStorageSystem: false
 storageDeviceSets: []
