@@ -17,11 +17,14 @@ spec:
   {{- end }}
   managedResources:
     cephBlockPools: {}
-    cephConfig: {}
     cephDashboard: {}
     cephFilesystems: {}
     cephObjectStoreUsers: {}
     cephObjectStores: {}
+    {{- with .Values.cephConfig }}
+    cephConfig:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
   resourceProfile: {{ .Values.resourceProfile }}
   {{- with .Values.resources }}
   resources:
