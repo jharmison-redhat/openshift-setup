@@ -9,6 +9,16 @@ roleBindings:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
         name: wcaban
+  - name: wcaban-view
+    namespace: redhat-ods-applications
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: view
+    subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: wcaban
 clusterRoleBindings:
   - name: wcaban-evalhub-mlflow-access
     roleRef:
