@@ -9,3 +9,49 @@ roleBindings:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
         name: wcaban
+clusterRoleBindings:
+  - name: wcaban-evalhub-mlflow-access
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: trustyai-service-operator-evalhub-mlflow-access
+    subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: wcaban
+  - name: wcaban-evalhub-mlflow-jobs-access
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: trustyai-service-operator-evalhub-mlflow-jobs-access
+    subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: wcaban
+  - name: wcaban-evalhub-collections-access
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: trustyai-service-operator-evalhub-collections-access
+    subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: wcaban
+  - name: wcaban-evalhub-providers-access
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: trustyai-service-operator-evalhub-providers-access
+    subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: wcaban
+  - name: wcaban-lmeval-user
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: trustyai-service-operator-lmeval-user-role
+    subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: wcaban
