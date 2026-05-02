@@ -3,23 +3,17 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '3'
+    argocd.argoproj.io/sync-wave: '5'
   finalizers:
     - resources-finalizer.argocd.argoproj.io
-  name: rhoai-nightly-prereqs
+  name: rhoai-nightly-evalhub
 spec:
   destination:
     name: in-cluster
     namespace: default
   project: default
   sources:
-    - path: components/instances/external-secrets-instance
-      repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
-      targetRevision: 3713127343ad45e1ceae0c37e0d80b54c8f04f23
-    - path: components/instances/jobset-instance/base
-      repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
-      targetRevision: 3713127343ad45e1ceae0c37e0d80b54c8f04f23
-    - path: components/instances/leader-worker-set-instance/base
+    - path: components/instances/evalhub
       repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
       targetRevision: 3713127343ad45e1ceae0c37e0d80b54c8f04f23
   syncPolicy:

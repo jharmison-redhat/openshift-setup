@@ -15,16 +15,16 @@ spec:
   sources:
     - path: bootstrap/icsp
       repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
-      targetRevision: 853a8a7280149a3b9bfda0fc872262b1ed9ef285
+      targetRevision: 3713127343ad45e1ceae0c37e0d80b54c8f04f23
     - path: bootstrap/external-secrets
       repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
-      targetRevision: 853a8a7280149a3b9bfda0fc872262b1ed9ef285
+      targetRevision: 3713127343ad45e1ceae0c37e0d80b54c8f04f23
     - path: components/operators/rhoai-operator
       repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
-      targetRevision: 853a8a7280149a3b9bfda0fc872262b1ed9ef285
+      targetRevision: 3713127343ad45e1ceae0c37e0d80b54c8f04f23
     - path: components/instances/maas-observability/base
       repoURL: https://github.com/rh-aiservices-bu/rhoai-nightly.git
-      targetRevision: 853a8a7280149a3b9bfda0fc872262b1ed9ef285
+      targetRevision: 3713127343ad45e1ceae0c37e0d80b54c8f04f23
   syncPolicy:
     automated:
       prune: true
