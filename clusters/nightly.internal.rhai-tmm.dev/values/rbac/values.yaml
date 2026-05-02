@@ -1,5 +1,5 @@
 roleBindings:
-  - name: wcaban-tenant-admin
+  - name: tenant-admin
     namespace: evalhub-tenant
     roleRef:
       apiGroup: rbac.authorization.k8s.io
@@ -8,8 +8,11 @@ roleBindings:
     subjects:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
+        name: developer
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
         name: wcaban
-  - name: wcaban-view
+  - name: rhoai-view
     namespace: redhat-ods-applications
     roleRef:
       apiGroup: rbac.authorization.k8s.io
@@ -18,9 +21,13 @@ roleBindings:
     subjects:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
+        name: developer
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
         name: wcaban
+
 clusterRoleBindings:
-  - name: wcaban-evalhub-mlflow-access
+  - name: evalhub-mlflow-access
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -28,8 +35,11 @@ clusterRoleBindings:
     subjects:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
+        name: developer
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
         name: wcaban
-  - name: wcaban-evalhub-mlflow-jobs-access
+  - name: evalhub-mlflow-jobs-access
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -37,8 +47,11 @@ clusterRoleBindings:
     subjects:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
+        name: developer
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
         name: wcaban
-  - name: wcaban-evalhub-collections-access
+  - name: evalhub-collections-access
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -46,8 +59,11 @@ clusterRoleBindings:
     subjects:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
+        name: developer
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
         name: wcaban
-  - name: wcaban-evalhub-providers-access
+  - name: evalhub-providers-access
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -55,13 +71,31 @@ clusterRoleBindings:
     subjects:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
+        name: developer
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
         name: wcaban
-  - name: wcaban-lmeval-user
+  - name: lmeval-user
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
       name: trustyai-service-operator-lmeval-user-role
     subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: developer
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: wcaban
+  - name: mlflow-view
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: mlflow-operator-mlflow-view
+    subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: developer
       - apiGroup: rbac.authorization.k8s.io
         kind: User
         name: wcaban
