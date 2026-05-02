@@ -26,14 +26,15 @@ hardwareProfiles:
     displayName: NVIDIA L40s
     cpu:
       min: 2
-      max: 7
+      max: 40
       default: 2
     memory:
       min: 2Gi
-      max: 48Gi
+      max: 256Gi
       default: 16Gi
     gpu:
       nvidia.com/gpu:
+        max: 4
         displayName: NVIDIA L40s
 
 postgres-cluster:
