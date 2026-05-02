@@ -17,6 +17,13 @@ install-operators:
 
 gateways:
   maasDefaultGateway:
+    # only created if enabled in DSC
+    useRoute: false
+    certificate:
+      create: true
+      clusterIssuer: letsencrypt
+  openshiftAiInference:
+    create: true
     useRoute: false
     certificate:
       create: true
