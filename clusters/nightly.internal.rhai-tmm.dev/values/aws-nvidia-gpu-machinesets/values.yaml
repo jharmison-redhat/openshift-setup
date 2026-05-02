@@ -1,2 +1,2 @@
-instanceType: g6e.2xlarge
+instanceType: g6e.12xlarge
 rootDeviceSizeGB: 200
