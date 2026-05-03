@@ -35,7 +35,8 @@ spec:
             - hf
           args:
             - download
-            - --local-dir .
+            - --local-dir
+            - .
           {{- with $.Values.huggingface }}
             {{- with .args }}
             {{- toYaml . | nindent 12 }}
