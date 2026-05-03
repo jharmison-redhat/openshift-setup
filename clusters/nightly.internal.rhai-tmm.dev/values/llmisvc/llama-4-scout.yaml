@@ -1,7 +1,7 @@
 displaynameOverride: "Llama 4 Scout"
 
 model:
-  name: redhataillama-4-scout-17b-16e
+  name: llama-4-scout
   uri: oci://registry.redhat.io/rhelai1/modelcar-llama-4-scout-17b-16e-instruct-quantized-w4a16:1.5
   args:
     - --max-model-len=400000
