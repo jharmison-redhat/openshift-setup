@@ -43,10 +43,10 @@ spec:
     resources:
       limits:
         cpu: "2"
-        memory: 2Gi
+        memory: 4Gi
       requests:
         cpu: 250m
-        memory: 1Gi
+        memory: 2Gi
     sharding: {}
   grafana:
     enabled: false
@@ -151,10 +151,8 @@ spec:
         memory: 1Gi
   extraConfig:
     helm.valuesFileSchemes: >-
-      secrets+gpg-import, secrets+gpg-import-kubernetes,
-      secrets+age-import, secrets+age-import-kubernetes,
-      secrets,secrets+literal,
-      https
+      secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import,
+      secrets+age-import-kubernetes, secrets,secrets+literal, https
   server:
     autoscale:
       enabled: false
