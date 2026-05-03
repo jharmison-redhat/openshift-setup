@@ -8,7 +8,8 @@ metadata:
     {{- include "llminferenceservice.labels" $ | nindent 4 }}
 spec:
   modelRefs:
-    - {{ include "llminferenceservice.fullname" . }}
+    - name: {{ include "llminferenceservice.fullname" . }}
+      namespace: {{ .Release.Namespace }}
   {{- with .Values.maas.subjects }}
   subjects:
     {{- toYaml . | nindent 4 }}

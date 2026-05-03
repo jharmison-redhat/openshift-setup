@@ -3,12 +3,10 @@ apiVersion: maas.opendatahub.io/v1alpha1
 kind: MaaSModelRef
 metadata:
   name: {{ include "llminferenceservice.fullname" . }}
-  namespace: models-as-a-service
   labels:
     {{- include "llminferenceservice.labels" $ | nindent 4 }}
 spec:
   modelRef:
     kind: LLMInferenceService
     name: {{ include "llminferenceservice.fullname" . }}
-    namespace: {{ .Release.Namespace }}
 {{- end }}
