@@ -6,7 +6,7 @@ kind: ServiceAccount
 metadata:
   name: populate-{{ include "llminferenceservice.fullname" $ }}-model
   annotations:
-    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-1"
   labels:
     {{- include "llminferenceservice.labels" $ | nindent 4 }}
 automountServiceAccountToken: false
@@ -16,8 +16,8 @@ kind: Job
 metadata:
   name: populate-{{ include "llminferenceservice.fullname" $ }}-model
   annotations:
-    argocd.argoproj.io/hook: PreSync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "-1"
   labels:
     {{- include "llminferenceservice.labels" $ | nindent 4 }}
 spec:
