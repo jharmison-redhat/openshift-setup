@@ -30,6 +30,9 @@ resources:
     memory: 12Gi
     nvidia.com/gpu: "1"
 
+nodeSelector:
+  nvidia.com/gpu.present: "true"
+
 tolerations:
   - key: nvidia.com/gpu
     effect: NoSchedule
