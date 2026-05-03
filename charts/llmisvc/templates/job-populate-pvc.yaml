@@ -58,5 +58,13 @@ spec:
         - name: model
           persistentVolumeClaim:
             claimName: {{ include "llminferenceservice.fullname" $ }}-model
+      {{- with $.Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with $.Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
 {{- end }}
 {{- end }}
