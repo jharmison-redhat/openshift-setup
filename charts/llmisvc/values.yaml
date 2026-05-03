@@ -57,3 +57,7 @@ dataScienceConnection:
 
 maas:
   enabled: false
+  subjects:
+    groups:
+      - name: system:authenticated
+    users: []
