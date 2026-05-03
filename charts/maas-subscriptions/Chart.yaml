@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: maas-subscriptions
+description: >
+  A helm chart to manage Models-as-a-Service Subscriptions, rate limits, etc.
+type: application
+version: 0.1.0
+appVersion: 0.1.0

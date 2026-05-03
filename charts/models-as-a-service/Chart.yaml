@@ -1,9 +1,0 @@
----
-apiVersion: v2
-name: models-as-a-service
-description: >
-  A helm chart to manage Models-as-a-Service resources such as ExternalModels,
-  MaaSModelRefs, and Subscriptions.
-type: application
-version: 0.1.0
-appVersion: 0.1.0
