@@ -1,4 +1,28 @@
+roles:
+  - name: evalhub-evaluator
+    namespace: evalhub-tenant
+    rules:
+      - apiGroups: [trustyai.opendatahub.io]
+        resources: [evaluations, collections, providers]
+        verbs: [get, list, create, update, delete]
+      - apiGroups: [mlflow.kubeflow.org]
+        resources: [experiments]
+        verbs: [create, get]
+
 roleBindings:
+  - name: tenant-evaluator
+    namespace: evalhub-tenant
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: Role
+      name: evalhub-evaluator
+    subjects:
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: developer
+      - apiGroup: rbac.authorization.k8s.io
+        kind: User
+        name: wcaban
   - name: tenant-admin
     namespace: evalhub-tenant
     roleRef:
