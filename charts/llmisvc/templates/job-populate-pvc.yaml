@@ -32,7 +32,7 @@ spec:
           imagePullPolicy: IfNotPresent
           workingDir: /mnt/models
           command:
-            - huggingface-cli
+            - hf
           args:
             - download
             - --local-dir .
