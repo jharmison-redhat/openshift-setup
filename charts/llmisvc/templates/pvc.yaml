@@ -5,7 +5,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ include "llminferenceservice.fullname" $ }}-model
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "-2"
   labels:
     {{- include "llminferenceservice.labels" $ | nindent 4 }}
 spec:
