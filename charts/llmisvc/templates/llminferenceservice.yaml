@@ -1,0 +1,80 @@
+apiVersion: serving.kserve.io/v1alpha1
+kind: LLMInferenceService
+metadata:
+  annotations:
+    openshift.io/display-name: {{ include "llminferenceservice.displayname" . }}
+    {{- with .Values.modelType }}
+    opendatahub.io/model-type: {{ quote . }}
+    {{- end }}
+    {{- with .Values.genaiAsset }}
+    {{- if .enabled }}
+    opendatahub.io/genai-use-case: {{ quote .useCase }}
+    {{- end }}
+    {{- end }}
+    {{- if and .Values.enableAuth (not .Values.maas.enabled) }}
+    security.opendatahub.io/enable-auth: "true"
+    {{- else }}
+    security.opendatahub.io/enable-auth: "false"
+    {{- end }}
+    {{- with .Values.hardwareProfile }}
+    {{- if .enabled }}
+    opendatahub.io/hardware-profile-name: {{ .name }}
+    opendatahub.io/hardware-profile-namespace: {{ .namespace }}
+    {{- end }}
+    {{- end }}
+  labels:
+    {{- include "llminferenceservice.labels" $ | nindent 4 }}
+    opendatahub.io/dashboard: "true"
+    {{- if or .Values.genaiAsset.enabled .Values.maas.enabled }}
+    opendatahub.io/genai-asset: "true"
+    {{- end }}
+  name: {{ include "llminferenceservice.fullname" . }}
+spec:
+  model:
+    name: {{ include "llminferenceservice.fullname" . }}
+    {{- if .Values.model.uri }}
+    {{- if .Values.model.pvc.preload }}
+    uri: pvc://{{ include "llminferenceservice.fullname" . }}-model
+    {{- else }}
+    uri: {{ .Values.model.uri }}
+    {{- end }}
+    {{- end }}
+  {{- with .Values.replicas }}
+  replicas: {{ . }}
+  {{- end }}
+  router:
+    gateway:
+      refs:
+        {{- if .Values.maas.enabled }}
+        - name: maas-default-gateway
+        {{- else }}
+        - name: openshift-ai-inference
+        {{- end }}
+          namespace: openshift-ingress
+    route: {}
+    scheduler: {}
+  template:
+    containers:
+      - name: main
+        image: {{ include "llminferenceservice.image" . }}
+        {{- with .Values.model.args }}
+        env:
+          - name: VLLM_ADDITIONAL_ARGS
+            value: >-
+              {{- join " " . | wrap 106 | nindent 14 }}
+        {{- end }}
+        {{- with .Values.huggingface.token }}
+        envFrom:
+            - secretRef:
+                name: HF_TOKEN
+        {{- end }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+    {{- with .Values.nodeSelector }}
+    nodeSelector:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+    tolerations:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}

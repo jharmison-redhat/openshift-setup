@@ -1,0 +1,9 @@
+---
+apiVersion: v2
+name: llmisvc
+description: >
+  A helm chart to deploy a model using KServe and llm-d via the
+  LLMInferenceService API
+type: application
+version: 0.1.0
+appVersion: 3.3.1

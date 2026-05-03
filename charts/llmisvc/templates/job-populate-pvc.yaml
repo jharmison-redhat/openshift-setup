@@ -1,0 +1,58 @@
+{{- with .Values.model.pvc }}
+{{- if .preload }}
+{{- $model := trimPrefix "hf://" $.Values.model.uri }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: populate-{{ include "llminferenceservice.fullname" $ }}-model
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+  labels:
+    {{- include "llminferenceservice.labels" $ | nindent 4 }}
+automountServiceAccountToken: false
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: populate-{{ include "llminferenceservice.fullname" $ }}-model
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+  labels:
+    {{- include "llminferenceservice.labels" $ | nindent 4 }}
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      serviceAccountName: populate-{{ include "llminferenceservice.fullname" $ }}-model
+      restartPolicy: Never
+      containers:
+        - name: populate-model
+          image: {{ include "llminferenceservice.image" $ }}
+          imagePullPolicy: IfNotPresent
+          workingDir: /mnt/models
+          command:
+            - huggingface-cli
+          args:
+            - download
+            - --local-dir .
+          {{- with $.Values.huggingface }}
+            {{- with .args }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            - {{ $model }}
+          {{- with .token }}
+          envFrom:
+            - secretRef:
+                name: HF_TOKEN
+          {{- end }}
+          {{- end }}
+          volumeMounts:
+            - name: model
+              mountPath: /mnt/models
+      volumes:
+        - name: model
+          persistentVolumeClaim:
+            claimName: {{ include "llminferenceservice.fullname" $ }}-model
+{{- end }}
+{{- end }}

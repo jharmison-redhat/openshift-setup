@@ -1,0 +1,37 @@
+image:
+  repository: rhaii-preview/vllm-cuda-rhel9
+  tag: gemma4
+
+model:
+  name: gemma-4
+  uri: hf://google/gemma-4-26B-A4B-it
+  pvc:
+    preload: true
+    size: 60Gi
+  args:
+    - --max-model-len=131072
+    - --enable-force-include-usage
+    - --tensor-parallel-size=2
+    - --pipeline-parallel-size=1
+    - --distributed-executor-backend=mp
+    - --trust-remote-code
+    - --enable-auto-tool-choice
+    - --reasoning-parser=gemma4
+    - --tool-call-parser=gemma4
+    - --language-model-only
+
+hardwareProfile:
+  name: l40s
+
+resources:
+  limits:
+    cpu: "16"
+    memory: 128Gi
+    nvidia.com/gpu: "2"
+  requests:
+    cpu: "2"
+    memory: 32Gi
+    nvidia.com/gpu: "2"
+
+maas:
+  enabled: true

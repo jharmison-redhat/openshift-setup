@@ -1,0 +1,59 @@
+fullnameOverride: ""
+displaynameOverride: ""
+
+image:
+  registry: registry.redhat.io
+  repository: rhaiis/vllm-cuda-rhel9
+  manifestHash: ""
+  tag: ""
+
+replicas: 1
+
+model:
+  name: qwen3-8b
+  uri: oci://registry.redhat.io/rhelai1/modelcar-qwen3-8b-fp8-dynamic:1.5
+  pvc:
+    preload: false
+    mode: ReadWriteOnce
+    size: 20Gi
+  args:
+    - --enable-reasoning
+    - --reasoning-parser=deepseek_r1
+
+resources:
+  limits:
+    cpu: "6"
+    memory: 24Gi
+    nvidia.com/gpu: "1"
+  requests:
+    cpu: "2"
+    memory: 12Gi
+    nvidia.com/gpu: "1"
+
+tolerations:
+  - key: nvidia.com/gpu
+    effect: NoSchedule
+    operator: Exists
+
+huggingface:
+  downloadArgs: []
+  token: ""
+
+modelType: generative
+enableAuth: true
+
+genaiAsset:
+  enabled: true
+  useCase: chat
+
+hardwareProfile:
+  enabled: true
+  name: gpu
+  namespace: redhat-ods-applications
+
+dataScienceConnection:
+  create: true
+  name: ""
+
+maas:
+  enabled: false

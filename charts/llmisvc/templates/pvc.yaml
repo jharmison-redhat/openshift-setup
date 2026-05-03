@@ -1,0 +1,21 @@
+{{- with .Values.model.pvc }}
+{{- if .preload }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "llminferenceservice.fullname" $ }}-model
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+  labels:
+    {{- include "llminferenceservice.labels" $ | nindent 4 }}
+spec:
+  {{- with .storageClassName }}
+  storageClassName: {{ . }}
+  {{- end }}
+  accessModes:
+    - {{ .mode }}
+  resources:
+    requests:
+      storage: {{ .size }}
+{{- end }}
+{{- end }}
