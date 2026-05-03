@@ -42,6 +42,9 @@ spec:
             {{- toYaml . | nindent 12 }}
             {{- end }}
             - {{ $model }}
+          env:
+            - name: HF_HUB_OFFLINE
+              value: "0"
           {{- with .token }}
           envFrom:
             - secretRef:
