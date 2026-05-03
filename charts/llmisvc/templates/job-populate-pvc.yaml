@@ -45,6 +45,8 @@ spec:
           env:
             - name: HF_HUB_OFFLINE
               value: "0"
+            - name: HOME
+              value: /home/vllm
           {{- with .token }}
           envFrom:
             - secretRef:
@@ -54,10 +56,14 @@ spec:
           volumeMounts:
             - name: model
               mountPath: /mnt/models
+            - name: home
+              mountPath: /home/vllm
       volumes:
         - name: model
           persistentVolumeClaim:
             claimName: {{ include "llminferenceservice.fullname" $ }}-model
+        - name: home
+          emptyDir: {}
       {{- with $.Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 6 }}
