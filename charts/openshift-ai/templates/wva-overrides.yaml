@@ -1,5 +1,4 @@
-{{- range $name, $override := .Values.wvaOverrides }}
----
+{{- if .Values.wvaOverrides }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,6 +7,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "8"
 data:
+{{- range $name, $override := .Values.wvaOverrides }}
   {{ $name }}: |
     {{- toYaml $override | nindent 4 }}
 {{- end }}
