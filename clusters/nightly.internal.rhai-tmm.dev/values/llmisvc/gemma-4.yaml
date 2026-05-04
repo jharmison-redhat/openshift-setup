@@ -2,6 +2,11 @@ image:
   repository: rhaii-preview/vllm-cuda-rhel9
   tag: gemma4
 
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+
 model:
   name: gemma-4
   uri: hf://google/gemma-4-26B-A4B-it

@@ -39,8 +39,17 @@ spec:
     uri: {{ .Values.model.uri }}
     {{- end }}
     {{- end }}
-  {{- with .Values.replicas }}
-  replicas: {{ . }}
+  {{- if and .Values.replicas (not .Values.autoscaling.enabled) }}
+  replicas: {{ .Values.replicas }}
+  {{- end }}
+  {{- with .Values.autoscaling }}
+  {{- if .enabled }}
+  scaling:
+    minReplicas: {{ .minReplicas }}
+    maxReplicas: {{ .maxReplicas }}
+    wva:
+      {{- toYaml .wva | nindent 6 }}
+  {{- end }}
   {{- end }}
   router:
     gateway:

@@ -8,6 +8,14 @@ image:
   tag: ""
 
 replicas: 1
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  wva:
+    keda:
+      pollingInterval: 5
+      cooldownPeriod: 30
 
 model:
   name: qwen3-8b
