@@ -23,3 +23,8 @@ operators:
       - openshift-lws-operator
   opentelemetry-product:
     channel: stable
+  openshift-custom-metrics-autoscaler-operator:
+    channel: stable
+    namespace: openshift-keda
+    operatorGroup:
+      enabled: true
