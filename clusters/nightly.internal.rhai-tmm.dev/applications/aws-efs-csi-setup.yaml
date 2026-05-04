@@ -16,6 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/nightly.internal.rhai-tmm.dev/cluster.yaml
+      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/nightly.internal.rhai-tmm.dev/values/aws-efs-csi-setup/secrets.enc.yaml
     path: charts/aws-efs-csi-setup
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
