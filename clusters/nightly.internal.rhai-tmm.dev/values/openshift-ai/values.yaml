@@ -8,6 +8,8 @@ dataScienceCluster:
     kserve:
       modelsAsService:
         managementState: Managed
+      wva:
+        managementState: Managed
 
 dashboardConfig:
   disableKServeMetrics: false
