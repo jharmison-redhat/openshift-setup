@@ -1,0 +1,44 @@
+{{- with .Values.dataScienceCluster.components.wva }}
+{{- if eq .managementState "Managed" }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: keda-metrics-reader
+  namespace: openshift-keda
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: keda-metrics-reader-monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-monitoring-view
+subjects:
+  - kind: ServiceAccount
+    name: keda-metrics-reader
+    namespace: openshift-keda
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: keda-metrics-reader-token
+  namespace: openshift-keda
+  annotations:
+    kubernetes.io/service-account.name: keda-metrics-reader
+type: kubernetes.io/service-account-token
+---
+apiVersion: keda.sh/v1alpha1
+kind: ClusterTriggerAuthentication
+metadata:
+  name: ai-inference-keda-thanos
+spec:
+  secretTargetRef:
+    - parameter: bearerToken
+      name: keda-metrics-reader-token
+      key: token
+    - parameter: ca
+      name: keda-metrics-reader-token
+      key: ca.crt
+{{- end }}
+{{- end }}
