@@ -24,6 +24,7 @@ model:
     - --reasoning-parser=gemma4
     - --tool-call-parser=gemma4
     - --language-model-only
+    - --max-num-batched-tokens=1024
 
 hardwareProfile:
   name: l40s
