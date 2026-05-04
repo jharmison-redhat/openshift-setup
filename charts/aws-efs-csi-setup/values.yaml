@@ -6,7 +6,7 @@ ack:
   enableLeaderElection: true
   logLevel: info
   enableDevelopmentLogging: false
-  resourceTags: ackmanaged
+  resourceTags: ack-managed=true
   featureFlags: ""
   featureGates: ""
   enableCarm: false
