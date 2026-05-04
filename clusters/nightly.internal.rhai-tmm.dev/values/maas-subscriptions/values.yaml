@@ -4,12 +4,12 @@ subscriptions:
       gemma-4:
         namespace: models
         tokenRateLimits:
-          - limit: 50000
+          - limit: 5000000
             window: 1m
       llama-4-scout:
         namespace: models
         tokenRateLimits:
-          - limit: 50000
+          - limit: 5000000
             window: 1m
     groups:
       - name: system:authenticated:oauth
