@@ -1,4 +1,4 @@
-{{- with .Values.dataScienceCluster.components.wva }}
+{{- with .Values.dataScienceCluster.components.kserve.wva }}
 {{- if eq .managementState "Managed" }}
 apiVersion: v1
 kind: ServiceAccount
