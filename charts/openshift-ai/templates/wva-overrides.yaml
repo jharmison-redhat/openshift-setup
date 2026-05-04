@@ -1,0 +1,13 @@
+{{- range $name, $override := .Values.wvaOverrides }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workload-variant-autoscaler-saturation-scaling-config
+  namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/sync-wave: "8"
+data:
+  {{ $name }}: |
+    {{- toYaml $override | nindent 4 }}
+{{- end }}

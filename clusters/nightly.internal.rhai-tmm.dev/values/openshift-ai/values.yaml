@@ -18,6 +18,12 @@ dashboardConfig:
   modelAsService: true
   observabilityDashboard: true
 
+wvaOverrides:
+  gemma-4:
+    model_id: gemma-4
+    namespace: models
+    kvCacheThreshold: 0.1
+
 hardwareProfiles:
   l40s:
     node:
