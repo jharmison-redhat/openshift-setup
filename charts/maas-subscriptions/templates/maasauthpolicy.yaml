@@ -1,4 +1,4 @@
-{{- range $name, $sub := .Values }}
+{{- range $name, $sub := .Values.subscriptions }}
 {{- if $sub.groups }}
 apiVersion: maas.opendatahub.io/v1alpha1
 kind: MaaSAuthPolicy

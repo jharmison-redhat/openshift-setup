@@ -1,16 +1,16 @@
-# agentic:
-#   models:
-#     gemma-4:
-#       namespace: models
-#       tokenRateLimits:
-#         - limit: 50000
-#           window: 1m
-#     llama-4-scout:
-#       namespace: models
-#       tokenRateLimits:
-#         - limit: 50000
-#           window: 1m
-#   groups:
-#     - name: system:authenticated:oauth
-
-null
+subscriptions:
+  agentic:
+    models:
+      gemma-4:
+        namespace: models
+        tokenRateLimits:
+          - limit: 50000
+            window: 1m
+      llama-4-scout:
+        namespace: models
+        tokenRateLimits:
+          - limit: 50000
+            window: 1m
+    groups:
+      - name: system:authenticated:oauth
+    priority: 0
