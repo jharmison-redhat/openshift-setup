@@ -13,7 +13,7 @@ metadata:
     {{- end }}
     {{- if and .Values.enableAuth (not .Values.maas.enabled) }}
     security.opendatahub.io/enable-auth: "true"
-    {{- else }}
+    {{- else if not .Values.maas.enabled }}
     security.opendatahub.io/enable-auth: "false"
     {{- end }}
     {{- with .Values.hardwareProfile }}
