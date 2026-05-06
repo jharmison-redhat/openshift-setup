@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora:43
+FROM registry.fedoraproject.org/fedora:44
 
 RUN dnf -y install \
     awscli2 \
@@ -26,8 +26,8 @@ RUN dnf -y install \
     python3-typer \
     python3-dotenv \
     python3-pip \
-    https://github.com/getsops/sops/releases/download/v3.11.0/sops-3.11.0-1.x86_64.rpm \
-    https://github.com/derailed/k9s/releases/download/v0.50.16/k9s_linux_amd64.rpm \
+    https://github.com/getsops/sops/releases/download/v3.12.2/sops-3.12.2-1.x86_64.rpm \
+    https://github.com/derailed/k9s/releases/download/v0.50.18/k9s_linux_amd64.rpm \
     && dnf -y clean all \
     && python3 -m pip install --no-cache-dir locust
 
@@ -36,6 +36,7 @@ RUN mkdir -p /tmp/krew && cd /tmp/krew \
     && ./krew-linux_amd64 install krew \
     && cd ~ && rm -rf /tmp/krew \
     && /root/.krew/bin/kubectl-krew install \
+    browse-pvc \
     edit-status \
     modify-secret \
     neat \
