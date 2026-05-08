@@ -1,14 +1,20 @@
 server:
-  disableTls: false
+  disableTls: true
 
 pkiInitJob:
   enabled: false
-
-certManager:
-  enabled: true
 
 podSecurityContext:
   fsGroup: null
 
 securityContext:
   runAsUser: null
+
+grpcRoute:
+  enabled: true
+  hostnames:
+    - openshell.nightly-gw.internal.rhai-tmm.dev
+  gateway:
+    create: false
+    name: default-gateway
+    namespace: openshift-ingress
