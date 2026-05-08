@@ -1,0 +1,100 @@
+{{- range $name, $realm := .Values.realms }}
+---
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: KeycloakRealmImport
+metadata:
+  name: {{ $name }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  keycloakCRName: {{ $.Values.name }}
+  realm:
+    id: {{ $name }}
+    realm: {{ $name }}
+    enabled: true
+    sslRequired: external
+    registrationAllowed: false
+    loginWithEmailAllowed: true
+    duplicateEmailsAllowed: false
+    clients:
+      {{- range $cname, $client := $realm.clients }}
+      - clientId: {{ $cname }}
+        enabled: true
+        clientAuthenticatorType: client-secret
+        secret: {{ $realm.secret }}
+        publicClient: false
+        redirectUris:
+          - "*"
+        standardFlowEnabled: true
+        directAccessGrantsEnabled: true
+        serviceAccountsEnabled: true
+        frontchannelLogout: false
+        protocol: openid-connect
+      {{- end }}
+    roles:
+      realm:
+        - name: admin
+          description: Administrator role
+        {{- range $rname, $role := $realm.roles }}
+        - name: {{ $rname }}
+          {{- toYaml $role | nindent 10 }}
+        {{- end }}
+    users:
+      {{- range $i := until (int $realm.generated.count) }}
+      {{- $username := printf "%s%s" $realm.generated.prefix (toString (add 1 $i)) }}
+      - username: {{ $username }}
+        enabled: true
+        emailVerified: true
+        email: {{ $username }}@demo.redhat.com
+        firstName: {{ title $username }}
+        lastName: Demo
+        credentials:
+          - type: password
+            value: {{ $realm.generated.password }}
+            temporary: false
+        realmRoles:
+          - user
+      {{- end }}
+      {{- range $username, $user := $realm.users }}
+      - username: {{ $username }}
+        enabled: {{ $user.enabled | default "true" }}
+        emailVerified: {{ $user.emailVerified | default "true" }}
+        email: {{ $user.email | default (printf "%s@demo.redhat.com" $username) }}
+        firstName: {{ $user.firstName | default (title $username) }}
+        lastName: {{ $user.lastName | default "Demo" }}
+        {{- if $user.credentials }}
+        credentials:
+          {{- toYaml $user.credentials | nindent 10 }}
+        {{- else if $user.password }}
+        credentials:
+          - type: password
+            value: {{ $user.password }}
+            temporary: false
+        {{- end }}
+        {{- with $user.realmRoles }}
+        realmRoles:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      {{- end }}
+      - username: {{ $realm.admin.username }}
+        enabled: true
+        emailVerified: true
+        email: {{ $realm.admin.username }}@demo.redhat.com
+        firstName: {{ title $realm.admin.username }}
+        lastName: Demo
+        credentials:
+          - type: password
+            value: {{ $realm.admin.password }}
+            temporary: false
+        realmRoles:
+          - admin
+    groups:
+    {{- if $realm.groups }}
+      {{- toYaml $realm.groups | nindent 6 }}
+    {{- else if $realm.groupsFromRoles }}
+      - name: admins
+      {{- range $rname, $role := $realm.roles }}
+      - name: {{ $rname }}
+      {{- end }}
+    {{- end }}
+{{- end }}

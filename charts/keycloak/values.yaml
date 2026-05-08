@@ -1,0 +1,27 @@
+global:
+  cluster:
+    name: cluster
+    baseDomain: example.com
+
+channel: stable-v26.2
+
+name: keycloak
+instances: 1
+realms:
+  sso:
+    clients: {}
+    roles: {}
+    admin:
+      username: admin
+      password: openshift
+    users: {}
+    generated:
+      prefix: user
+      count: 0
+      password: openshift
+    groupsFromRoles: true
+
+cloudnative-pg:
+  enabled: true
+  clusters:
+    - name: keycloak-postgres

@@ -40,7 +40,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: remove-kubeadmin
-        image: {{ .Values.openshiftToolsImage }}
+        image: {{ .Values.global.toolsImage }}
         imagePullPolicy: IfNotPresent
         command: ["/bin/bash"]
         args:

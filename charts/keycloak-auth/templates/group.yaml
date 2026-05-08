@@ -3,4 +3,4 @@ kind: Group
 metadata:
   name: cluster-admins
 users:
-  - {{ .Values.realm.admin.username }}
+  - {{ .Values.keycloak.realms.sso.admin.username }}

@@ -1,25 +1,25 @@
-channel: stable-v26.2
+global:
+  cluster:
+    name: cluster
+    baseDomain: example.com
+  toolsImage: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
 
-name: keycloak
-instances: 1
-realm:
-  name: sso
-  openshiftClientId: ocp-idp
-  openshiftClientSecret: abcdefghijkl
-  admin:
-    username: admin
-    password: openshift
-  user:
-    prefix: user
-    count: 5
-    password: openshift
+keycloak:
+  name: keycloak
+  realms:
+    sso:
+      clients:
+        ocp-idp:
+          secret: abcdefghijkl
+      roles:
+        user:
+          description: Default user role
+      admin:
+        username: admin
+      generated:
+        count: 5
 
 removeKubeAdmin: true
-openshiftToolsImage: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
-
-cluster:
-  name: cluster
-  baseDomain: example.com
 
 cloudnative-pg:
   enabled: true

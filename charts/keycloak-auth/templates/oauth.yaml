@@ -15,9 +15,9 @@ spec:
             - name
           preferredUsername:
             - preferred_username
-        clientID: {{ .Values.realm.openshiftClientId }}
+        clientID: {{ (index .Values.keycloak.realms.sso.clients "ocp-idp").secret }}
         clientSecret:
           name: openid-client-secret
         extraScopes: []
         issuer: >-
-          https://{{ .Values.name }}.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}/realms/{{ .Values.realm.name }}
+          https://{{ include "keycloak.hostname" .Values.keycloak }}/realms/{{ (first (keys .Values.keycloak.realms)) }}

@@ -1,0 +1,14 @@
+---
+apiVersion: v2
+name: keycloak
+description: >
+  A helm chart to deploy Keycloak
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+
+dependencies:
+  - name: cloudnative-pg
+    version: 0.1.0
+    repository: file://../cloudnative-pg
+    condition: cloudnative-pg.enabled
