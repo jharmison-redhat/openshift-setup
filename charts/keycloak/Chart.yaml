@@ -12,3 +12,7 @@ dependencies:
     version: 0.1.0
     repository: file://../cloudnative-pg
     condition: cloudnative-pg.enabled
+  - name: postgres-cluster
+    version: 0.1.0
+    repository: file://../postgres-cluster
+    condition: postgres-cluster.enabled

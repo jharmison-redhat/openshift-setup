@@ -23,5 +23,10 @@ realms:
 
 cloudnative-pg:
   enabled: true
-  clusters:
-    - name: keycloak-postgres
+
+postgres-cluster:
+  enabled: true
+  nameOverride: keycloak
+  databases:
+    - name: keycloak
+      user: keycloak

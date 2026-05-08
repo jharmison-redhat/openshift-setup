@@ -7,13 +7,13 @@ metadata:
 spec:
   db:
     vendor: postgres
-    database: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}
-    host: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}-rw
+    database: {{ (get .Values "postgres-cluster").name }}
+    host: {{ (get .Values "postgres-cluster").nameOverride }}-rw
     usernameSecret:
-      name: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}-app
+      name: {{ (get .Values "postgres-cluster").nameOverride }}-app
       key: username
     passwordSecret:
-      name: {{ (index (get .Values "cloudnative-pg").clusters 0).name }}-app
+      name: {{ (get .Values "postgres-cluster").nameOverride }}-app
       key: password
   hostname:
     hostname: {{ include "keycloak.hostname" .Values }}
