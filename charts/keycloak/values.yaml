@@ -26,7 +26,7 @@ cloudnative-pg:
 
 postgres-cluster:
   enabled: true
-  nameOverride: keycloak
+  nameOverride: db
   databases:
     - name: keycloak
       user: keycloak
