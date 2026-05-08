@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: '6'
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  name: openshell
+spec:
+  destination:
+    name: in-cluster
+    namespace: openshell
+  project: default
+  sources:
+    - repoURL: oci://ghcr.io/nvidia/openshell/helm-chart
+      path: .
+      targetRevision: 0.0.0-dev.52097f2d4c89f612e93c4dbc7babc46268729279
+      helm:
+        valueFiles:
+          - $values/clusters/nightly.internal.rhai-tmm.dev/values/openshell/values.yaml
+    - repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      backoff:
+        duration: 10s
+        factor: 3
+        maxDuration: 60m
+      limit: 10
+    syncOptions:
+      - RespectIgnoreDifferences=true
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
