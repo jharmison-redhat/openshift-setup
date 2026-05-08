@@ -1,6 +1,6 @@
 {{- if eq .Values.dataScienceCluster.components.kserve.modelsAsService.managementState "Managed" }}
 {{- with .Values.gateways.maasDefaultGateway }}
-{{- $host := .hostname | default (printf "maas.apps.%s.%s" $.Values.cluster.name $.Values.cluster.baseDomain) }}
+{{- $host := .hostname | default (printf "maas.apps.%s.%s" $.Values.global.cluster.name $.Values.global.cluster.baseDomain) }}
 {{- if .useRoute }}
 ---
 apiVersion: v1

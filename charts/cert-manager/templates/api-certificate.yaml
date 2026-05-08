@@ -13,7 +13,7 @@ spec:
     {{- if .Values.certificates.api.dnsNames }}
     {{- toYaml .Values.certificates.api.dnsNames | nindent 4 }}
     {{- else }}
-    - api.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    - api.{{ .Values.global.cluster.name }}.{{ .Values.global.cluster.baseDomain }}
     {{- end }}
   issuerRef:
     group: cert-manager.io
@@ -34,7 +34,7 @@ spec:
           {{- if .Values.certificates.api.dnsNames }}
           {{- toYaml .Values.certificates.api.dnsNames | nindent 10 }}
           {{- else }}
-          - api.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+          - api.{{ .Values.global.cluster.name }}.{{ .Values.global.cluster.baseDomain }}
           {{- end }}
         servingCertificate:
           name: openshift-api

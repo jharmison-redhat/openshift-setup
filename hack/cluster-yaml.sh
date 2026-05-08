@@ -141,11 +141,13 @@ EOF
 fi
 
 cat <<EOF >"${CLUSTER_DIR}/cluster.yaml"
+global:
+  cluster:
+    name: $CLUSTER_NAME
+    baseDomain: $BASE_DOMAIN
 desiredUpdate:
   version: $CLUSTER_VERSION
 cluster:
-  name: $CLUSTER_NAME
-  baseDomain: $BASE_DOMAIN
   controlPlaneNodes: $CONTROL_PLANE_COUNT
   workerNodes: $WORKER_COUNT
   agePublicKey: $age_public_key

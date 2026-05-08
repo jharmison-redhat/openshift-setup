@@ -13,8 +13,8 @@ spec:
     {{- if .Values.certificates.router.dnsNames }}
     {{- toYaml .Values.certificates.router.dnsNames | nindent 4 }}
     {{- else }}
-    - apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
-    - "*.apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}"
+    - apps.{{ .Values.global.cluster.name }}.{{ .Values.global.cluster.baseDomain }}
+    - "*.apps.{{ .Values.global.cluster.name }}.{{ .Values.global.cluster.baseDomain }}"
     {{- end }}
   issuerRef:
     group: cert-manager.io
@@ -48,8 +48,8 @@ spec:
     {{- if .Values.certificates.nlbRouter.dnsNames }}
     {{- toYaml .Values.certificates.nlbRouter.dnsNames | nindent 4 }}
     {{- else }}
-    - nlb-apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
-    - *.nlb-apps.{{ .Values.cluster.name }}.{{ .Values.cluster.baseDomain }}
+    - nlb-apps.{{ .Values.global.cluster.name }}.{{ .Values.global.cluster.baseDomain }}
+    - *.nlb-apps.{{ .Values.global.cluster.name }}.{{ .Values.global.cluster.baseDomain }}
     {{- end }}
   issuerRef:
     group: cert-manager.io

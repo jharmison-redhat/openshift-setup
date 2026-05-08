@@ -1,3 +1,8 @@
+global:
+  cluster:
+    name: cluster
+    baseDomain: example.com
+
 gatewayClasses:
   openshift-default: {}
 
@@ -6,7 +11,7 @@ gateways:
     gatewayClassName: openshift-default
     listeners:
       https:
-        hostname: "*.{{ .Values.cluster.name }}-gw.{{ .Values.cluster.baseDomain }}"
+        hostname: "*.{{ .Values.global.cluster.name }}-gw.{{ .Values.global.cluster.baseDomain }}"
         port: 443
         protocol: HTTPS
         tls:
@@ -15,7 +20,3 @@ gateways:
             - name: default-gateway-tls
         certificate:
           create: true
-
-cluster:
-  name: cluster
-  baseDomain: example.com

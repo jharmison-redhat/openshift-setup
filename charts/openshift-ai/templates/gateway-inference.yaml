@@ -1,6 +1,6 @@
 {{- with .Values.gateways.openshiftAiInference }}
 {{- if .create }}
-{{- $host := .hostname | default (printf "inference.apps.%s.%s" $.Values.cluster.name $.Values.cluster.baseDomain) }}
+{{- $host := .hostname | default (printf "inference.apps.%s.%s" $.Values.global.cluster.name $.Values.global.cluster.baseDomain) }}
 {{- if .useRoute }}
 ---
 apiVersion: v1

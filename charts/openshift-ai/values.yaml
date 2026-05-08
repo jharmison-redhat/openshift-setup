@@ -1,10 +1,9 @@
 ---
 global:
   toolsImage: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
-
-cluster:
-  name: cluster
-  baseDomain: example.com
+  cluster:
+    name: cluster
+    baseDomain: example.com
 
 install-operators:
   enabled: true

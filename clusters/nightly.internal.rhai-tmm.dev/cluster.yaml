@@ -1,12 +1,17 @@
-desiredUpdate:
-  version: 4.21.12
+global:
+  cluster:
+    name: nightly
+    baseDomain: internal.rhai-tmm.dev
+
 cluster:
-  name: nightly
-  baseDomain: internal.rhai-tmm.dev
   controlPlaneNodes: 3
   workerNodes: 3
   agePublicKey: age1ae6vgx7lakh6jtktywzqa2rjwuwmh2fhq7ktxycyl76fk249h4uswmjkww
   infraID: nightly-mdg9m
+
+desiredUpdate:
+  version: 4.21.12
+
 aws:
   region: us-west-2
   azs: ["us-west-2c", "us-west-2d", "us-west-2a", "us-west-2b"]
