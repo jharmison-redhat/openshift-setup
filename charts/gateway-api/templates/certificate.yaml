@@ -1,6 +1,8 @@
 {{- range $name, $gw := .Values.gateways }}
 {{- range $lname, $listener := $gw.listeners }}
 {{- if and $listener.tls (default $listener.certificate dict).create }}
+---
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ (first $listener.tls.certificateRefs).name }}
