@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: gateway-api
+description: >
+  A helm chart to configure core Gateway API components with the OpenShift Ingress operator
+type: application
+version: 0.1.0
+appVersion: 0.1.0

@@ -1,0 +1,26 @@
+{{- range $name, $gw := .Values.gateways }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ $name }}
+spec:
+  gatewayClassName: {{ $gw.gatewayClassName }}
+  listeners:
+    {{- range $lname, $listener := $gw.listeners }}
+    - name: {{ $lname }}
+      hostname: {{ tpl $listener.hostname $ | quote }}
+      port: {{ $listener.port }}
+      protocol: {{ $listener.protocol }}
+      {{- with $listener.tls }}
+      tls:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      allowedRoutes:
+      {{- if $listener.allowedRoutes }}
+        {{- toYaml $listener.allowedRoutes | nindent 8 }}
+      {{- else }}
+        namespaces:
+          from: All
+      {{- end }}
+    {{- end }}
+{{- end }}

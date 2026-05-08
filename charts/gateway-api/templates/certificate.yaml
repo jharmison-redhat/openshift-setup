@@ -1,0 +1,21 @@
+{{- range $name, $gw := .Values.gateways }}
+{{- range $lname, $listener := $gw.listeners }}
+{{- if and $listener.tls (default $listener.certificate dict).create }}
+kind: Certificate
+metadata:
+  name: {{ (first $listener.tls.certificateRefs).name }}
+spec:
+  dnsNames:
+  - {{ tpl $listener.hostname $ | quote }}
+  issuerRef:
+    {{- if $listener.certificate.issuerRef }}
+    {{- toYaml $listener.certificate.issuerRef | nindent 4 }}
+    {{- else }}
+    group: cert-manager.io
+    kind: ClusterIssuer
+    name: letsencrypt
+    {{- end }}
+  secretName: {{ (first $listener.tls.certificateRefs).name }}
+{{- end }}
+{{- end }}
+{{- end }}
