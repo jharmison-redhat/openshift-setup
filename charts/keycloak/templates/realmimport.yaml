@@ -21,7 +21,7 @@ spec:
       - clientId: {{ $cname }}
         enabled: true
         clientAuthenticatorType: client-secret
-        secret: {{ $realm.secret }}
+        secret: {{ $client.secret }}
         publicClient: false
         redirectUris:
           - "*"
@@ -37,7 +37,9 @@ spec:
           description: Administrator role
         {{- range $rname, $role := $realm.roles }}
         - name: {{ $rname }}
+          {{- if $role }}
           {{- toYaml $role | nindent 10 }}
+          {{- end }}
         {{- end }}
     users:
       {{- range $i := until (int $realm.generated.count) }}
@@ -50,7 +52,7 @@ spec:
         lastName: Demo
         credentials:
           - type: password
-            value: {{ $realm.generated.password }}
+            value: {{ $realm.generated.password | quote }}
             temporary: false
         realmRoles:
           - user
@@ -68,7 +70,7 @@ spec:
         {{- else if $user.password }}
         credentials:
           - type: password
-            value: {{ $user.password }}
+            value: {{ $user.password | quote }}
             temporary: false
         {{- end }}
         {{- with $user.realmRoles }}
@@ -84,7 +86,7 @@ spec:
         lastName: Demo
         credentials:
           - type: password
-            value: {{ $realm.admin.password }}
+            value: {{ $realm.admin.password | quote }}
             temporary: false
         realmRoles:
           - admin
