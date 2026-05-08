@@ -8,12 +8,12 @@ spec:
   db:
     vendor: postgres
     database: {{ (get .Values "postgres-cluster").name }}
-    host: {{ (get .Values "postgres-cluster").nameOverride }}-rw
+    host: {{ .Release.Name }}-{{ (get .Values "postgres-cluster").nameOverride }}-rw
     usernameSecret:
-      name: {{ (get .Values "postgres-cluster").nameOverride }}-app
+      name: {{ .Release.Name }}-{{ (get .Values "postgres-cluster").nameOverride }}-app
       key: username
     passwordSecret:
-      name: {{ (get .Values "postgres-cluster").nameOverride }}-app
+      name: {{ .Release.Name }}-{{ (get .Values "postgres-cluster").nameOverride }}-app
       key: password
   hostname:
     hostname: {{ include "keycloak.hostname" .Values }}
