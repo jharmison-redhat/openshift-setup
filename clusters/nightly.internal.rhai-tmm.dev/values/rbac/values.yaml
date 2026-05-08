@@ -49,6 +49,16 @@ roleBindings:
       - apiGroup: rbac.authorization.k8s.io
         kind: User
         name: wcaban
+  - name: openshell-privileged
+    namespace: openshell
+    roleRef:
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: system:openshift:scc:privileged
+    subjects:
+      - kind: ServiceAccount
+        name: default
+        namespace: openshell
 
 clusterRoleBindings:
   - name: evalhub-mlflow-access
