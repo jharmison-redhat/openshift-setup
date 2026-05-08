@@ -1,6 +1,11 @@
 server:
   disableTls: true
-  disableGatewayAuth: true
+  oidc:
+    issuer: https://keycloak.apps.nightly.internal.rhai-tmm.dev/realms/sso
+    audience: openshell
+    roleClaim: realm_access.roles
+    adminRole: admin
+    userRole: openshell
 
 pkiInitJob:
   enabled: false
