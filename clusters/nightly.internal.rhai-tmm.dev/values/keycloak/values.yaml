@@ -1,0 +1,9 @@
+realms:
+  sso:
+    roles:
+      openshell:
+        description: OpenShell users
+    users:
+      openshell-user:
+        realmRoles:
+          - openshell
