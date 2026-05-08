@@ -12,6 +12,9 @@ spec:
     namespace: openshell
   project: default
   sources:
+    - repoURL: git@github.com:jharmison-redhat/openshift-setup.git
+      targetRevision: HEAD
+      path: kustomizations/agent-sandbox
     - repoURL: oci://ghcr.io/nvidia/openshell/helm-chart
       path: .
       targetRevision: 0.0.0-dev.52097f2d4c89f612e93c4dbc7babc46268729279
