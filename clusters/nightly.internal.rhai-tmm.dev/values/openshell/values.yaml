@@ -2,10 +2,10 @@ server:
   disableTls: true
   oidc:
     issuer: https://keycloak.apps.nightly.internal.rhai-tmm.dev/realms/sso
-    audience: openshell
-    roleClaim: realm_access.roles
-    adminRole: admin
-    userRole: openshell
+    audience: openshell-cli
+    rolesClaim: realm_access.roles
+    adminRole: openshell-admin
+    userRole: openshell-user
 
 pkiInitJob:
   enabled: false
