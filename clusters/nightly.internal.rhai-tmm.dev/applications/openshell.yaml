@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '6'
+    argocd.argoproj.io/sync-wave: "6"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   name: openshell
@@ -17,7 +17,7 @@ spec:
       path: kustomizations/agent-sandbox
     - repoURL: oci://ghcr.io/nvidia/openshell/helm-chart
       path: .
-      targetRevision: 0.0.0-dev.52097f2d4c89f612e93c4dbc7babc46268729279
+      targetRevision: 0.0.0-dev.57a80ed2ad2fd2757b3d25e95787e5c709f62158
       helm:
         valueFiles:
           - $values/clusters/nightly.internal.rhai-tmm.dev/values/openshell/values.yaml
