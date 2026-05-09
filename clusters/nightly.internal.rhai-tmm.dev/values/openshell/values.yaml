@@ -1,6 +1,9 @@
 server:
   disableTls: true
 
+pkiInitJob:
+  enabled: false
+
 service:
   type: ClusterIP
 
