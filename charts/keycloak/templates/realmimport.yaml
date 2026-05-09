@@ -33,8 +33,12 @@ spec:
         description: {{ . }}
         {{- end }}
         enabled: {{ $client.enabled | default true }}
-        {{- if and (not $client.clientAuthenticatorType) $client.publicClient }}
+        {{- if not $client.publicClient }}
+        {{- if $client.clientAuthenticatorType }}
+        clientAuthenticatorType: {{ $client.clientAuthenicatorType }}
+        {{- else }}
         clientAuthenticatorType: client-secret
+        {{- end }}
         {{- end }}
         {{- with $client.secret }}
         secret: {{ . }}
