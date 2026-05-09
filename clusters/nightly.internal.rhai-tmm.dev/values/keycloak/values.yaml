@@ -1,9 +1,230 @@
 realms:
   sso:
+    clients:
+      openshell-cli:
+        name: OpenShell CLI
+        description: Public client for interactive CLI login (Authorization Code + PKCE)
+        serviceAccountsEnabled: false
+        publicClient: true
+        attributes:
+          pkce.code.challenge.method: S256
+        fullScopeAllowed: true
+        defaultClientScopes:
+          - openid
+          - profile
+          - email
+          - roles
+          - web-origins
+          - acr
+        optionalClientScopes:
+          - sandbox:read
+          - sandbox:write
+          - provider:read
+          - provider:write
+          - config:read
+          - config:write
+          - inference:read
+          - inference:write
+          - openshell:all
+      openshell-ci:
+        name: OpenShell CI
+        description: Confidential client for CI/automation (Client Credentials grant)
+        standardFlowEnabled: false
+        directAccessGrantsEnabled: false
+        serviceAccountsEnabled: true
+        fullScopeAllowed: true
+        defaultClientScopes:
+          - openid
+          - profile
+          - email
+          - roles
+          - web-origins
+          - acr
+          - openshell:all
+    clientScopes:
+      - attributes:
+          include.in.token.scope: 'true'
+        description: OpenID Connect scope
+        name: openid
+        protocol: openid-connect
+        protocolMappers:
+        - config:
+            access.token.claim: 'true'
+            introspection.token.claim: 'true'
+          consentRequired: false
+          name: sub
+          protocol: openid-connect
+          protocolMapper: oidc-sub-mapper
+      - attributes:
+          include.in.token.scope: 'true'
+        description: 'OpenID Connect built-in scope: profile'
+        name: profile
+        protocol: openid-connect
+        protocolMappers:
+        - config:
+            access.token.claim: 'true'
+            claim.name: preferred_username
+            id.token.claim: 'true'
+            jsonType.label: String
+            user.attribute: username
+            userinfo.token.claim: 'true'
+          consentRequired: false
+          name: preferred_username
+          protocol: openid-connect
+          protocolMapper: oidc-usermodel-attribute-mapper
+        - config:
+            access.token.claim: 'true'
+            claim.name: given_name
+            id.token.claim: 'true'
+            jsonType.label: String
+            user.attribute: firstName
+            userinfo.token.claim: 'true'
+          consentRequired: false
+          name: given name
+          protocol: openid-connect
+          protocolMapper: oidc-usermodel-attribute-mapper
+        - config:
+            access.token.claim: 'true'
+            claim.name: family_name
+            id.token.claim: 'true'
+            jsonType.label: String
+            user.attribute: lastName
+            userinfo.token.claim: 'true'
+          consentRequired: false
+          name: family name
+          protocol: openid-connect
+          protocolMapper: oidc-usermodel-attribute-mapper
+        - config:
+            access.token.claim: 'true'
+            id.token.claim: 'true'
+            userinfo.token.claim: 'true'
+          consentRequired: false
+          name: full name
+          protocol: openid-connect
+          protocolMapper: oidc-full-name-mapper
+      - attributes:
+          include.in.token.scope: 'true'
+        description: 'OpenID Connect built-in scope: email'
+        name: email
+        protocol: openid-connect
+        protocolMappers:
+        - config:
+            access.token.claim: 'true'
+            claim.name: email
+            id.token.claim: 'true'
+            jsonType.label: String
+            user.attribute: email
+            userinfo.token.claim: 'true'
+          consentRequired: false
+          name: email
+          protocol: openid-connect
+          protocolMapper: oidc-usermodel-attribute-mapper
+        - config:
+            access.token.claim: 'true'
+            claim.name: email_verified
+            id.token.claim: 'true'
+            jsonType.label: boolean
+            user.attribute: emailVerified
+            userinfo.token.claim: 'true'
+          consentRequired: false
+          name: email verified
+          protocol: openid-connect
+          protocolMapper: oidc-usermodel-attribute-mapper
+      - attributes:
+          include.in.token.scope: 'false'
+        description: OpenID Connect scope for roles
+        name: roles
+        protocol: openid-connect
+        protocolMappers:
+        - config:
+            access.token.claim: 'true'
+            claim.name: realm_access.roles
+            id.token.claim: 'true'
+            jsonType.label: String
+            multivalued: 'true'
+            userinfo.token.claim: 'true'
+          consentRequired: false
+          name: realm roles
+          protocol: openid-connect
+          protocolMapper: oidc-usermodel-realm-role-mapper
+      - attributes:
+          include.in.token.scope: 'false'
+        description: OpenID Connect scope for allowed web origins
+        name: web-origins
+        protocol: openid-connect
+        protocolMappers:
+        - config: {}
+          consentRequired: false
+          name: allowed web origins
+          protocol: openid-connect
+          protocolMapper: oidc-allowed-origins-mapper
+      - attributes:
+          include.in.token.scope: 'false'
+        description: OpenID Connect scope for ACR
+        name: acr
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Read sandbox resources
+        name: sandbox:read
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Write sandbox resources
+        name: sandbox:write
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Read provider resources
+        name: provider:read
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Write provider resources
+        name: provider:write
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Read configuration resources
+        name: config:read
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Write configuration resources
+        name: config:write
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Read inference resources
+        name: inference:read
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Write inference resources
+        name: inference:write
+        protocol: openid-connect
+      - attributes:
+          display.on.consent.screen: 'true'
+          include.in.token.scope: 'true'
+        description: Full access to all OpenShell resources
+        name: openshell:all
+        protocol: openid-connect
     roles:
-      openshell:
-        description: OpenShell users
+      openshell-admin:
+        description: Full administrative access to OpenShell
+      openshell-user:
+        description: Standard user access to OpenShell
     users:
       openshell-user:
         realmRoles:
-          - openshell
+          - openshell-user
+    defaultRoles:
+      - openshell-user

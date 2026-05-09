@@ -13,24 +13,62 @@ spec:
     realm: {{ $name }}
     enabled: true
     sslRequired: external
-    registrationAllowed: false
-    loginWithEmailAllowed: true
-    duplicateEmailsAllowed: false
+    registrationAllowed: {{ $realm.registrationAllowed | default false }}
+    loginWithEmailAllowed: {{ $realm.loginWithEmailAllowed | default true }}
+    duplicateEmailsAllowed: {{ $realm.duplicateEmailsAllowed | default false }}
+    resetPasswordAllowed: {{ $realm.resetPasswordAllowed | default false }}
+    editUsernameAllowed: {{ $realm.editUsernameAllowed | default false }}
+    bruteForceProtected: {{ $realm.bruteForceProtected | default true }}
+    accessTokenLifespan: {{ $realm.accessTokenLifespan | default 300 }}
+    ssoSessionIdleTimeout: {{ $realm.ssoSessionIdleTimeout | default 1800 }}
+    ssoSessionMaxLifespan: {{ $realm.ssoSessionMaxLifespan | default 36000 }}
+    offlineSessionIdleTimeout: {{ $realm.offlineSessionIdleTimeout | default 2592000 }}
     clients:
-      {{- range $cname, $client := $realm.clients }}
-      - clientId: {{ $cname }}
-        enabled: true
+      {{- range $cid, $client := $realm.clients }}
+      - clientId: {{ $cid }}
+        {{- with $client.name }}
+        name: {{ . }}
+        {{- end }}
+        {{- with $client.description }}
+        description: {{ . }}
+        {{- end }}
+        enabled: {{ $client.enabled | default true }}
+        {{- if and (not $client.clientAuthenticatorType) $client.publicClient }}
         clientAuthenticatorType: client-secret
-        secret: {{ $client.secret }}
-        publicClient: false
+        {{- end }}
+        {{- with $client.secret }}
+        secret: {{ . }}
+        {{- end }}
+        publicClient: {{ $client.publicClient | default false }}
         redirectUris:
-          - "*"
-        standardFlowEnabled: true
-        directAccessGrantsEnabled: true
-        serviceAccountsEnabled: true
-        frontchannelLogout: false
-        protocol: openid-connect
+          {{- toYaml (default (list "*") $client.redirectUris) | nindent 10 }}
+        webOrigins:
+          {{- toYaml (default (list "*") $client.webOrigins) | nindent 10 }}
+        standardFlowEnabled: {{ $client.standardFlowEnabled | default true }}
+        directAccessGrantsEnabled: {{ $client.directAccessGrantsEnabled | default true }}
+        serviceAccountsEnabled: {{ $client.serviceAccountsEnabled | default true }}
+        frontchannelLogout: {{ $client.frontchannelLogout | default false }}
+        protocol: {{ $client.protocol | default "openid-connect" }}
+        {{- with $client.attributes }}
+        attributes:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with $client.fullScopeAllowed }}
+        fullScopeAllowed: {{ . }}
+        {{- end }}
+        {{- with $client.defaultClientScopes }}
+        defaultClientScopes:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with $client.optionalClientScopes }}
+        optionalClientScopes:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
       {{- end }}
+    {{- with $realm.clientScopes }}
+    clientScopes:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     roles:
       realm:
         - name: admin
@@ -90,6 +128,9 @@ spec:
             temporary: false
         realmRoles:
           - admin
+          {{- with $realm.admin.realmRoles }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
     groups:
     {{- if $realm.groups }}
       {{- toYaml $realm.groups | nindent 6 }}
@@ -98,5 +139,9 @@ spec:
       {{- range $rname, $role := $realm.roles }}
       - name: {{ $rname }}
       {{- end }}
+    {{- end }}
+    {{- with $realm.defaultRoles }}
+    defaultRoles:
+      {{- toYaml . | nindent 6 }}
     {{- end }}
 {{- end }}
