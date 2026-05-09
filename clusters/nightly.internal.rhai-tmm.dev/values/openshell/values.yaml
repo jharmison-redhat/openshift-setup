@@ -1,6 +1,5 @@
 server:
   disableTls: true
-  grpcEndpoint: http://openshell.openshell.svc.cluster.local:8080
 
 service:
   type: ClusterIP
