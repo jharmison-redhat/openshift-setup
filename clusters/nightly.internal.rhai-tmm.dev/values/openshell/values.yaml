@@ -1,26 +1,12 @@
 server:
   disableTls: true
-  oidc:
-    issuer: https://keycloak.apps.nightly.internal.rhai-tmm.dev/realms/sso
-    audience: openshell-cli
-    rolesClaim: realm_access.roles
-    adminRole: openshell-admin
-    userRole: openshell-user
+  grpcEndpoint: http://openshell.openshell.svc.cluster.local:8080
 
-pkiInitJob:
-  enabled: false
+service:
+  type: ClusterIP
 
 podSecurityContext:
   fsGroup: null
 
 securityContext:
   runAsUser: null
-
-grpcRoute:
-  enabled: true
-  hostnames:
-    - openshell.nightly-gw.internal.rhai-tmm.dev
-  gateway:
-    create: false
-    name: default-gateway
-    namespace: openshift-ingress
