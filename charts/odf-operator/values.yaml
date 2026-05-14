@@ -1,5 +1,5 @@
 ---
-install-operators:
+install-odf:
   enabled: true
   operators:
     odf-operator:

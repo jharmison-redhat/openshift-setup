@@ -12,4 +12,5 @@ dependencies:
   - name: install-operators
     version: 0.1.0
     repository: file://../install-operators
-    condition: install-operators.enabled
+    alias: install-cnpg
+    condition: install-cnpg.enabled

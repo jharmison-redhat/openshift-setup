@@ -1,4 +1,4 @@
-install-operators:
+install-rhoai:
   operators:
     cluster-observability-operator:
       channel: stable

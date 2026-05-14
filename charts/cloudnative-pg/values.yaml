@@ -1,4 +1,4 @@
-install-operators:
+install-cnpg:
   enabled: true
   operators:
     cloudnative-pg:

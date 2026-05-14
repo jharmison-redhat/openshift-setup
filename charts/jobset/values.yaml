@@ -1,5 +1,5 @@
 ---
-install-operators:
+install-jobset:
   enabled: true
   operators:
     job-set:

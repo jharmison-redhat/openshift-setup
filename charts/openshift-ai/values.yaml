@@ -5,7 +5,7 @@ global:
     name: cluster
     baseDomain: example.com
 
-install-operators:
+install-rhoai:
   enabled: true
   operators:
     rhods-operator:

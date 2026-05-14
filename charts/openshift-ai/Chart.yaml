@@ -11,7 +11,8 @@ dependencies:
   - name: install-operators
     version: 0.1.0
     repository: file://../install-operators
-    condition: install-operators.enabled
+    alias: install-rhoai
+    condition: install-rhoai.enabled
   - name: postgres-cluster
     version: 0.1.0
     repository: file://../postgres-cluster

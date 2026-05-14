@@ -11,5 +11,5 @@ dependencies:
   - name: install-operators
     version: 0.1.0
     repository: file://../install-operators
-    alias: installRhclOperator
-    condition: installRhclOperator.enabled
+    alias: install-rhcl
+    condition: install-rhcl.enabled

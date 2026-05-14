@@ -1,7 +1,7 @@
 global:
   toolsImage: image-registry.openshift-image-registry.svc:5000/openshift/tools:latest
 
-installRhclOperator:
+install-rhcl:
   enabled: true
   operators:
     rhcl-operator:
