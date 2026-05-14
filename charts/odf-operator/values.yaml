@@ -3,7 +3,7 @@ install-odf:
   enabled: true
   operators:
     odf-operator:
-      channel: stable-4.20
+      channel: stable-4.21
       namespace: openshift-storage
       targetNamespaces:
         - openshift-storage
