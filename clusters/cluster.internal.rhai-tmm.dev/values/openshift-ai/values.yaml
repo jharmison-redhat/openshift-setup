@@ -23,6 +23,17 @@ dataScienceCluster:
       wva:
         managementState: Managed
 
+mcpServers:
+  GitHub-MCP-Server:
+    url: https://api.githubcopilot.com/mcp
+    description: The GitHub MCP server enables exploration and interaction with
+      repositories, code, and developer resources on GitHub. It provides
+      programmatic access to repositories, issues, pull requests, and related
+      project data, allowing automation and integration within development
+      workflows. With this service, developers can query repositories, discover
+      project metadata, and streamline code-related tasks through MCP-compatible
+      tools.
+
 dashboardConfig:
   disableKServeMetrics: false
   disableLMEval: false

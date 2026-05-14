@@ -1,0 +1,14 @@
+{{- with .Values.mcpServers }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: gen-ai-aa-mcp-servers
+  namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+data:
+  {{- range $name, $server := . }}
+  {{ $name }}: |
+    {{- toPrettyJson $server | nindent 4 }}
+  {{- end }}
+{{- end }}

@@ -26,6 +26,12 @@ install-rhoai:
 #     operatorGroup:
 #       enabled: true
 
+rbac:
+  create: true
+  group: system:authenticated:oauth
+
+mcpServers: {}
+
 gateways:
   maasDefaultGateway:
     # only created if enabled in DSC
