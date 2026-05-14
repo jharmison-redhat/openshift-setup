@@ -1,5 +1,6 @@
 providers:
-  htpasswd: null
+  htpasswd:
+    admin: null
   github:
     organizations:
       - rhai-code
