@@ -1,0 +1,8 @@
+name: models
+annotations:
+  openshift.io/description: For hosting models to share in MaaS
+  openshift.io/display-name: Models
+labels:
+  opendatahub.io/dashboard: "true"
+namespaceAdmins:
+  - admin
