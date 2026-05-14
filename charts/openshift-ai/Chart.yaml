@@ -17,11 +17,3 @@ dependencies:
     version: 0.1.0
     repository: file://../postgres-cluster
     condition: postgres-cluster.enabled
-  - name: jobset
-    version: 0.1.0
-    repository: file://../jobset
-    condition: jobset.enabled
-  - name: leaderworkerset
-    version: 0.1.0
-    repository: file://../leaderworkerset
-    condition: leaderworkerset.enabled

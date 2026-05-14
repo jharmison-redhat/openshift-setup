@@ -26,12 +26,6 @@ install-rhoai:
 #     operatorGroup:
 #       enabled: true
 
-jobset:
-  enabled: true
-
-leaderworkerset:
-  enabled: true
-
 gateways:
   maasDefaultGateway:
     # only created if enabled in DSC
