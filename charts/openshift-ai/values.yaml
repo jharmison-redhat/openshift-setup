@@ -9,10 +9,28 @@ install-operators:
   enabled: true
   operators:
     rhods-operator:
-      channel: stable-3.3
+      channel: stable-3.4
       namespace: redhat-ods-operator
       operatorGroup:
         enabled: true
+#   cluster-observability-operator:
+#     channel: stable
+#     namespace: openshift-cluster-observability-operator
+#     operatorGroup:
+#       enabled: true
+#   opentelemetry-product:
+#     channel: stable
+#   openshift-custom-metrics-autoscaler-operator:
+#     channel: stable
+#     namespace: openshift-keda
+#     operatorGroup:
+#       enabled: true
+
+jobset:
+  enabled: true
+
+leaderworkerset:
+  enabled: true
 
 gateways:
   maasDefaultGateway:

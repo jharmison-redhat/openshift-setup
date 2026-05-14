@@ -1,0 +1,15 @@
+---
+install-operators:
+  enabled: true
+  operators:
+    job-set:
+      channel: stable-v1.0
+      namespace: openshift-jobset-operator
+      operatorGroup:
+        enabled: true
+      targetNamespaces:
+        - openshift-jobset-operator
+
+spec:
+  logLevel: Normal
+  operatorLogLevel: Normal

@@ -1,0 +1,14 @@
+---
+apiVersion: v2
+name: jobset
+description: >
+  A helm chart to deploy the Jobset operator and operand
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+
+dependencies:
+  - name: install-operators
+    version: 0.1.0
+    repository: file://../install-operators
+    condition: install-operators.enabled

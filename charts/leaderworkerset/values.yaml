@@ -1,0 +1,16 @@
+---
+install-operators:
+  enabled: true
+  operators:
+    leader-worker-set:
+      channel: stable-v1.0
+      namespace: openshift-lws-operator
+      operatorGroup:
+        enabled: true
+      targetNamespaces:
+        - openshift-lws-operator
+
+spec:
+  managementState: Managed
+  logLevel: Normal
+  operatorLogLevel: Normal

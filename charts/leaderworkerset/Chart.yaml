@@ -1,0 +1,14 @@
+---
+apiVersion: v2
+name: leaderworkerset
+description: >
+  A helm chart to deploy the LeaderWorkerSet operator and operand
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+
+dependencies:
+  - name: install-operators
+    version: 0.1.0
+    repository: file://../install-operators
+    condition: install-operators.enabled

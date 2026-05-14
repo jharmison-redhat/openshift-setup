@@ -1,0 +1,11 @@
+apiVersion: operator.openshift.io/v1
+kind: LeaderWorkerSetOperator
+metadata:
+  name: cluster
+  namespace: openshift-lws-operator
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+{{- with .Values.spec }}
+spec:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
