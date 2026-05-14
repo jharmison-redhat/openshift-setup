@@ -19,20 +19,43 @@ nfd:
           - "vendor"
 
 gpuOperator:
-  channel: v25.3
+  channel: v26.3
   timeSlices: 1
   policy:
-    operator:
-      defaultRuntime: crio
-      use_ocp_driver_toolkit: true
-      initContainer: {}
-    sandboxWorkloads:
-      enabled: false
-      defaultWorkload: container
-    driver:
+    vgpuDeviceManager:
+      config:
+        default: default
       enabled: true
-      useNvidiaDriverCRD: false
-      useOpenKernelModules: false
+    migManager:
+      config:
+        default: all-disabled
+      enabled: true
+    operator:
+      runtimeClass: nvidia
+      use_ocp_driver_toolkit: true
+    dcgm:
+      enabled: true
+    gfd:
+      enabled: true
+    dcgmExporter:
+      config:
+        name: ""
+      serviceMonitor:
+        enabled: true
+      enabled: true
+    cdi:
+      default: false
+      enabled: true
+      nriPluginEnabled: false
+    driver:
+      licensingConfig:
+        nlsEnabled: true
+        secretName: ""
+      kernelModuleType: auto
+      certConfig:
+        name: ""
+      kernelModuleConfig:
+        name: ""
       upgradePolicy:
         autoUpgrade: true
         drain:
@@ -50,62 +73,53 @@ gpuOperator:
           timeoutSeconds: 0
       repoConfig:
         configMapName: ""
-      certConfig:
-        name: ""
-      licensingConfig:
-        nlsEnabled: true
-        configMapName: ""
       virtualTopology:
         config: ""
-      kernelModuleConfig:
-        name: ""
-    dcgmExporter:
       enabled: true
-      config:
-        name: ""
-      serviceMonitor:
-        enabled: true
-    dcgm:
-      enabled: true
-    daemonsets:
-      updateStrategy: RollingUpdate
-      rollingUpdate:
-        maxUnavailable: "1"
-      tolerations:
-        - effect: NoSchedule
-          operator: Exists
-          key: nvidia.com/gpu
+      useNvidiaDriverCRD: false
     devicePlugin:
-      enabled: true
       config:
         name: "{{ if gt (int .Values.gpuOperator.timeSlices) 1 }}device-plugin-config{{ end }}"
         default: ""
       mps:
-        root: "/run/nvidia/mps"
-    gfd:
+        root: /run/nvidia/mps
       enabled: true
-    migManager:
-      enabled: true
-    nodeStatusExporter:
-      enabled: true
+    gdrcopy:
+      enabled: false
+    kataManager:
+      config:
+        artifactsDir: /opt/nvidia-gpu-operator/artifacts/runtimeclasses
     mig:
       strategy: single
-    toolkit:
+    kataSandboxDevicePlugin:
       enabled: true
-    validator:
-      plugin:
-        env:
-          - name: WITH_WORKLOAD
-            value: "false"
-    vgpuManager:
-      enabled: false
-    vgpuDeviceManager:
+    ccManager:
       enabled: true
     sandboxDevicePlugin:
       enabled: true
-    vfioManager:
+    validator:
+      plugin:
+        env: []
+    nodeStatusExporter:
       enabled: true
+    daemonsets:
+      rollingUpdate:
+        maxUnavailable: "1"
+      updateStrategy: RollingUpdate
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+          key: nvidia.com/gpu
+    sandboxWorkloads:
+      defaultWorkload: container
+      mode: kubevirt
+      enabled: false
     gds:
       enabled: false
-    gdrcopy:
+    vgpuManager:
       enabled: false
+    vfioManager:
+      enabled: true
+    toolkit:
+      installDir: /usr/local/nvidia
+      enabled: true
