@@ -18,3 +18,7 @@ enableConsolePlugin: true
 resources: {}
 multiCloudGateway: {}
 resourceProfile: balanced
+
+rbac:
+  create: true
+  group: system:authenticated:oauth
