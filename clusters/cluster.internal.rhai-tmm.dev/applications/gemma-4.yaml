@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '5'
+    argocd.argoproj.io/sync-wave: "5"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   name: gemma-4
@@ -15,8 +15,8 @@ spec:
   source:
     helm:
       valueFiles:
-        - ../../clusters/nightly.internal.rhai-tmm.dev/cluster.yaml
-        - ../../clusters/nightly.internal.rhai-tmm.dev/values/llmisvc/gemma-4.yaml
+        - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
+        - ../../clusters/cluster.internal.rhai-tmm.dev/values/llmisvc/gemma-4.yaml
     path: charts/llmisvc
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD

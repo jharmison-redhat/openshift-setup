@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '0'
+    argocd.argoproj.io/sync-wave: "0"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
   name: models-namespace
@@ -15,8 +15,8 @@ spec:
   source:
     helm:
       valueFiles:
-        - ../../clusters/nightly.internal.rhai-tmm.dev/cluster.yaml
-        - ../../clusters/nightly.internal.rhai-tmm.dev/values/namespace/models.yaml
+        - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
+        - ../../clusters/cluster.internal.rhai-tmm.dev/values/namespace/models.yaml
     path: charts/namespace
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
