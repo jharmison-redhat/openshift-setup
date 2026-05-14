@@ -32,6 +32,8 @@ apiVersion: keda.sh/v1alpha1
 kind: ClusterTriggerAuthentication
 metadata:
   name: ai-inference-keda-thanos
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   secretTargetRef:
     - parameter: bearerToken
