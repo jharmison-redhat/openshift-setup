@@ -32,6 +32,9 @@ if [ -n "${INSTALL_DIR}" ]; then
 	fi
 fi
 
+alias vi=nvim
+alias vim=nvim
+
 source <(oc completion bash)
 # Only alias oc if we can't connect to the cluster as is, to support plugins
 if ! oc whoami >/dev/null 2>&1; then

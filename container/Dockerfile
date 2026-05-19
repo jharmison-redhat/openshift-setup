@@ -28,6 +28,7 @@ RUN arch=$(uname -m) && \
     python3-typer \
     python3-dotenv \
     python3-pip \
+    nvim \
     https://github.com/getsops/sops/releases/download/v3.12.2/sops-3.12.2-1.${arch}.rpm \
     https://github.com/derailed/k9s/releases/download/v0.50.18/k9s_linux_${goarch}.rpm \
     && dnf -y clean all \
