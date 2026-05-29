@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: create-kuadrant-script
+  name: restart-kuadrant-operator-script
   namespace: {{ .Values.kuadrant.namespace }}
   labels:
     {{- include "rhcl.labels" . | nindent 4 }}

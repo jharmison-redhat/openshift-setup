@@ -10,3 +10,16 @@ install-rhcl:
 kuadrant:
   create: true
   namespace: kuadrant-system
+  spec:
+    observability:
+      enable: true
+
+authorino:
+  overwrite: true
+  serviceTls: true
+  spec:
+    listener:
+      tls:
+        certSecretRef:
+          name: authorino-server-cert
+        enabled: true

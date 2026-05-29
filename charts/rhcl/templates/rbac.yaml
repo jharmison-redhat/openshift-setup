@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: create-kuadrant
+  name: restart-kuadrant-operator
   namespace: {{ .Values.kuadrant.namespace }}
   labels:
     {{- include "rhcl.labels" . | nindent 4 }}
@@ -10,37 +10,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: create-kuadrant-kuadrant-admin
-  namespace: {{ .Values.kuadrant.namespace }}
-  labels:
-    {{- include "rhcl.labels" . | nindent 4 }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: kuadrants.kuadrant.io-v1beta1-admin
-subjects:
-  - kind: ServiceAccount
-    name: create-kuadrant
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: create-kuadrant-edit
-  namespace: {{ .Values.kuadrant.namespace }}
-  labels:
-    {{- include "rhcl.labels" . | nindent 4 }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: edit
-subjects:
-  - kind: ServiceAccount
-    name: create-kuadrant
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: create-kuadrant-olm-view
+  name: restart-kuadrant-operator-olm-view
   namespace: openshift-operators
   labels:
     {{- include "rhcl.labels" . | nindent 4 }}
@@ -50,13 +20,13 @@ roleRef:
   name: aggregate-olm-view
 subjects:
   - kind: ServiceAccount
-    name: create-kuadrant
+    name: restart-kuadrant-operator
     namespace: {{ .Values.kuadrant.namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: create-kuadrant-namespace-edit
+  name: restart-kuadrant-operator-namespace-edit
   namespace: openshift-operators
   labels:
     {{- include "rhcl.labels" . | nindent 4 }}
@@ -66,6 +36,6 @@ roleRef:
   name: edit
 subjects:
   - kind: ServiceAccount
-    name: create-kuadrant
+    name: restart-kuadrant-operator
     namespace: {{ .Values.kuadrant.namespace }}
 {{- end }}

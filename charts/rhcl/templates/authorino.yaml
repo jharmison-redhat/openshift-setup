@@ -1,0 +1,12 @@
+{{- if and .Values.kuadrant.create .Values.authorino.overwrite }}
+apiVersion: operator.authorino.kuadrant.io/v1beta1
+kind: Authorino
+metadata:
+  name: authorino
+  namespace: {{ .Values.kuadrant.namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true,ServerSideApply=true
+spec:
+  {{- toYaml .Values.authorino.spec | nindent 2 }}
+{{- end }}
