@@ -39,11 +39,11 @@ all: container
 
 $(INSTALL_DIR)/openshift-install:
 	mkdir -p $(@D)
-	curl -sLo- https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$(CLUSTER_VERSION)/openshift-install-linux$(if $(filter $(ARCH),arm64),-arm64).tar.gz | tar xvzf - -C $(@D) openshift-install
+	curl -sLo- https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$(CLUSTER_VERSION)/openshift-install-linux$(if $(filter $(ARCH),aarch64),-arm64).tar.gz | tar xvzf - -C $(@D) openshift-install
 
 $(INSTALL_DIR)/oc:
 	mkdir -p $(@D)
-	curl -sLo- https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$(CLUSTER_VERSION)/openshift-client-linux$(if $(filter $(ARCH),arm64),-arm64).tar.gz | tar xvzf - -C $(@D) oc kubectl
+	curl -sLo- https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$(CLUSTER_VERSION)/openshift-client-linux$(if $(filter $(ARCH),aarch64),-arm64).tar.gz | tar xvzf - -C $(@D) oc kubectl
 
 $(INSTALL_DIR)/kubectl: $(INSTALL_DIR)/oc
 
