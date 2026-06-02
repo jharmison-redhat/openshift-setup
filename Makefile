@@ -26,7 +26,17 @@ ARCH ?= $(shell uname -m)
 DOWNLOAD_SUFFIX := $(if $(or $(filter $(ARCH),aarch64),$(filter $(ARCH),arm64)),-arm64)
 IMAGE ?= quay.io/jharmison/openshift-setup:latest
 CONTAINER_MAKE_ARGS ?= bootstrap
-RUNTIME_ARGS := run --rm -it --security-opt=label=disable --privileged -v "$${PWD}:/workdir" -v ~/.config:/root/.config $(subst .env,--env-file .env,$(wildcard .env)) $(subst $(INSTALL_DIR).env,--env-file $(INSTALL_DIR).env,$(wildcard $(INSTALL_DIR).env)) --env HOME=/root --env EDITOR=nvim --env CLUSTER_NAME=$(CLUSTER_NAME) --env BASE_DOMAIN=$(BASE_DOMAIN) --env CLUSTER_URL=$(CLUSTER_URL) --env CLUSTER_DIR=$(CLUSTER_DIR) --env INSTALL_DIR=$(INSTALL_DIR) --env XDG_CONFIG_HOME=/root/.config --env XDG_DATA_HOME=/workdir/$(INSTALL_DIR)/.data
+RUNTIME_ARGS := run --rm -it --security-opt=label=disable --privileged -v "$${PWD}:/workdir" \
+								-v ~/.config:/root/.config \
+								$(subst .env,--env-file .env,$(wildcard .env)) \
+								$(subst $(INSTALL_DIR).env,--env-file $(INSTALL_DIR).env,$(wildcard $(INSTALL_DIR).env)) \
+								--env HOME=/root --env EDITOR=nvim --env XDG_CONFIG_HOME=/root/.config \
+								--env CLUSTER_NAME=$(CLUSTER_NAME) \
+								--env BASE_DOMAIN=$(BASE_DOMAIN) \
+								--env CLUSTER_URL=$(CLUSTER_URL) \
+								--env CLUSTER_DIR=$(CLUSTER_DIR) \
+								--env INSTALL_DIR=$(INSTALL_DIR) \
+								--env XDG_DATA_HOME=/workdir/$(INSTALL_DIR)/.data
 AUTHFILE ?= ~/.redhat/quay-cli.json
 
 DEMO_FILE ?= demos/gpuaas.yaml
