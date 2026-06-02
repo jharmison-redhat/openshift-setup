@@ -1,3 +1,7 @@
+ifneq ("$(wildcard /opt/homebrew/bin/bash)","")
+	SHELL := /opt/homebrew/bin/bash
+endif
+
 -include .env
 
 CLUSTER_NAME ?= cluster
