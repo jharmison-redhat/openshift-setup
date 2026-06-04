@@ -1,3 +1,6 @@
+dashboardConfig:
+  genAiStudio: true
+
 hardwareProfiles:
   l40s:
     node:
