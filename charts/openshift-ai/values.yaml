@@ -83,7 +83,7 @@ dataScienceCluster:
     ray:
       managementState: Managed
     trainer:
-      managementState: Managed
+      managementState: Removed
     trainingoperator:
       managementState: Managed
     trustyai:
