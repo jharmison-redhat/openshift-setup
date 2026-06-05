@@ -50,7 +50,7 @@ spec:
           {{- with .token }}
           envFrom:
             - secretRef:
-                name: HF_TOKEN
+                name: {{ include "llminferenceservice.fullname" $ }}-token
           {{- end }}
           {{- end }}
           volumeMounts:
