@@ -6,4 +6,4 @@ description: >
   LLMInferenceService API
 type: application
 version: 0.1.0
-appVersion: 3.3.1
+appVersion: 3.4.0

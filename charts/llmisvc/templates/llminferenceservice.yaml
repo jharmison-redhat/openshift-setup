@@ -1,3 +1,9 @@
+{{- $needsToken := false }}
+{{- if and .Values.huggingface.token (hasPrefix "hf://" .Values.model.uri) }}
+{{- if not .Values.model.pvc.preload }}
+{{- $needsToken = true }}
+{{- end }}
+{{- end }}
 apiVersion: serving.kserve.io/v1alpha1
 kind: LLMInferenceService
 metadata:
@@ -7,7 +13,7 @@ metadata:
     opendatahub.io/model-type: {{ quote . }}
     {{- end }}
     {{- with .Values.genaiAsset }}
-    {{- if .enabled }}
+    {{- if and .useCase .enabled }}
     opendatahub.io/genai-use-case: {{ quote .useCase }}
     {{- end }}
     {{- end }}
@@ -22,11 +28,17 @@ metadata:
     opendatahub.io/hardware-profile-namespace: {{ .namespace }}
     {{- end }}
     {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
   labels:
     {{- include "llminferenceservice.labels" $ | nindent 4 }}
     opendatahub.io/dashboard: "true"
     {{- if or .Values.genaiAsset.enabled .Values.maas.enabled }}
     opendatahub.io/genai-asset: "true"
+    {{- end }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
   name: {{ include "llminferenceservice.fullname" . }}
 spec:
@@ -52,6 +64,10 @@ spec:
   {{- end }}
   {{- end }}
   router:
+    {{- if .Values.router.gateway }}
+    gateway:
+      {{- toYaml . | nindent 6 }}
+    {{- else }}
     gateway:
       refs:
         {{- if .Values.maas.enabled }}
@@ -60,19 +76,43 @@ spec:
         - name: openshift-ai-inference
         {{- end }}
           namespace: openshift-ingress
+    {{- end }}
+    {{- if .Values.router.createRoute }}
+    {{- if .Values.router.route }}
+    route:
+      {{ toYaml .Values.router.route | nindent 6 }}
+    {{- else }}
     route: {}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.router.createScheduler }}
+    {{- if .Values.router.scheduler }}
+    scheduler:
+      {{ toYaml .Values.router.scheduler | nindent 6 }}
+    {{- else }}
     scheduler: {}
+    {{- end }}
+    {{- end }}
   template:
     containers:
       - name: main
         image: {{ include "llminferenceservice.image" . }}
-        {{- with .Values.model.args }}
+        {{- if or .Values.model.args (or .Values.env $needsToken) }}
         env:
+        {{- if $needsToken }}
+          - name: HF_HUB_OFFLINE
+            value: "0"
+        {{- end }}
+        {{- with .Values.model.args }}
           - name: VLLM_ADDITIONAL_ARGS
             value: >-
               {{- join " " . | wrap 106 | nindent 14 }}
         {{- end }}
-        {{- with .Values.huggingface.token }}
+        {{- with .Values.env }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- end }}
+        {{- if $needsToken }}
         envFrom:
             - secretRef:
                 name: HF_TOKEN
