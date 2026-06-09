@@ -1,23 +1,6 @@
 ---
 applications:
   - name: aws-nvidia-gpu-machinesets
-    fileprefix: h100
-    rewrite:
-      metadata:
-        name: machineset-h100
-    values:
-      instanceType: p5.4xlarge
-      desiredReplicas: 0
-      baseName: worker-h100
-      taints:
-        - key: nvidia.com/gpu
-          value: h100
-          effect: NoSchedule
-      nodeLabels:
-        node-role.kubernetes.io/gpu: ""
-        jharmison.dev/gpu-type: h100
-        gpu-class: large
-  - name: aws-nvidia-gpu-machinesets
     fileprefix: l40s
     rewrite:
       metadata:
