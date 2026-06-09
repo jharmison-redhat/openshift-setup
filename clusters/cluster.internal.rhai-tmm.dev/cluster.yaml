@@ -1,0 +1,18 @@
+global:
+  cluster:
+    name: cluster
+    baseDomain: internal.rhai-tmm.dev
+desiredUpdate:
+  version: 4.21.14
+cluster:
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age1c97f5epnx5l23zgy445qgwpms73z8lg9rsff4akcedq7hhn2gqjq7x09d5
+  infraID: cluster-mrd76
+aws:
+  region: us-west-2
+  azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
+  ami: ami-04941543f3e575579
+  subnets: ["subnet-09a35c1a39d04ffdc","subnet-08e29713877439249","subnet-0cbce59703df9897d","subnet-03dcd6b77ada8c44a"]
+  nodeSg: sg-010ab9577d002a97e
+  vpcId: vpc-093aff84b9da67269
