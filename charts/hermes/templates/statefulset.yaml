@@ -1,0 +1,237 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "hermes.fullname" . }}
+  labels:
+    {{- include "hermes.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  {{- with .Values.updateStrategy }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "hermes.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        {{- include "hermes.config-annotations" . | nindent 8 }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "hermes.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "hermes.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      initContainers:
+        - name: memory-init
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+            - /bin/bash
+          args:
+            - -c
+            - |-
+              set -x
+              if [ -r /opt/data/memories/MEMORY.md ]; then exit 0; fi
+              mkdir -p /opt/data/memories
+              echo 'Always load the `kubernetes-helm-config` skill whenever the topic involves Hermes Agent config — configuration discussions, config.yaml, config set/get, provider/model config, tool config, anything config-related.' > /opt/data/memories/MEMORY.md
+              chown -R 10000:10000 /opt/data/memories
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            {{- range $name, $volume := .Values.persistence }}
+            - name: {{ include "hermes.fullname" $ }}-{{ $name }}
+              mountPath: {{ $volume.mountPath }}
+            {{- end }}
+      {{- if .Values.injectServiceCA }}
+        - name: ca-bundle-packer
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+            - /bin/bash
+          args:
+            - -c
+            - |-
+              set -x
+              find /etc/ssl/certs -type f -o -type l -exec cp -P {} /etc/ssl/new-root/ \;
+              update-ca-certificates --etccertsdir /etc/ssl/new-root
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: service-ca
+              mountPath: /usr/local/share/ca-certificates
+            - name: new-ca-root
+              mountPath: /etc/ssl/new-root
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command:
+            - /init
+          args:
+            - /opt/hermes/docker/main-wrapper.sh
+            - gateway
+            - run
+            {{- with .Values.extraArgs }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "hermes.fullname" . }}-env
+            {{- if .Values.secretEnv }}
+            - secretRef:
+                name: {{ include "hermes.fullname" . }}-env
+            {{- end }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            {{- range $name, $port := .Values.ports }}
+            - name: {{ $name }}
+              containerPort: {{ $port.port }}
+              protocol: {{ $port.protocol | default "TCP" }}
+            {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            {{- range $name, $volume := .Values.persistence }}
+            - name: {{ include "hermes.fullname" $ }}-{{ $name }}
+              mountPath: {{ $volume.mountPath }}
+            {{- end }}
+            - name: config
+              mountPath: /opt/data/config.yaml
+              subPath: config.yaml
+            - name: config
+              mountPath: /opt/data/skills/devops/kubernetes-helm-config/SKILL.md
+              subPath: SKILL.md
+            {{- if .Values.soul }}
+            - name: config
+              mountPath: /opt/data/SOUL.md
+              subPath: SOUL.md
+            {{- end }}
+            - name: tmp
+              mountPath: /tmp
+            - name: run
+              mountPath: /run
+            {{- if .Values.injectServiceCA }}
+            - mountPath: /etc/ssl/certs
+              name: new-ca-root
+            {{- end }}
+        {{- if .Values.oauth.enabled }}
+        - name: oauth-proxy
+          image: {{ .Values.oauth.image.registry }}/{{ .Values.oauth.image.repo }}:{{ .Values.oauth.image.tag }}
+          args:
+            - --provider=openshift
+            - --pass-basic-auth=false
+            - --https-address=:8443
+            - --http-address=
+            - --email-domain=*
+            - --upstream=http://localhost:{{ (get .Values.ports .Values.service.backend).port }}
+            - --openshift-service-account={{ include "hermes.serviceAccountName" . }}
+            - --tls-key=/etc/tls/private/tls.key
+            - --tls-cert=/etc/tls/private/tls.crt
+            - --cookie-secret-file=/etc/proxy/secrets/session_secret
+            - --openshift-ca=/etc/pki/tls/cert.pem
+            - --openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+            - --openshift-ca=/etc/ocp-injected-certs/ca-bundle.crt
+            - >
+              --openshift-sar={{ tpl .Values.oauth.sarTemplate . }}
+          ports:
+            - containerPort: 8443
+              name: oauth
+          volumeMounts:
+            - mountPath: /etc/tls/private
+              name: proxy-svc-tls
+            - mountPath: /etc/proxy/secrets
+              name: proxy-session
+            - mountPath: /etc/ocp-injected-certs
+              name: proxy-ca
+        {{- end }}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: run
+          emptyDir:
+            medium: Memory
+        - name: config
+          configMap:
+            name: {{ include "hermes.fullname" . }}-config
+        {{- if .Values.injectServiceCA }}
+        - name: service-ca
+          configMap:
+            name: {{ include "hermes.fullname" . }}-ocp-service-ca
+        - name: new-ca-root
+          emptyDir: {}
+        {{- end }}
+        {{- if .Values.oauth.enabled }}
+        - name: proxy-svc-tls
+          secret:
+            secretName: {{ include "hermes.fullname" . }}-proxy-svc-tls
+        - name: proxy-session
+          secret:
+            secretName: {{ include "hermes.fullname" . }}-proxy-session
+        - name: proxy-ca
+          configMap:
+            name: {{ include "hermes.fullname" . }}-ocp-injected-certs
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- with .Values.persistence }}
+  volumeClaimTemplates:
+    {{- range $name, $volume := . }}
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: {{ include "hermes.fullname" $ }}-{{ $name }}
+        annotations:
+          helm.sh/resource-policy: keep
+        labels:
+          {{- include "hermes.labels" $ | nindent 10 }}
+      spec:
+        {{- with $volume.storageClassName }}
+        storageClassName: {{ . }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ $volume.size }}
+        accessModes:
+          {{- toYaml $volume.accessModes | nindent 10 }}
+        volumeMode: {{ $volume.volumeMode | default "Filesystem" }}
+    {{- end }}
+  {{- end }}

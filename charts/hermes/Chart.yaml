@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: hermes
+description: >
+  A helm chart to deploy Hermes on OpenShift
+type: application
+version: 0.1.0
+appVersion: v2026.6.5

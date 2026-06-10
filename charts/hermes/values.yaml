@@ -1,0 +1,125 @@
+image:
+  registry: docker.io
+  repository: nousresearch/hermes-agent
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+
+persistence:
+  data:
+    mountPath: /opt/data
+    size: 10Gi
+    storageClassName: ""
+    accessModes:
+      - ReadWriteOnce
+
+soul: ""
+
+# DO NOT PUT SECRETS HERE
+env: {} # see: https://hermes-agent.nousresearch.com/docs/reference/environment-variables
+# DO PUT SECRETS HERE
+secretEnv: {} # see: https://hermes-agent.nousresearch.com/docs/reference/environment-variables
+
+extraArgs: []
+
+config:
+  model:
+    provider: custom
+    model: my-model
+    base_url: http://vllm:8000/v1
+    api_key: "${MY_SECRET_API_KEY}"
+
+updateStrategy:
+  type: RollingUpdate
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials? (overridden if you enable oauth)
+  automount: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  runAsUser: 0
+  capabilities:
+    add:
+      - SETUID
+  readOnlyRootFilesystem: true
+  runAsNonRoot: false
+
+injectServiceCA: false
+
+ports:
+  dashboard:
+    port: 9119
+
+service:
+  type: ClusterIP
+  backend: dashboard
+
+route:
+  enabled: true
+  annotations: {}
+  tls:
+    enabled: true
+    insecureEdgeTerminationPolicy: Redirect
+  subdomain: ""
+  host: ""
+
+oauth:
+  enabled: true
+  image:
+    registry: image-registry.openshift-image-registry.svc:5000
+    repo: openshift/oauth-proxy
+    tag: v4.4
+  sarTemplate: >
+    {"namespace": "{{ .Release.Namespace }}", "resource": "services", "verb": "create"}
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 4Gi
+  requests:
+    cpu: 200m
+    memory: 500Mi
+
+livenessProbe:
+  tcpSocket:
+    port: dashboard
+  failureThreshold: 1
+  periodSeconds: 10
+  timeoutSeconds: 3
+readinessProbe:
+  tcpSocket:
+    port: dashboard
+  failureThreshold: 1
+  periodSeconds: 10
+  timeoutSeconds: 3
+startupProbe:
+  tcpSocket:
+    port: dashboard
+  initialDelaySeconds: 5
+  failureThreshold: 30
+  periodSeconds: 5
+  timeoutSeconds: 3
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

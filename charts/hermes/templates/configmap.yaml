@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hermes.fullname" . }}-env
+  labels:
+    {{- include "hermes.labels" . | nindent 4 }}
+data:
+  HERMES_DASHBOARD: "true"
+  HERMES_DASHBOARD_INSECURE: "true"
+  {{- range $k, $v := .Values.env }}
+  {{ $k }}: {{ quote $v }}
+  {{- end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hermes.fullname" . }}-config
+  labels:
+    {{- include "hermes.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    {{- toYaml .Values.config | nindent 4 }}
+  SKILL.md: |
+    {{- $.Files.Get "files/kubernetes-helm-config/SKILL.md" | nindent 4 }}
+  {{- with .Values.soul }}
+  SOUL.md: |
+    {{- . | nindent 4 }}
+  {{- end }}
+{{- if .Values.oauth.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hermes.fullname" . }}-ocp-injected-certs
+  labels:
+    config.openshift.io/inject-trusted-cabundle: "true"
+{{- end }}
+{{- if .Values.injectServiceCA }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "hermes.fullname" . }}-ocp-service-ca
+  annotations:
+    service.beta.openshift.io/inject-cabundle: "true"
+{{- end }}

@@ -1,0 +1,18 @@
+1. Get the Hermes Dashboard URL by running these commands:
+{{- if .Values.route.enabled }}
+  route_hostname=$(kubectl get --namespace {{ .Release.Namespace }} route {{ include "hermes.fullname" . }} -o jsonpath='{.status.ingress[0].host}')
+  {{- $proto := ternary "https" "http" .Values.route.tls.enabled }}
+  {{- printf "" | nindent 2 }}echo {{ $proto }}://${route_hostname}
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath='{.spec.ports[?(@.name == "dashboard")].port}' services {{ include "hermes.fullname" . }})
+  export NODE_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch its status by running 'kubectl get --namespace {{ .Release.Namespace }} svc -w {{ include "hermes.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "hermes.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+  echo http://$SERVICE_IP:{{ .Values.ports.dashboard.port }}
+{{- else if contains "ClusterIP" .Values.service.type }}
+  echo http://127.0.0.1:8080
+  kubectl --namespace {{ .Release.Namespace }} port-forward svc/{{ include "hermes.fullname" . }} 8080:{{ .Values.ports.dashboard.port }}
+{{- end }}

@@ -1,0 +1,43 @@
+{{- if .Values.route.enabled -}}
+{{- $fullName := include "hermes.fullname" . -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "hermes.labels" . | nindent 4 }}
+  {{- with .Values.route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .Values.route.subdomain }}
+  subdomain: {{ . }}
+  {{- end }}
+  {{- with .Values.route.host }}
+  host: {{ . }}
+  {{- end }}
+  to:
+    kind: Service
+    name: {{ $fullName }}
+    weight: 100
+  port:
+    {{- if .Values.oauth.enabled }}
+    targetPort: oauth
+    {{- else }}
+    targetPort: {{ .Values.service.backend }}
+    {{- end }}
+  {{- if or .Values.route.tls.enabled .Values.oauth.enabled }}
+  tls:
+    insecureEdgeTerminationPolicy: {{ .Values.route.tls.insecureEdgeTerminationPolicy }}
+    {{- if .Values.oauth.enabled }}
+    {{- if .Values.route.tls.enabled }}
+    termination: reencrypt
+    {{- else }}
+    termination: passthrough
+    {{- end }}
+    {{- else }}
+    termination: edge
+    {{- end }}
+  {{- end }}
+{{- end }}
