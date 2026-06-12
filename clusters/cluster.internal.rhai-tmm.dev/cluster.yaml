@@ -7,12 +7,12 @@ desiredUpdate:
 cluster:
   controlPlaneNodes: 3
   workerNodes: 3
-  agePublicKey: age1c97f5epnx5l23zgy445qgwpms73z8lg9rsff4akcedq7hhn2gqjq7x09d5
-  infraID: cluster-mrd76
+  agePublicKey: age1t0x7hz0ym7slhav3djnz209vt9uuuequjsqy7xmsqsl5mp98j9mscfuqj8
+  infraID: cluster-kd5bk
 aws:
   region: us-west-2
-  azs: ["us-west-2a","us-west-2b","us-west-2c","us-west-2d"]
+  azs: ["us-west-2b","us-west-2c","us-west-2d","us-west-2a"]
   ami: ami-04941543f3e575579
-  subnets: ["subnet-09a35c1a39d04ffdc","subnet-08e29713877439249","subnet-0cbce59703df9897d","subnet-03dcd6b77ada8c44a"]
-  nodeSg: sg-010ab9577d002a97e
-  vpcId: vpc-093aff84b9da67269
+  subnets: ["subnet-0804f35c580cd8f0f","subnet-0f37bd59f40318e70","subnet-0a6015275a7af0be0","subnet-0ed0f5d5bcd3aeadc"]
+  nodeSg: sg-07baa3cdc2a7f91c9
+  vpcId: vpc-00a0c5c25aff7f8f5
