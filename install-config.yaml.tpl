@@ -11,6 +11,8 @@ compute:
     platform:
       aws:
         type: ${WORKER_TYPE}
+        rootVolume:
+          size: ${WORKER_DISK_SIZE}
     replicas: ${WORKER_COUNT}
 controlPlane:
   architecture: amd64

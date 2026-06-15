@@ -11,11 +11,12 @@ CONTROL_PLANE_TYPE ?= m6i.2xlarge
 CONTROL_PLANE_COUNT ?= 3
 WORKER_TYPE ?= m6i.2xlarge
 WORKER_COUNT ?= 3
+WORKER_DISK_SIZE ?= 200
 ARGO_GIT_URL ?= git@github.com:jharmison-redhat/openshift-setup.git
 ARGO_GIT_REVISION ?= HEAD
 ARGO_APPLICATIONS ?= config oauth cert-manager monitoring
 # https://mirror.openshift.com/pub/openshift-v4/clients/ocp/
-CLUSTER_VERSION ?= 4.21.14
+CLUSTER_VERSION ?= 4.21.18
 ACME_EMAIL ?=
 ACME_DISABLE_ACCOUNT_KEY_GENERATION ?= true
 GH_REPO := $(word 1,$(subst ., ,$(word 2,$(subst :, ,$(ARGO_GIT_URL)))))
