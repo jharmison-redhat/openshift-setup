@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
