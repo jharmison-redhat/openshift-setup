@@ -52,6 +52,7 @@ else
         \$SSH_KEY
         \$WORKER_TYPE
         \$WORKER_COUNT
+        \$WORKER_DISK_SIZE
         \$CONTROL_PLANE_TYPE
         \$CONTROL_PLANE_COUNT
     )
