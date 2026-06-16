@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 rhcl_operators=(
   authorino
@@ -12,13 +12,16 @@ rhcl_operators=(
 operator_namespace={{ (index (index $.Values "install-rhcl").operators "rhcl-operator").namespace | default "openshift-operators" }}
 
 function operator_ready {
-  [ "$(oc get -n $operator_namespace subscription -l "operators.coreos.com/${1}-operator.openshift-operators" -ojsonpath='{.items[0].status.state}' 2>&1 ||:)" = "AtLatestKnown" ]
+  installed_version="$(oc get -n $operator_namespace subscription -l "operators.coreos.com/${1}-operator.${operator_namespace}" -ojsonpath='{.items[0].status.state}' 2>&1)" ||:
+  if [ "$installed_version" != "" ]; then
+    return 0
+  else
+    return 1
+  fi
 }
 
-echo -n 'Waiting for dependencies to be installed'
 for operator in "${rhcl_operators[@]}"; do
   if ! operator_ready "$operator"; then
-    echo -n '.'
     sleep 1
   fi
 done
