@@ -16,7 +16,14 @@ function approve_install_plan {
 
 function find_install_plans {
   for csv in {{ join " " $approveCSVs }}; do
-    oc get installplan -l operators.coreos.com/{{ $operator }}.{{ $config.namespace | default "openshift-operators" }} -ojsonpath='{.items[?(@.spec.clusterServiceVersionNames contains "'"$csv"'")].metadata.name}' 2>/dev/null
+    oc get installplan -ogo-template='
+      {{ "{{-" }} range $ip := .items {{ "}}" }}
+        {{ "{{-" }} range .spec.clusterServiceVersionNames {{ "}}" }}
+          {{ "{{-" }} if eq . "'"$csv"'" {{ "}}" }}
+            {{ "{{-" }} $ip.metadata.name }}{{ break {{ "}}" }}
+          {{ "{{-" }} end {{ "}}" }}
+        {{ "{{-" }} end {{ "}}" }}
+      {{ "{{-" }} end {{ "}}" }}' 2>/dev/null
     echo
   done
 }
