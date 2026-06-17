@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ex
+
 {{- $operator := index . 0 }}
 {{- $config := index . 1 }}
 {{- $approveCSVs := $config.approveCSVs | default list }}
@@ -20,7 +22,11 @@ function find_install_plans {
       {{ "{{-" }} range $ip := .items {{ "}}" }}
         {{ "{{-" }} range .spec.clusterServiceVersionNames {{ "}}" }}
           {{ "{{-" }} if eq . "'"$csv"'" {{ "}}" }}
-            {{ "{{-" }} $ip.metadata.name {{ "}}{{" }} break {{ "}}" }}
+            {{ "{{-" }} if $ip.status {{ "}}" }}
+              {{ "{{-" }} if or (eq $ip.status.phase "RequiresApproval") (eq $ip.status.phase "Complete") {{ "}}" }}
+                {{ "{{-" }} $ip.metadata.name {{ "}}{{" }} break {{ "}}" }}
+              {{ "{{-" }} end {{ "}}" }}
+            {{ "{{-" }} end {{ "}}" }}
           {{ "{{-" }} end {{ "}}" }}
         {{ "{{-" }} end {{ "}}" }}
       {{ "{{-" }} end {{ "}}" }}' 2>/dev/null
@@ -28,14 +34,11 @@ function find_install_plans {
   done
 }
 
-echo -n 'Waiting for InstallPlan.'
 while true; do
   install_plans=( $(find_install_plans) )
   if [ "${#install_plans[@]}" -eq 0 ]; then
-    echo -n '.'
     sleep 1
   else
-    echo
     for install_plan in "${install_plans[@]}"; do
       approve_install_plan "$install_plan"
     done
