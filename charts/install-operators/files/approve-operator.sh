@@ -20,7 +20,7 @@ function find_install_plans {
       {{ "{{-" }} range $ip := .items {{ "}}" }}
         {{ "{{-" }} range .spec.clusterServiceVersionNames {{ "}}" }}
           {{ "{{-" }} if eq . "'"$csv"'" {{ "}}" }}
-            {{ "{{-" }} $ip.metadata.name }}{{ break {{ "}}" }}
+            {{ "{{-" }} $ip.metadata.name }}{{ "{{break}}" }}
           {{ "{{-" }} end {{ "}}" }}
         {{ "{{-" }} end {{ "}}" }}
       {{ "{{-" }} end {{ "}}" }}' 2>/dev/null
