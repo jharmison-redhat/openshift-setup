@@ -7,6 +7,7 @@ install-rhcl:
     rhcl-operator:
       channel: stable
       namespace: kuadrant-system
+      ownSubscription: false
       installPlanApproval: Manual
       startingCSV: rhcl-operator.v1.3.4
       operatorGroup:
