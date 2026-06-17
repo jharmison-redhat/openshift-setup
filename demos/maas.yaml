@@ -7,7 +7,7 @@ applications:
         name: machineset-l40s
     values:
       instanceType: g6e.2xlarge
-      desiredReplicas: 2
+      desiredReplicas: 1
       baseName: worker-l40s
       taints:
         - key: nvidia.com/gpu
