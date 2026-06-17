@@ -1,6 +1,6 @@
 ---
 baseName: worker-l40s
-desiredReplicas: 2
+desiredReplicas: 1
 instanceType: g6e.2xlarge
 nodeLabels:
   gpu-class: medium
