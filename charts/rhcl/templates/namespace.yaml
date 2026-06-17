@@ -1,4 +1,5 @@
-{{- if .Values.kuadrant.create }}
+{{- $operatorNs := (index (index $.Values "install-rhcl").operators "rhcl-operator").namespace | default "openshift-operators" }}
+{{- if and .Values.kuadrant.create (not (eq $operatorNs .Values.kuadrant.namespace)) }}
 apiVersion: v1
 kind: Namespace
 metadata:
