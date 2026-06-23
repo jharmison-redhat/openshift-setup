@@ -78,6 +78,9 @@ applications:
     rewrite:
       metadata:
         name: llmisvc-nemotron-maas
+      spec:
+        destination:
+          namespace: models
     values:
       router:
         createScheduler: true
