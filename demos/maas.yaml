@@ -87,6 +87,7 @@ applications:
         destination:
           namespace: models
     values:
+      fullnameOverride: nemotron-3-nano-30b-a3b-fp8
       router:
         createScheduler: true
       model:
