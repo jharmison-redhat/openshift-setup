@@ -37,6 +37,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: install-{{ $operator }}
+  namespace: {{ $config.namespace | default "openshift-operators" }}
   labels:
     {{- include "install-operators.labels" $ | nindent 4 }}
 roleRef:
