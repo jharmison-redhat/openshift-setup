@@ -32,9 +32,11 @@ install-rhoai:
   operators:
     cluster-observability-operator:
       channel: stable
+      installPlanApproval: Manual
       namespace: openshift-cluster-observability-operator
       operatorGroup:
         enabled: true
+      startingCSV: cluster-observability-operator.v1.4.0
     opentelemetry-product:
       channel: stable
 mlflow:
