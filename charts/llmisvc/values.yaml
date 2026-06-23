@@ -74,6 +74,7 @@ hardwareProfile:
 dataScienceConnection:
   create: true
   name: ""
+  hidden: false
 
 maas:
   enabled: false
