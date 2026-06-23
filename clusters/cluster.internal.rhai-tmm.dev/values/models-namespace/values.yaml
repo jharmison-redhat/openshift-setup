@@ -1,0 +1,7 @@
+---
+annotations:
+  openshift.io/description: Project for hosting MaaS models
+  openshift.io/display-name: Models
+labels:
+  opendatahub.io/dashboard: 'true'
+name: models

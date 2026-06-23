@@ -1,0 +1,43 @@
+---
+dashboardConfig:
+  genAiStudio: true
+  modelAsService: true
+  observabilityDashboard: true
+dataScienceCluster:
+  components:
+    kserve:
+      modelsAsService:
+        managementState: Managed
+hardwareProfiles:
+  l40s:
+    cpu:
+      default: 2
+      max: 6
+      min: 2
+    displayName: NVIDIA L40s
+    gpu:
+      nvidia.com/gpu:
+        displayName: NVIDIA L40s
+        max: 1
+    memory:
+      default: 16Gi
+      max: 48Gi
+      min: 2Gi
+    node:
+      tolerations:
+      - effect: NoSchedule
+        key: nvidia.com/gpu
+        operator: Exists
+install-rhoai:
+  operators:
+    cluster-observability-operator:
+      channel: stable
+      namespace: openshift-cluster-observability-operator
+      operatorGroup:
+        enabled: true
+    opentelemetry-product:
+      channel: stable
+mlflow:
+  create: false
+postgres-cluster:
+  enabled: true

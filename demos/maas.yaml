@@ -1,5 +1,13 @@
 ---
+namespaces:
+  - name: models
+    labels:
+      opendatahub.io/dashboard: "true"
+    annotations:
+      openshift.io/description: Project for hosting MaaS models
+      openshift.io/display-name: Models
 applications:
+  - name: monitoring
   - name: aws-nvidia-gpu-machinesets
     fileprefix: l40s
     rewrite:
@@ -18,3 +26,155 @@ applications:
         jharmison.dev/gpu-type: l40s
         gpu-class: medium
   - name: nvidia-gpu-enablement
+  - name: leaderworkerset
+  - name: rhcl
+  - name: cloudnative-pg
+  - name: openshift-ai
+    values:
+      install-rhoai:
+        operators:
+          cluster-observability-operator:
+            channel: stable
+            namespace: openshift-cluster-observability-operator
+            operatorGroup:
+              enabled: true
+          opentelemetry-product:
+            channel: stable
+      dataScienceCluster:
+        components:
+          kserve:
+            modelsAsService:
+              managementState: Managed
+      dashboardConfig:
+        genAiStudio: true
+        modelAsService: true
+        observabilityDashboard: true
+      hardwareProfiles:
+        l40s:
+          node:
+            tolerations:
+              - key: nvidia.com/gpu
+                effect: NoSchedule
+                operator: Exists
+          displayName: NVIDIA L40s
+          cpu:
+            min: 2
+            max: 6
+            default: 2
+          memory:
+            min: 2Gi
+            max: 48Gi
+            default: 16Gi
+          gpu:
+            nvidia.com/gpu:
+              max: 1
+              displayName: NVIDIA L40s
+      postgres-cluster:
+        enabled: true
+      mlflow:
+        create: false
+  - name: llmisvc
+    fileprefix: nemotron-maas
+    rewrite:
+      metadata:
+        name: llmisvc-nemotron-maas
+    values:
+      router:
+        createScheduler: true
+      model:
+        name: nemotron-3-nano-30b-a3b-fp8
+        uri: oci://registry.redhat.io/rhai/modelcar-nvidia-nemotron-3-nano-30b-a3b-fp8:3.0
+        args:
+          - --max-model-len=131072
+          - --enable-auto-tool-choice
+          - --tool-call-parser=qwen3_coder
+          - --trust-remote-code
+          - --enable-force-include-usage
+          - --reasoning-parser-plugin=/mnt/models/nano_v3_reasoning_parser.py
+          - --reasoning-parser=nano_v3
+      hardwareProfile:
+        enabled: true
+        name: l40s
+      genaiAsset:
+        enabled: true
+        useCase: chat code agentic
+      resources:
+        limits:
+          cpu: "6"
+          memory: 48Gi
+          nvidia.com/gpu: "1"
+        requests:
+          cpu: "6"
+          memory: 48Gi
+          nvidia.com/gpu: "1"
+      maas:
+        enabled: true
+  - name: maas-subscriptions
+    values:
+      subscriptions:
+        agentic:
+          models:
+            gemma-4: null
+            llama-4-scout: null
+            nemotron-3-nano-30b-a3b-fp8:
+              namespace: models
+              tokenRateLimits:
+                - limit: 50000
+                  window: 1m
+          groups:
+            - name: system:authenticated:oauth
+  - name: oauth
+    secrets:
+      providers:
+        htpasswd:
+          admin: r3dh4t1
+          user1: openshift
+          user2: openshift
+          user3: openshift
+          user4: openshift
+          user5: openshift
+          user6: openshift
+          user7: openshift
+          user8: openshift
+          user9: openshift
+          user10: openshift
+          user11: openshift
+          user12: openshift
+          user13: openshift
+          user14: openshift
+          user15: openshift
+          user16: openshift
+          user17: openshift
+          user18: openshift
+          user19: openshift
+          user20: openshift
+          user21: openshift
+          user22: openshift
+          user23: openshift
+          user24: openshift
+          user25: openshift
+          user26: openshift
+          user27: openshift
+          user28: openshift
+          user29: openshift
+          user30: openshift
+          user31: openshift
+          user32: openshift
+          user33: openshift
+          user34: openshift
+          user35: openshift
+          user36: openshift
+          user37: openshift
+          user38: openshift
+          user39: openshift
+          user40: openshift
+          user41: openshift
+          user42: openshift
+          user43: openshift
+          user44: openshift
+          user45: openshift
+          user46: openshift
+          user47: openshift
+          user48: openshift
+          user49: openshift
+          user50: openshift

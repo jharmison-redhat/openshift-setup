@@ -1,0 +1,31 @@
+---
+genaiAsset:
+  enabled: true
+  useCase: chat code agentic
+hardwareProfile:
+  enabled: true
+  name: l40s
+maas:
+  enabled: true
+model:
+  args:
+  - --max-model-len=131072
+  - --enable-auto-tool-choice
+  - --tool-call-parser=qwen3_coder
+  - --trust-remote-code
+  - --enable-force-include-usage
+  - --reasoning-parser-plugin=/mnt/models/nano_v3_reasoning_parser.py
+  - --reasoning-parser=nano_v3
+  name: nemotron-3-nano-30b-a3b-fp8
+  uri: oci://registry.redhat.io/rhai/modelcar-nvidia-nemotron-3-nano-30b-a3b-fp8:3.0
+resources:
+  limits:
+    cpu: '6'
+    memory: 48Gi
+    nvidia.com/gpu: '1'
+  requests:
+    cpu: '6'
+    memory: 48Gi
+    nvidia.com/gpu: '1'
+router:
+  createScheduler: true
