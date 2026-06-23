@@ -4,6 +4,8 @@ kind: Telemetry
 metadata:
   name: latency-per-subscription
   namespace: openshift-ingress
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   selector:
     matchLabels:
