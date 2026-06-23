@@ -42,6 +42,9 @@ applications:
               enabled: true
           opentelemetry-product:
             channel: stable
+      gateways:
+        maasDefaultGateway:
+          disableIpp: true
       dataScienceCluster:
         components:
           kserve:

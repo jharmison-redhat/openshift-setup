@@ -73,4 +73,12 @@ spec:
   {{- with $config.startingCSV }}
   startingCSV: {{ . }}
   {{- end }}
+  {{- with config.env }}
+  config:
+    env:
+      {{- range $k, $v := . }}
+      - name: {{ $k }}
+        value: {{ quote $v }}
+      {{- end }}
+  {{- end }}
 {{- end }}

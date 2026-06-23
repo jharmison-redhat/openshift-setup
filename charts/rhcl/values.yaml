@@ -12,6 +12,8 @@ install-rhcl:
       startingCSV: rhcl-operator.v1.3.4
       operatorGroup:
         enabled: true
+      env:
+        AUTH_SERVICE_TIMEOUT: 2s
 
 kuadrant:
   create: true

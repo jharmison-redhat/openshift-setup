@@ -8,6 +8,9 @@ dataScienceCluster:
     kserve:
       modelsAsService:
         managementState: Managed
+gateways:
+  maasDefaultGateway:
+    disableIpp: true
 hardwareProfiles:
   l40s:
     cpu:

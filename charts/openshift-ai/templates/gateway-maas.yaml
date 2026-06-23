@@ -1,7 +1,6 @@
 {{- if eq .Values.dataScienceCluster.components.kserve.modelsAsService.managementState "Managed" }}
 {{- with .Values.gateways.maasDefaultGateway }}
 {{- $host := .hostname | default (printf "maas.apps.%s.%s" $.Values.global.cluster.name $.Values.global.cluster.baseDomain) }}
-{{- if .useRoute }}
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -9,6 +8,17 @@ metadata:
   name: maas-default-gateway-config
   namespace: openshift-ingress
 data:
+  {{- with .Values.gateways.maasDefaultGateway.resources }}
+  deployment: |
+    spec:
+      template:
+        spec:
+          containers:
+          - name: istio-proxy
+            resources:
+              {{- toYaml . | nindent 16 }}
+  {{- end }}
+{{- if .useRoute }}
   service: |
     spec:
       type: ClusterIP
@@ -48,6 +58,34 @@ spec:
     name: {{ .certificate.clusterIssuer }}
   secretName: maas-default-gateway-cert
 {{- end }}
+{{- if .disableIpp }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: ipp-disable
+  namespace: openshift-ingress
+  annotations:
+    openshift.io/managed: "false"
+    argocd.argoproj.io/sync-wave: "4"
+spec:
+  priority: 0
+  workloadSelector:
+    labels:
+      gateway.networking.k8s.io/gateway-name: maas-default-gateway
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match:
+        context: GATEWAY
+        listener:
+          filterChain:
+            filter:
+              name: envoy.filters.network.http_connection_manager
+              subFilter:
+                name: envoy.filters.http.ext_proc.bbr
+      patch:
+        operation: REMOVE
+{{- end }}
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -62,13 +100,11 @@ metadata:
     security.opendatahub.io/authorino-tls-bootstrap: "true"
 spec:
   gatewayClassName: data-science-gateway-class
-  {{- if .useRoute }}
   infrastructure:
     parametersRef:
       group: ""
       kind: ConfigMap
       name: maas-default-gateway-config
-  {{- end }}
   listeners:
     {{- if .useRoute }}
     - name: http
