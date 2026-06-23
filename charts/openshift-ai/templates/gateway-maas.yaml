@@ -8,7 +8,7 @@ metadata:
   name: maas-default-gateway-config
   namespace: openshift-ingress
 data:
-  {{- with .Values.gateways.maasDefaultGateway.resources }}
+  {{- with .resources }}
   deployment: |
     spec:
       template:
