@@ -73,7 +73,7 @@ spec:
   {{- with $config.startingCSV }}
   startingCSV: {{ . }}
   {{- end }}
-  {{- with config.env }}
+  {{- with $config.env }}
   config:
     env:
       {{- range $k, $v := . }}
