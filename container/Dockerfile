@@ -29,8 +29,8 @@ RUN arch=$(uname -m) && \
     python3-dotenv \
     python3-pip \
     nvim \
-    https://github.com/getsops/sops/releases/download/v3.12.2/sops-3.12.2-1.${arch}.rpm \
-    https://github.com/derailed/k9s/releases/download/v0.50.18/k9s_linux_${goarch}.rpm \
+    https://github.com/getsops/sops/releases/download/v3.13.2/sops-3.13.2-1.${arch}.rpm \
+    https://github.com/derailed/k9s/releases/download/v0.51.0/k9s_linux_${goarch}.rpm \
     && dnf -y clean all \
     && python3 -m pip install --no-cache-dir locust
 
