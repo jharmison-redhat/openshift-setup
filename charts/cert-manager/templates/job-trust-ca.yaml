@@ -1,10 +1,10 @@
-{{- if and .Values.ca.enabled -}}
+{{- if .Values.ca.enabled -}}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: trust-ca
-  namespace: openshift-config
+  namespace: cert-manager
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 ---
@@ -21,13 +21,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: trust-ca
-  namespace: openshift-config
+  namespace: cert-manager
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: trust-cert-manager-ca
-  namespace: openshift-config
+  namespace: cert-manager
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
@@ -46,6 +46,6 @@ spec:
         - -xc
         - |-
           ca=$(oc get secret cert-manager-ca -n cert-manager -ogo-template='{{ "{{" }}index .data "tls.crt" | base64decode{{ "}}" }}')
-          oc create configmap user-ca-bundle --from-literal=ca-bundle.crt="$ca" --dry-run=client -oyaml | oc apply -f-
+          oc create configmap user-ca-bundle -n openshift-config --from-literal=ca-bundle.crt="$ca" --dry-run=client -oyaml | oc apply -n openshift-config -f-
           oc patch proxy cluster --patch '{"spec": {"trustedCA": {"name": "user-ca-bundle"}}}' --type merge
 {{- end }}
