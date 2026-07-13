@@ -1,0 +1,26 @@
+dataScienceCluster:
+  components:
+    kserve:
+      modelsAsService:
+        managementState: Managed
+
+hardwareProfiles:
+  l40s:
+    node:
+      tolerations:
+        - key: nvidia.com/gpu
+          effect: NoSchedule
+          operator: Exists
+    displayName: NVIDIA L40s
+    cpu:
+      min: 2
+      max: 42
+      default: 2
+    memory:
+      min: 2Gi
+      max: 340Gi
+      default: 16Gi
+    gpu:
+      nvidia.com/gpu:
+        max: 4
+        displayName: NVIDIA L40s
