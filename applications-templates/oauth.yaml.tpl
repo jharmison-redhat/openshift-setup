@@ -28,3 +28,8 @@ spec:
       - kind: Secret
         jsonPointers:
           - /data/htpasswd
+      - group: rbac.authorization.k8s.io
+        kind: ClusterRoleBinding
+        name: cluster-admins
+        jsonPointers:
+          - /subjects
