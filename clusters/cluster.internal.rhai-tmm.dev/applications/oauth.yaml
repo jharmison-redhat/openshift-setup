@@ -11,6 +11,15 @@ spec:
   destination:
     name: in-cluster
     namespace: openshift-config
+  ignoreDifferences:
+  - jsonPointers:
+    - /data/htpasswd
+    kind: Secret
+  - group: rbac.authorization.k8s.io
+    jsonPointers:
+    - /subjects
+    kind: ClusterRoleBinding
+    name: cluster-admins
   project: default
   source:
     helm:
@@ -27,12 +36,3 @@ spec:
       selfHeal: true
     syncOptions:
     - RespectIgnoreDifferences=true
-  ignoreDifferences:
-  - jsonPointers:
-    - /data/htpasswd
-    kind: Secret
-  - group: rbac.authorization.k8s.io
-    kind: ClusterRoleBinding
-    name: cluster-admins
-    jsonPointers:
-      - /subjects
