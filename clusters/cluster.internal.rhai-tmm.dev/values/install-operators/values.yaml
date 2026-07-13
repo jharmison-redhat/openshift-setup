@@ -1,0 +1,16 @@
+operators:
+  cluster-observability-operator:
+    enabled: true
+    channel: stable
+    namespace: openshift-cluster-observability-operator
+    installPlanApproval: Manual
+    startingCSV: cluster-observability-operator.v1.4.0
+    operatorGroup:
+      enabled: true
+
+  opentelemetry-product:
+    enabled: true
+    channel: stable
+    namespace: opentelemetry-operator
+    operatorGroup:
+      enabled: true
