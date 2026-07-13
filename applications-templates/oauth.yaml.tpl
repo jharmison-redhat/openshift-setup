@@ -24,12 +24,12 @@ spec:
       selfHeal: true
     syncOptions:
       - RespectIgnoreDifferences=true
-    ignoreDifferences:
-      - kind: Secret
-        jsonPointers:
-          - /data/htpasswd
-      - group: rbac.authorization.k8s.io
-        kind: ClusterRoleBinding
-        name: cluster-admins
-        jsonPointers:
-          - /subjects
+  ignoreDifferences:
+    - kind: Secret
+      jsonPointers:
+        - /data/htpasswd
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+      name: cluster-admins
+      jsonPointers:
+        - /subjects
