@@ -16,6 +16,7 @@ dashboardConfig:
   genAiStudio: true
   observabilityDashboard: true
   aiAssetCustomEndpoints: true
+  disableLMEval: false
 
 genAiStudioConfig:
   aiAssetCustomEndpoints:
