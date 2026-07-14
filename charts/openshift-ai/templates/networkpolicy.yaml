@@ -5,6 +5,29 @@ metadata:
   name: payload-processing-api-access
   namespace: openshift-ingress
 spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              gateway.istio.io/managed: istio.io-gateway-controller
+          namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-ingress
+      ports:
+        - protocol: TCP
+          port: 9004
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-monitoring
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-user-workload-monitoring
+      ports:
+        - protocol: TCP
+          port: 9005
+        - protocol: TCP
+          port: 9090
   egress:
     - ports:
         - port: 6443
@@ -30,5 +53,6 @@ spec:
       app: payload-processing
       app.kubernetes.io/name: maas-api
   policyTypes:
+    - Ingress
     - Egress
 {{- end }}
