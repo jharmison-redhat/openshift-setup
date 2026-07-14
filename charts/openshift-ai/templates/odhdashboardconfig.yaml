@@ -15,6 +15,10 @@ spec:
   dashboardConfig:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with .Values.genAiStudioConfig }}
+  genAiStudioConfig:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   groupsConfig:
     adminGroups: rhods-admins
     allowedGroups: {{ join "," .Values.userGroups }}

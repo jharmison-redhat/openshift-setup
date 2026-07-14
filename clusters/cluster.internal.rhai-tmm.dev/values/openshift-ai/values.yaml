@@ -4,6 +4,24 @@ dataScienceCluster:
       modelsAsService:
         managementState: Managed
 
+postgres-cluster:
+  enabled: true
+
+evalhub:
+  create: true
+  tenant:
+    subjects: []
+
+dashboardConfig:
+  genAiStudio: true
+  observabilityDashboard: true
+  aiAssetCustomEndpoints: true
+
+genAiStudioConfig:
+  aiAssetCustomEndpoints:
+    externalProviders: true
+    clusterDomains: []
+
 hardwareProfiles:
   l40s:
     node:
