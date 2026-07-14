@@ -1,0 +1,34 @@
+{{- if .Values.maasPayloadProcessingNetworkPolicy.create }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: payload-processing-api-access
+  namespace: openshift-ingress
+spec:
+  egress:
+    - ports:
+        - port: 6443
+          protocol: TCP
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-kube-apiserver
+          podSelector:
+            matchLabels:
+              app: openshift-kube-apiserver
+    - ports:
+        - port: 5353
+          protocol: TCP
+        - port: 5353
+          protocol: UDP
+      to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: openshift-dns
+  podSelector:
+    matchLabels:
+      app: payload-processing
+      app.kubernetes.io/name: maas-api
+  policyTypes:
+    - Egress
+{{- end }}

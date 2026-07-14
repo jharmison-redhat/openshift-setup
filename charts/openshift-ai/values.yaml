@@ -192,6 +192,9 @@ postgres-cluster:
     - name: maas
       user: maas
 
+maasPayloadProcessingNetworkPolicy:
+  create: false
+
 mlflow:
   create: true
   spec:
