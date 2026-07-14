@@ -10,7 +10,7 @@ metadata:
 spec:
   destination:
     name: in-cluster
-    namespace: default
+    namespace: models
   project: default
   source:
     helm:
@@ -32,3 +32,7 @@ spec:
       limit: 10
     syncOptions:
     - RespectIgnoreDifferences=true
+    - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
