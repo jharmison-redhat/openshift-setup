@@ -1,0 +1,28 @@
+replicas: 1
+
+model:
+  name: nemotron-3-nano-30b-a3b
+  uri: oci://registry.redhat.io/rhai/modelcar-nvidia-nemotron-3-nano-30b-a3b-fp8:3.0
+  args:
+    - --max-model-len=131072
+    - --enable-auto-tool-choice
+    - --tool-call-parser=qwen3_coder
+    - --trust-remote-code
+    - --enable-force-include-usage
+    - --tensor-parallel-size=2
+    - --pipeline-parallel-size=1
+    - --reasoning-parser-plugin=/mnt/models/nano_v3_reasoning_parser.py
+    - --reasoning-parser=nano_v3
+
+resources:
+  limits:
+    cpu: "16"
+    memory: 128Gi
+    nvidia.com/gpu: "2"
+  requests:
+    cpu: "2"
+    memory: 32Gi
+    nvidia.com/gpu: "2"
+
+maas:
+  enabled: true
