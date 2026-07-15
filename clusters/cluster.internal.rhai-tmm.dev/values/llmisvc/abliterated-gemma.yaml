@@ -1,0 +1,37 @@
+replicas: 1
+
+model:
+  name: abliterated-gemma-4-31b-it
+  uri: oci://registry.apps.ocp.cloud.rhai-tmm.dev/modelcars/modelcar-maker:huihui-ai--huihui-gemma-4-31b-it-abliterated-modelcar
+  args:
+    - --max-model-len=262144
+    - --enable-auto-tool-choice
+    - --reasoning-parser=gemma4
+    - --tool-call-parser=gemma4
+    - --language-model-only
+    - --trust-remote-code
+    - --enable-force-include-usage
+    - --tensor-parallel-size=2
+    - --pipeline-parallel-size=1
+
+hardwareProfile:
+  enabled: true
+  name: l40s
+
+resources:
+  limits:
+    cpu: "16"
+    memory: 128Gi
+    nvidia.com/gpu: "2"
+  requests:
+    cpu: "2"
+    memory: 32Gi
+    nvidia.com/gpu: "2"
+
+tolerations:
+ - key: nvidia.com/gpu
+   effect: NoSchedule
+   operator: Exists
+
+maas:
+  enabled: true

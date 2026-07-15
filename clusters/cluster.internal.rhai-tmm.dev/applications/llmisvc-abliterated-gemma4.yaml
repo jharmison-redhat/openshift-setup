@@ -6,7 +6,7 @@ metadata:
     argocd.argoproj.io/sync-wave: '5'
   finalizers:
   - resources-finalizer.argocd.argoproj.io
-  name: llmisvc
+  name: llmisvc-abliterated-gemma4
 spec:
   destination:
     name: in-cluster
@@ -16,7 +16,7 @@ spec:
     helm:
       valueFiles:
       - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
-      - ../../clusters/cluster.internal.rhai-tmm.dev/values/llmisvc/values.yaml
+      - ../../clusters/cluster.internal.rhai-tmm.dev/values/llmisvc/abliterated-gemma.yaml
     path: charts/llmisvc
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
@@ -32,8 +32,3 @@ spec:
       limit: 10
     syncOptions:
     - RespectIgnoreDifferences=true
-    - CreateNamespace=true
-    managedNamespaceMetadata:
-      labels:
-        argocd.argoproj.io/managed-by: openshift-gitops
-        opendatahub.io/dashboard: "true"
