@@ -1,5 +1,9 @@
 replicas: 1
 
+image:
+  repository: rhaii-preview/vllm-cuda-rhel9
+  tag: gemma4
+
 model:
   name: abliterated-gemma-4-31b-it
   uri: oci://registry.apps.ocp.cloud.rhai-tmm.dev/modelcars/modelcar-maker:huihui-ai--huihui-gemma-4-31b-it-abliterated-modelcar
