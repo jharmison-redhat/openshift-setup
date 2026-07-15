@@ -15,7 +15,7 @@ model:
     - --language-model-only
     - --trust-remote-code
     - --enable-force-include-usage
-    - --tensor-parallel-size=2
+    - --tensor-parallel-size=4
     - --pipeline-parallel-size=1
 
 hardwareProfile:
@@ -26,11 +26,11 @@ resources:
   limits:
     cpu: "16"
     memory: 128Gi
-    nvidia.com/gpu: "2"
+    nvidia.com/gpu: "4"
   requests:
     cpu: "2"
     memory: 32Gi
-    nvidia.com/gpu: "2"
+    nvidia.com/gpu: "4"
 
 tolerations:
  - key: nvidia.com/gpu
