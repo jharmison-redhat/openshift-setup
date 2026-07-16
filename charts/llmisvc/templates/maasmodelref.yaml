@@ -8,5 +8,5 @@ metadata:
 spec:
   modelRef:
     kind: LLMInferenceService
-    name: {{ include "llminferenceservice.fullname" . }}
+    name: {{ include "llminferenceservice.name" . }}
 {{- end }}
