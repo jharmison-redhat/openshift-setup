@@ -68,6 +68,7 @@ metadata:
   annotations:
     openshift.io/managed: "false"
     argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   priority: 0
   workloadSelector:
