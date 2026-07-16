@@ -15,11 +15,6 @@ spec:
   - jsonPointers:
     - /data/htpasswd
     kind: Secret
-  - group: rbac.authorization.k8s.io
-    jsonPointers:
-    - /subjects
-    kind: ClusterRoleBinding
-    name: cluster-admins
   project: default
   source:
     helm:
