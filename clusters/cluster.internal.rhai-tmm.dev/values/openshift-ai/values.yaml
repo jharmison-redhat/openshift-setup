@@ -1,3 +1,7 @@
+gateways:
+  maasDefaultGateway:
+    disableIpp: true
+
 dataScienceCluster:
   components:
     kserve:
