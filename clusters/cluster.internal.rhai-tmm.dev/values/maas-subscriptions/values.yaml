@@ -1,0 +1,20 @@
+subscriptions:
+  maas-user:
+    models:
+      abliterated-gemma-4-31b-it:
+        namespace: models
+        tokenRateLimits:
+          - limit: 1000
+            window: 1s
+          - limit: 80000
+            window: 1m
+      nemotron-3-nano-30b-a3b:
+        namespace: models
+        tokenRateLimits:
+          - limit: 1000
+            window: 1s
+          - limit: 80000
+            window: 1m
+      groups:
+        - name: system:authenticated:oauth
+      priority: 0
