@@ -40,10 +40,10 @@ metadata:
     {{- with .Values.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
-  name: {{ include "llminferenceservice.fullname" . }}
+  name: {{ include "llminferenceservice.name" . }}
 spec:
   model:
-    name: {{ include "llminferenceservice.fullname" . }}
+    name: {{ include "llminferenceservice.name" . }}
     {{- if .Values.model.uri }}
     {{- if .Values.model.pvc.preload }}
     uri: pvc://{{ include "llminferenceservice.fullname" . }}-model
