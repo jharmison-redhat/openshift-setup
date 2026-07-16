@@ -1,5 +1,1 @@
 ---
-install-rhcl:
-  operators:
-    rhcl-operator:
-      startingCSV: rhcl-operator.v1.4.1
