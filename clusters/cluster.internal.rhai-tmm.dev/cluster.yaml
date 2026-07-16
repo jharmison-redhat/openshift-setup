@@ -3,16 +3,16 @@ global:
     name: cluster
     baseDomain: internal.rhai-tmm.dev
 desiredUpdate:
-  version: 4.22.3
+  version: 4.20.28
 cluster:
   controlPlaneNodes: 3
   workerNodes: 3
-  agePublicKey: age15u66fvyl9p6tzvp8cfrkzcddm3hqlrszt00tk99st8xy23nfmc5s9rqsph
-  infraID: cluster-k2fth
+  agePublicKey: age1mqnplzxj93xrh66hp5t94dggwcvlzkdhapuxjdn7f3e9mmksna4qe2n4wk
+  infraID: cluster-j7zm5
 aws:
   region: us-west-2
-  azs: ["us-west-2d","us-west-2a","us-west-2b","us-west-2c"]
-  ami: ami-0106a1d635d4a36c0
-  subnets: ["subnet-08ab1d4cd714d7fab","subnet-0e93e1eb90df8c9dd","subnet-0fe816d5c5338e315","subnet-07478b3c937343eb0"]
-  nodeSg: sg-067f75f5a358840c5
-  vpcId: vpc-0eda128d8041ba3bc
+  azs: ["us-west-2c","us-west-2d","us-west-2a","us-west-2b"]
+  ami: ami-00ed84a07420727b7
+  subnets: ["subnet-0003608971050b246","subnet-0eb112fa105b749ca","subnet-00f2bc58270bf2850","subnet-0e1389e846cc8b485"]
+  nodeSg: sg-0306a302a857c4053
+  vpcId: vpc-0e48224f091ee895d
