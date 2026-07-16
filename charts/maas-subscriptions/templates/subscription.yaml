@@ -4,18 +4,18 @@ apiVersion: maas.opendatahub.io/v1alpha1
 kind: MaaSSubscription
 metadata:
   annotations:
-    openshift.io/display-name: {{ $sub.displayName | default (title $name) }}
+    openshift.io/display-name: {{ $sub.displayName | default (replace "-" " " $name | title) }}
   name: {{ $name }}
   namespace: models-as-a-service
 spec:
   modelRefs:
   {{- range $model, $config := $sub.models }}
-  - name: {{ $model }}
-    namespace: {{ $config.namespace }}
-    {{- with $config.tokenRateLimits }}
-    tokenRateLimits:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
+    - name: {{ $model }}
+      namespace: {{ $config.namespace }}
+      {{- with $config.tokenRateLimits }}
+      tokenRateLimits:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
   {{- end }}
   {{- with $sub.groups }}
   owner:

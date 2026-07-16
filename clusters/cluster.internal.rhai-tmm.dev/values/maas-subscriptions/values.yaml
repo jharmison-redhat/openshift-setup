@@ -15,6 +15,5 @@ subscriptions:
             window: 1s
           - limit: 80000
             window: 1m
-      groups:
-        - name: system:authenticated:oauth
-      priority: 0
+    groups:
+      - name: system:authenticated:oauth
