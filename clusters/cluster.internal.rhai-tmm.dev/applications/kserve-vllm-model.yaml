@@ -3,26 +3,26 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   annotations:
-    argocd.argoproj.io/sync-wave: '5'
+    argocd.argoproj.io/sync-wave: "5"
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
   name: kserve-vllm-model
 spec:
   destination:
     name: in-cluster
-    namespace: default
+    namespace: models
   ignoreDifferences:
-  - group: serving.kserve.io
-    jsonPointers:
-    - /spec/predictor/maxReplicas
-    - /spec/predictor/minReplicas
-    kind: InferenceService
+    - group: serving.kserve.io
+      jsonPointers:
+        - /spec/predictor/maxReplicas
+        - /spec/predictor/minReplicas
+      kind: InferenceService
   project: default
   source:
     helm:
       valueFiles:
-      - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
-      - ../../clusters/cluster.internal.rhai-tmm.dev/values/kserve-vllm-model/values.yaml
+        - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
+        - ../../clusters/cluster.internal.rhai-tmm.dev/values/kserve-vllm-model/values.yaml
     path: charts/kserve-vllm-model
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
@@ -37,4 +37,4 @@ spec:
         maxDuration: 60m
       limit: 10
     syncOptions:
-    - RespectIgnoreDifferences=true
+      - RespectIgnoreDifferences=true
