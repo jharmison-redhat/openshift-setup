@@ -5,11 +5,11 @@ subscriptions:
         namespace: models
         tokenRateLimits:
           - limit: 200000
-            window: 1m
+            window: 1s
       nemotron-3-nano-30b-a3b:
         namespace: models
         tokenRateLimits:
           - limit: 200000
-            window: 1m
+            window: 1s
     groups:
       - name: system:authenticated:oauth
