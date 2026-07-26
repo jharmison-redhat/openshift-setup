@@ -1,4 +1,7 @@
-replicas: 1
+replicas: 2
+
+router:
+  createScheduler: true
 
 model:
   name: nemotron-3-nano-30b-a3b
@@ -9,7 +12,7 @@ model:
     - --tool-call-parser=qwen3_coder
     - --trust-remote-code
     - --enable-force-include-usage
-    - --tensor-parallel-size=2
+    - --tensor-parallel-size=1
     - --pipeline-parallel-size=1
     - --reasoning-parser-plugin=/mnt/models/nano_v3_reasoning_parser.py
     - --reasoning-parser=nano_v3
@@ -21,17 +24,17 @@ hardwareProfile:
 resources:
   limits:
     cpu: "16"
-    memory: 128Gi
-    nvidia.com/gpu: "2"
+    memory: 64Gi
+    nvidia.com/gpu: "1"
   requests:
     cpu: "2"
     memory: 32Gi
-    nvidia.com/gpu: "2"
+    nvidia.com/gpu: "1"
 
 tolerations:
- - key: nvidia.com/gpu
-   effect: NoSchedule
-   operator: Exists
+  - key: nvidia.com/gpu
+    effect: NoSchedule
+    operator: Exists
 
 maas:
   enabled: true
