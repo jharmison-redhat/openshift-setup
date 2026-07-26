@@ -1,4 +1,5 @@
 fullnameOverride: nemotron-3-nano-30b-a3b
+displaynameOverride: Nemotron 3 Nano 30B A3B (bare vLLM)
 acceleratorName: ""
 
 model:
