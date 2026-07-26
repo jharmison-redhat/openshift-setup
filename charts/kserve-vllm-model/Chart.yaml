@@ -5,4 +5,4 @@ description: >
   A helm chart to deploy a model using KServe and vLLM from Red Hat AI Inference Server
 type: application
 version: 0.1.0
-appVersion: 3.2.3
+appVersion: 3.4.1

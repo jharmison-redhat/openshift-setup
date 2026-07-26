@@ -2,13 +2,13 @@
 # vLLM image specification
 image:
   registry: registry.redhat.io
-  repository: rhaiis/vllm-cuda-rhel9
+  repository: rhaii/vllm-cuda-rhel9
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   # Override the tag to choose a manifest hash reference
   manifestHash: ""
-  pullSecrets: []  # NOTE: this is busted. If you use this, you have to specify it also in the top level imagePullSecrets.
+  pullSecrets: [] # NOTE: this is busted. If you use this, you have to specify it also in the top level imagePullSecrets.
   # - name: terms-based-registry
   #   username: 123456|myaccount
   #   password: asdf1234.ASDF-_34
