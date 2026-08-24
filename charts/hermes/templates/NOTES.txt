@@ -1,4 +1,7 @@
-1. Get the Hermes Dashboard URL by running these commands:
+1. Wait for Hermes to roll out with the following command:
+  kubectl wait --for=jsonpath='{.status.readyReplicas}=1' -n {{ .Release.Namespace }} statefulset/{{ include "hermes.fullname" . }} --timeout=120s
+
+2. Get the Hermes Dashboard URL by running these commands:
 {{- if .Values.route.enabled }}
   route_hostname=$(kubectl get --namespace {{ .Release.Namespace }} route {{ include "hermes.fullname" . }} -o jsonpath='{.status.ingress[0].host}')
   {{- $proto := ternary "https" "http" .Values.route.tls.enabled }}
