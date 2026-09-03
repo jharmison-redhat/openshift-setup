@@ -167,17 +167,7 @@ shell: $(INSTALL_DIR)/kubectl
 demo: $(CLUSTER_DIR)/cluster.yaml $(INSTALL_DIR)/kubectl
 	openshift-setup demo process $(DEMO_FILE)
 
-.PHONY: test-model
-test-model:
-	for n in 1 5 10 32 10 5 1; do \
-		locust --headless --users $$n --processes $$n -f tests/locustfile-model-endpoint.py -t 2m; \
-	done
-
-.PHONY: test-llamastack
-test-llamastack:
-	for n in 1 5 10 32 10 5 1; do \
-		locust --headless --users $$n --processes $$n -f tests/locustfile-llama-stack-endpoint.py -t 2m; \
-	done
-
-.PHONY: test
-test: test-model test-llamastack
+.PHONY: kubeadmin
+kubeadmin: $(CLUSTER_DIR)/cluster.yaml
+	@cat $(INSTALL_DIR)/auth/kubeadmin-password
+	@echo
