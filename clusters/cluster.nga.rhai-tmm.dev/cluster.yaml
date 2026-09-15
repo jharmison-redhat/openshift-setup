@@ -1,0 +1,18 @@
+global:
+  cluster:
+    name: cluster
+    baseDomain: nga.rhai-tmm.dev
+desiredUpdate:
+  version: 4.22.11
+cluster:
+  controlPlaneNodes: 3
+  workerNodes: 3
+  agePublicKey: age15mvcsjrugwefhnh7ye0rpfsxetvjpe9zxmf8es7glf3gzl4ze9cqnnsct8
+  infraID: cluster-8rfbv
+aws:
+  region: us-west-2
+  azs: ["us-west-2d","us-west-2a","us-west-2b","us-west-2c"]
+  ami: ami-01d48aa6b50f9d0df
+  subnets: ["subnet-079a73c5a399ba174","subnet-0de849d5199478f52","subnet-0405016d8eb61e0c7","subnet-0eaf09a8879bf990b"]
+  nodeSg: sg-0843707a05066d6b2
+  vpcId: vpc-0c6e18a58fc7d24f3
