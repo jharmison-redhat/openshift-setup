@@ -14,3 +14,6 @@ charts/*/charts/*
 # Python things, thanks to Locust
 *.pyc
 __pycache__
+
+# Just useful
+tmp/*
