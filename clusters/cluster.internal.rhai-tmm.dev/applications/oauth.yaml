@@ -19,9 +19,7 @@ spec:
   source:
     helm:
       valueFiles:
-      - ../../clusters/cluster.nga.rhai-tmm.dev/cluster.yaml
-      - ../../clusters/cluster.nga.rhai-tmm.dev/values/oauth/values.yaml
-      - secrets+age-import:///helm-secrets-private-keys/argo.txt?../../clusters/cluster.nga.rhai-tmm.dev/values/oauth/secrets.enc.yaml
+      - ../../clusters/cluster.internal.rhai-tmm.dev/cluster.yaml
     path: charts/oauth
     repoURL: git@github.com:jharmison-redhat/openshift-setup.git
     targetRevision: HEAD
