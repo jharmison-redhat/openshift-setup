@@ -11,3 +11,6 @@
 
 uri=$(oc get secret {{ $fullname }}-app -ojsonpath='{.data.uri}' | base64 -d)
 oc create secret generic maas-db-config -n redhat-ods-applications --from-literal=DB_CONNECTION_URL="$uri" --dry-run=client -oyaml | oc apply -f-
+# maas-api (redhat-ai-gateway-infra, RHOAI 3.5.0+) reads maas-db-config from its own namespace
+# ponytail: naive retry-free; Job backoffLimit re-runs the script if redhat-ai-gateway-infra isn't up yet
+oc create secret generic maas-db-config -n redhat-ai-gateway-infra --from-literal=DB_CONNECTION_URL="$uri" --dry-run=client -oyaml | oc apply -f-

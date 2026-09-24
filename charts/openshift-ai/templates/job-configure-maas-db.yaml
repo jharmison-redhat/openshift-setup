@@ -1,5 +1,5 @@
 {{- with $db := index .Values "postgres-cluster" }}
-{{- if and $db.enabled (eq $.Values.dataScienceCluster.components.kserve.modelsAsService.managementState "Managed") }}
+{{- if and $db.enabled (eq $.Values.dataScienceCluster.components.aigateway.modelsAsAService.managementState "Managed") }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -25,6 +25,20 @@ kind: RoleBinding
 metadata:
   name: create-maas-db-config-edit
   namespace: redhat-ods-applications
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+  - kind: ServiceAccount
+    name: create-maas-db-config
+    namespace: {{ $db.namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: create-maas-db-config-edit
+  namespace: redhat-ai-gateway-infra
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

@@ -1,4 +1,4 @@
-{{- if eq .Values.dataScienceCluster.components.kserve.modelsAsService.managementState "Managed" }}
+{{- if eq .Values.dataScienceCluster.components.aigateway.modelsAsAService.managementState "Managed" }}
 {{- with .Values.gateways.maasDefaultGateway }}
 {{- $host := .hostname | default (printf "maas.apps.%s.%s" $.Values.global.cluster.name $.Values.global.cluster.baseDomain) }}
 ---

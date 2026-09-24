@@ -1,4 +1,4 @@
-{{- if eq .Values.dataScienceCluster.components.kserve.modelsAsService.managementState "Managed" }}
+{{- if eq .Values.dataScienceCluster.components.aigateway.modelsAsAService.managementState "Managed" }}
 apiVersion: telemetry.istio.io/v1
 kind: Telemetry
 metadata:
