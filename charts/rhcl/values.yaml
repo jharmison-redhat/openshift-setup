@@ -9,7 +9,7 @@ install-rhcl:
       namespace: kuadrant-system
       ownSubscription: false
       installPlanApproval: Manual
-      startingCSV: rhcl-operator.v1.3.4
+      startingCSV: rhcl-operator.v1.4.3
       operatorGroup:
         enabled: true
       env:
