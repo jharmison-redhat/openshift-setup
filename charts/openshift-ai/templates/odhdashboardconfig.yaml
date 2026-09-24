@@ -15,13 +15,6 @@ spec:
   dashboardConfig:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with .Values.genAiStudioConfig }}
-  genAiStudioConfig:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  groupsConfig:
-    adminGroups: rhods-admins
-    allowedGroups: {{ join "," .Values.userGroups }}
   {{- with .Values.modelServerSizes }}
   modelServerSizes:
     {{- toYaml . | nindent 4 }}
@@ -42,3 +35,17 @@ spec:
   templateOrder:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+---
+apiVersion: auth.opendatahub.io/v1
+kind: Auth
+metadata:
+  name: auth
+  namespace: redhat-ods-applications
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  adminGroups:
+    - rhods-admins
+  allowedGroups:
+    {{- toYaml .Values.userGroups | nindent 4 }}
