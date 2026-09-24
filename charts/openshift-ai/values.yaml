@@ -9,7 +9,7 @@ install-rhoai:
   enabled: true
   operators:
     rhods-operator:
-      channel: stable-3.4
+      channel: stable-3.5
       namespace: redhat-ods-operator
       operatorGroup:
         enabled: true
@@ -56,6 +56,10 @@ gateways:
 
 enableUserTelemetry: false
 
+# KEDA metrics reader for WVA autoscaling on LLMInferenceService
+kedaMetricsReader:
+  create: true
+
 # If set, will override the deployment replica counts
 dashboardReplicas: null
 operatorReplicas: null
@@ -70,10 +74,12 @@ dataScienceCluster:
       managementState: Managed
     feastoperator:
       managementState: Managed
+    aigateway:
+      managementState: Managed
+      modelsAsAService:
+        managementState: Managed
     kserve:
       managementState: Managed
-      modelsAsService:
-        managementState: Removed
       nim:
         managementState: Managed
       rawDeploymentServiceConfig: Headed
@@ -81,7 +87,7 @@ dataScienceCluster:
       defaultClusterQueueName: default
       defaultLocalQueueName: default
       managementState: Removed
-    llamastackoperator:
+    ogx:
       managementState: Managed
     mlflowoperator:
       managementState: Managed
@@ -150,7 +156,6 @@ userGroups:
   - system:authenticated
 
 dashboardConfig: {}
-# disableAcceleratorProfiles: false
 # disableBYONImageStream: false
 # disableClusterManager: false
 # disableCustomServingRuntimes: false
@@ -161,7 +166,6 @@ dashboardConfig: {}
 # disableKServe: false
 # disableKServeAuth: false
 # disableKServeMetrics: false
-# disableModelMesh: true
 # disableModelRegistry: false
 # disableModelServing: false
 # disablePerformanceMetrics: false
@@ -171,12 +175,14 @@ dashboardConfig: {}
 # disableSupport: false
 # disableTracking: true
 # enablement: true
-# tech preview
-# disableHardwareProfiles: true
-# disableModelCatalog: true
-# #disableKueue: true
-# #disableLMEval: true
-# #disableFineTuning: true
+# 3.5 flags
+# modelAsService: false
+# gpuaas: false
+# genAiStudio: false
+# llmGatewayField: false
+# externalModels: false
+# observabilityDashboard: false
+# disableLMEval: true
 
 defaultWorkbenchPvcSize: 20Gi
 showJupyterInEnabledApplications: true

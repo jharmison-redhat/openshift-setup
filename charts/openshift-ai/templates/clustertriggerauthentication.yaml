@@ -1,5 +1,5 @@
-{{- with .Values.dataScienceCluster.components.kserve.wva }}
-{{- if eq .managementState "Managed" }}
+{{- with .Values.kedaMetricsReader }}
+{{- if .create }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
