@@ -57,8 +57,9 @@ gateways:
 enableUserTelemetry: false
 
 # KEDA metrics reader for WVA autoscaling on LLMInferenceService
+# Opt-in: only create when WVA/KEDA is actually deployed
 kedaMetricsReader:
-  create: true
+  create: false
 
 # If set, will override the deployment replica counts
 dashboardReplicas: null
