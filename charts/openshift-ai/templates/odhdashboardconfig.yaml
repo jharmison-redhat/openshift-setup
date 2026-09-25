@@ -36,7 +36,7 @@ spec:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 ---
-apiVersion: auth.opendatahub.io/v1
+apiVersion: services.platform.opendatahub.io/v1alpha1
 kind: Auth
 metadata:
   name: auth
