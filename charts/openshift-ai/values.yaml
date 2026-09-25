@@ -194,7 +194,7 @@ notebookIdleCulling:
 postgres-cluster:
   enabled: false
   nameOverride: maas
-  namespace: maas-db
+  namespace: redhat-ai-gateway-infra
   databases:
     - name: maas
       user: maas
