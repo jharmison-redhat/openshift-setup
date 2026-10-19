@@ -6,17 +6,24 @@ global:
 gatewayClasses:
   openshift-default: {}
 
-gateways:
-  default-gateway:
-    gatewayClassName: openshift-default
-    listeners:
-      https:
-        hostname: "*.{{ .Values.global.cluster.name }}-gw.{{ .Values.global.cluster.baseDomain }}"
-        port: 443
-        protocol: HTTPS
-        tls:
-          mode: Terminate
-          certificateRefs:
-            - name: default-gateway-tls
-        certificate:
-          create: true
+gateways: {}
+# Gateways are opt-in - a default gateway with a placeholder domain and
+# issuer can never issue a certificate. Configure per environment, e.g.:
+# gateways:
+#   default-gateway:
+#     gatewayClassName: openshift-default
+#     listeners:
+#       https:
+#         hostname: "*.{{ .Values.global.cluster.name }}-gw.{{ .Values.global.cluster.baseDomain }}"
+#         port: 443
+#         protocol: HTTPS
+#         tls:
+#           mode: Terminate
+#           certificateRefs:
+#             - name: default-gateway-tls
+#         certificate:
+#           create: true
+#           issuerRef:
+#             name: letsencrypt
+#             kind: ClusterIssuer
+#             group: cert-manager.io
