@@ -33,7 +33,10 @@ networking:
     - 172.30.0.0/16
 platform:
   aws:
+    ipFamily: IPv4
     region: ${AWS_REGION}
+    vpc: {}
+osImageStream: ${OS_IMAGE_STREAM}
 publish: External
 additionalTrustBundlePolicy: Proxyonly
 pullSecret: '${PULL_SECRET}'
