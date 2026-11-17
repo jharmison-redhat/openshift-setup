@@ -28,8 +28,6 @@ else
   exit 1
 fi
 
-mkdir -p "${CLUSTER_DIR}/applications"
-
 age_public_key="$(awk '/public key:/{print $NF}' "${INSTALL_DIR}/argo.txt" || true)"
 
 missing=()
@@ -45,6 +43,8 @@ if [ "${#missing[@]}" -gt 0 ]; then
   echo "Unable to resolve required cluster fields: ${missing[*]}" >&2
   exit 1
 fi
+
+mkdir -p "${CLUSTER_DIR}/applications"
 
 # Template cert-manager if desired and able
 if [ -n "$ACME_EMAIL" ] && [[ $ARGO_APPLICATIONS =~ "cert-manager" ]] && [ -n "${AWS_ACCESS_KEY_ID}" ] && [ -n "${AWS_SECRET_ACCESS_KEY}" ]; then
