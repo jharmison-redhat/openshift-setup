@@ -36,7 +36,6 @@ platform:
     ipFamily: IPv4
     region: ${AWS_REGION}
     vpc: {}
-osImageStream: ${OS_IMAGE_STREAM}
 publish: External
 additionalTrustBundlePolicy: Proxyonly
 pullSecret: '${PULL_SECRET}'

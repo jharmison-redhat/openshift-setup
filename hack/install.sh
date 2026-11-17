@@ -53,10 +53,12 @@ templated_variables=(
     \$WORKER_DISK_SIZE
     \$CONTROL_PLANE_TYPE
     \$CONTROL_PLANE_COUNT
-    \$OS_IMAGE_STREAM
 )
 vars=$(concat_with_comma "${templated_variables[@]}")
 envsubst "$vars" <install-config.yaml.tpl >"${INSTALL_DIR}/install-config.yaml"
+if [ -n "${OS_IMAGE_STREAM:-}" ]; then
+  echo "osImageStream: ${OS_IMAGE_STREAM}" >>"${INSTALL_DIR}/install-config.yaml"
+fi
 
 echo "install-config.yaml:"
 sed 's/^/  /' "${INSTALL_DIR}/install-config.yaml"

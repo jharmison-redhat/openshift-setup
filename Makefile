@@ -12,7 +12,6 @@ CONTROL_PLANE_COUNT ?= 3
 WORKER_TYPE ?= m6i.2xlarge
 WORKER_COUNT ?= 3
 WORKER_DISK_SIZE ?= 200
-OS_IMAGE_STREAM ?= rhel-9
 ARGO_GIT_URL ?= git@github.com:jharmison-redhat/openshift-setup.git
 ARGO_GIT_REVISION ?= HEAD
 ARGO_APPLICATIONS ?= config oauth cert-manager monitoring
