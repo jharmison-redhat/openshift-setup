@@ -181,10 +181,24 @@ cluster dot-environment file inside `install/${CLUSTER_NAME}.${BASE_DOMAIN}.env`
     instead of registering a new account. If you haven't used LetsEncrypt before,
     or are unsure if you have, you should set this to `false` for at least one
     invocation.
-- `RECOVER_INSTALL` (default: `false`)
-  - Set to either `true` or `false`. Will allow setup to recover from a failed
-    installation, if this framework performed said failed installation (cloud
-    provider timeouts are a somewhat frequent cause).
+
+Recovering an Interrupted Install
+---------------------------------
+
+If an install is interrupted after the bootstrap phase, it should be resumed
+manually rather than destroyed and re-provisioned. From within the container
+instance, you can wait for the bootstrap phase to complete, remove the
+bootstrap resources, and wait for the install to complete:
+
+```sh
+"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" wait-for bootstrap-complete || :
+"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" destroy bootstrap || :
+"${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" wait-for install-complete
+touch "${INSTALL_DIR}/auth/kubeconfig"
+```
+
+Subsequent `make` invocations will proceed normally once
+`auth/kubeconfig` exists.
 
 Make Targets
 ------------
