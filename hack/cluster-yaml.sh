@@ -11,16 +11,7 @@ if cluster_validate && (! metadata_validate >/dev/null 2>&1); then # We are adop
   if [ "$(infra_get '.spec.platformSpec.type == "AWS"')" = true ]; then # We have an AWS cluster
     infraID="$(infra_get '.status.infrastructureName')"
     region="$(infra_get '.status.platformStatus.aws.region')"
-    if aws_validate_functional; then # we have valid AWS creds to query with
-      filter=(--filters "Name=tag-key,Values=kubernetes.io/cluster/$infraID")
-            subnet_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$infraID,Values=owned")
-            sg_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$infraID-node")
-      azs="$(AWS_REGION=$region aws ec2 describe-subnets "${filter[@]}" | jq -c '[.Subnets[].AvailabilityZone] | unique')"
-      ami="$(AWS_REGION=$region aws ec2 describe-instances "${filter[@]}" | jq -r '.Reservations[].Instances[].ImageId' | head -1)"
-            subnets="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}" | jq -c '[.Subnets[].SubnetId]')"
-            sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
-            vpc_id="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].VpcId')"
-    fi
+    aws_resolve_cluster_resources "$infraID" "$region"
     CONTROL_PLANE_COUNT="$(oc get machine -n openshift-machine-api -l machine.openshift.io/cluster-api-machine-role=master --no-headers 2>/dev/null | wc -l)"
     export CONTROL_PLANE_COUNT
     WORKER_COUNT="$(oc get machine -n openshift-machine-api -l machine.openshift.io/cluster-api-machine-role=worker --no-headers 2>/dev/null | wc -l)"
@@ -31,19 +22,7 @@ if cluster_validate && (! metadata_validate >/dev/null 2>&1); then # We are adop
 elif metadata_validate; then # We are provisioning an AWS cluster
   infraID="$(jq -r '.infraID' "${INSTALL_DIR}/metadata.json")"
   region="$(jq -r '.aws.region' "${INSTALL_DIR}/metadata.json")"
-  if aws_validate_functional; then # we have valid AWS creds to query with
-    subnet_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$infraID,Values=owned")
-    sg_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$infraID-node")
-    subnets_json="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}")"
-    subnets="$(jq -c '[.Subnets[].SubnetId]' <<<"$subnets_json")"
-    azs="$(jq -c '[.Subnets[].AvailabilityZone] | unique' <<<"$subnets_json")"
-    ami="$(AWS_REGION=$region aws ec2 describe-instances --filters "Name=tag:kubernetes.io/cluster/$infraID,Values=owned" "Name=instance-state-name,Values=running,stopped" | jq -r '[.Reservations[].Instances[]] | sort_by(.LaunchTime) | last | .ImageId // empty')"
-    sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
-    vpc_id="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].VpcId')"
-  else
-    echo "AWS credentials/region validation failed — cannot resolve cluster AWS resources" >&2
-    exit 1
-  fi
+  aws_resolve_cluster_resources "$infraID" "$region"
 else
   echo Unable to generate cluster.yaml >&2
   exit 1

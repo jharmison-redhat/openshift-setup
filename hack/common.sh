@@ -37,6 +37,45 @@ function aws_validate_functional {
 	fi
 }
 
+# Resolves the AWS resources of a cluster into the globals consumed by
+# cluster-yaml.sh (subnets, azs, ami, sg, vpc_id). Takes cluster_infra_id and
+# cluster_region as positional args. Returns 1 with a diagnostic on stderr for
+# validation failures; AWS CLI errors propagate.
+# shellcheck disable=SC2034  # azs/ami/sg/vpc_id/subnets are consumed by cluster-yaml.sh
+function aws_resolve_cluster_resources {
+	local cluster_infra_id="$1" cluster_region="$2"
+	local subnets_json sg_json sg_count
+	if ! aws_validate_functional; then
+		echo "AWS credentials/region validation failed — cannot resolve cluster AWS resources" >&2
+		return 1
+	fi
+	subnets_json="$(AWS_REGION="$cluster_region" aws ec2 describe-subnets --filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$cluster_infra_id,Values=owned")"
+	subnets="$(jq -c '[.Subnets[].SubnetId]' <<<"$subnets_json")"
+	azs="$(jq -c '[.Subnets[].AvailabilityZone] | unique' <<<"$subnets_json")"
+	if [ "$subnets" = "[]" ]; then
+		echo "No private subnets tagged kubernetes.io/cluster/$cluster_infra_id=owned found in $cluster_region" >&2
+		return 1
+	fi
+	ami="$(AWS_REGION="$cluster_region" aws ec2 describe-instances --filters "Name=tag:kubernetes.io/cluster/$cluster_infra_id,Values=owned" "Name=instance-state-name,Values=running,stopped" | jq -r '[.Reservations[].Instances[]] | sort_by(.LaunchTime) | last | .ImageId // empty')"
+	if [ -z "$ami" ]; then
+		echo "No running or stopped instances tagged kubernetes.io/cluster/$cluster_infra_id=owned found in $cluster_region" >&2
+		return 1
+	fi
+	sg_json="$(AWS_REGION="$cluster_region" aws ec2 describe-security-groups --filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$cluster_infra_id-node")"
+	sg_count="$(jq '.SecurityGroups | length' <<<"$sg_json")"
+	if [ "$sg_count" -eq 0 ]; then
+		echo "No node security groups tagged Name=$cluster_infra_id-node found in $cluster_region" >&2
+		return 1
+	fi
+	if [ "$sg_count" -gt 1 ]; then
+		echo "Multiple node security groups match Name=$cluster_infra_id-node; refusing to pick one:" >&2
+		jq -r '.SecurityGroups[].GroupId' <<<"$sg_json" >&2
+		return 1
+	fi
+	sg="$(jq -r '.SecurityGroups[].GroupId' <<<"$sg_json")"
+	vpc_id="$(jq -r '.SecurityGroups[].VpcId' <<<"$sg_json")"
+}
+
 function aws_hosted_zone_id {
 	aws route53 list-hosted-zones --output text --query "HostedZones[?Name == '${BASE_DOMAIN}.'].Id | [0]" | cut -d/ -f3
 }
