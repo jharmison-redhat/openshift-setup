@@ -85,6 +85,17 @@ function metadata_validate {
 		echo "No cluster metadata.json, indicating that you probably haven't installed a cluster using this framework" >&2
 		return 1
 	fi
+	local invalid_fields
+	if invalid_fields="$(jq -e -r '
+		[
+			(if (.infraID | type) != "string" or .infraID == "" then "infraID" else empty end),
+			(if (.aws.region | type) != "string" or .aws.region == "" then "aws.region" else empty end)
+		] | if length == 0 then false else join(", ") end' "${INSTALL_DIR}/metadata.json")"; then
+		echo "Cluster metadata ${INSTALL_DIR}/metadata.json is missing or empty: ${invalid_fields}; both must be non-empty strings" >&2
+		return 1
+	elif [ "$invalid_fields" != "false" ]; then
+		return 1 # jq failed on the file; its diagnostic is on stderr
+	fi
 }
 
 function cluster_validate {
