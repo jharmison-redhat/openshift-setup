@@ -22,6 +22,7 @@ fi
 function pull_secret_validate_and_clean {
 	[ -n "${PULL_SECRET:-}" ] || return 1
 	PULL_SECRET="$(echo "$PULL_SECRET" | tr -d '[:space:]' | tr -d "'")"
+	[ -n "$PULL_SECRET" ] || return 1 # Whitespace-only input cleans to empty
 	export PULL_SECRET
 }
 

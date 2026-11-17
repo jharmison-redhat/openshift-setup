@@ -12,7 +12,10 @@ fi
 if ! pull_secret_validate_and_clean; then
     echo "Copy your pull secret from: https://console.redhat.com/openshift/install/pull-secret"
     PULL_SECRET="$(read_secret Paste your pull secret here)"
-    pull_secret_validate_and_clean
+    if ! pull_secret_validate_and_clean; then
+        echo "Invalid or empty pull secret provided" >&2
+        exit 1
+    fi
     cat <<EOF >>".env"
 export PULL_SECRET='${PULL_SECRET}'
 EOF
@@ -22,7 +25,10 @@ if ! aws_validate; then
     AWS_ACCESS_KEY_ID="$(read_secret Enter your AWS_ACCESS_KEY_ID for "${CLUSTER_URL}")"
     AWS_SECRET_ACCESS_KEY="$(read_secret Enter your AWS_SECRET_ACCESS_KEY for "${CLUSTER_URL}")"
     export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
-    aws_validate
+    if ! aws_validate; then
+        echo "Invalid or empty AWS credentials provided" >&2
+        exit 1
+    fi
     cat <<EOF >>"${INSTALL_DIR}.env"
 export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}"
 export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}"
