@@ -31,15 +31,19 @@ if cluster_validate && (! metadata_validate >/dev/null 2>&1); then # We are adop
 elif metadata_validate; then # We are provisioning an AWS cluster
   infraID="$(jq -r '.infraID' "${INSTALL_DIR}/metadata.json")"
   region="$(jq -r '.aws.region' "${INSTALL_DIR}/metadata.json")"
-  azs="$(jq -c '.aws_worker_availability_zones' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
-  ami="$(jq -r '.aws_ami' "${INSTALL_DIR}/terraform.platform.auto.tfvars.json")"
-    if aws_validate_functional; then
-        subnet_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$infraID,Values=owned")
-        sg_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$infraID-node")
-        subnets="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}" | jq -c '[.Subnets[].SubnetId]')"
-        sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
-        vpc_id="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].VpcId')"
-    fi
+  if aws_validate_functional; then # we have valid AWS creds to query with
+    subnet_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=private" "Name=tag:kubernetes.io/cluster/$infraID,Values=owned")
+    sg_filter=(--filters "Name=tag:sigs.k8s.io/cluster-api-provider-aws/role,Values=node" "Name=tag:Name,Values=$infraID-node")
+    subnets_json="$(AWS_REGION=$region aws ec2 describe-subnets "${subnet_filter[@]}")"
+    subnets="$(jq -c '[.Subnets[].SubnetId]' <<<"$subnets_json")"
+    azs="$(jq -c '[.Subnets[].AvailabilityZone] | unique' <<<"$subnets_json")"
+    ami="$(AWS_REGION=$region aws ec2 describe-instances --filters "Name=tag:kubernetes.io/cluster/$infraID,Values=owned" "Name=instance-state-name,Values=running,stopped" | jq -r '[.Reservations[].Instances[]] | sort_by(.LaunchTime) | last | .ImageId // empty')"
+    sg="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].GroupId')"
+    vpc_id="$(AWS_REGION=$region aws ec2 describe-security-groups "${sg_filter[@]}" | jq -r '.SecurityGroups[].VpcId')"
+  else
+    echo "AWS credentials/region validation failed — cannot resolve cluster AWS resources" >&2
+    exit 1
+  fi
 else
   echo Unable to generate cluster.yaml >&2
   exit 1
@@ -47,7 +51,21 @@ fi
 
 mkdir -p "${CLUSTER_DIR}/applications"
 
-age_public_key="$(awk '/public key:/{print $NF}' "${INSTALL_DIR}/argo.txt")"
+age_public_key="$(awk '/public key:/{print $NF}' "${INSTALL_DIR}/argo.txt" || true)"
+
+missing=()
+[ -n "$infraID" ] || missing+=(infraID)
+[ -n "$region" ] || missing+=(region)
+[ -n "$ami" ] || missing+=(ami)
+[ -n "$sg" ] || missing+=(nodeSg)
+[ -n "$vpc_id" ] || missing+=(vpcId)
+[ -n "$age_public_key" ] || missing+=(agePublicKey)
+[[ -n "$azs" && "$azs" != "[]" ]] || missing+=(azs)
+[[ -n "$subnets" && "$subnets" != "[]" ]] || missing+=(subnets)
+if [ "${#missing[@]}" -gt 0 ]; then
+  echo "Unable to resolve required cluster fields: ${missing[*]}" >&2
+  exit 1
+fi
 
 # Template cert-manager if desired and able
 if [ -n "$ACME_EMAIL" ] && [[ $ARGO_APPLICATIONS =~ "cert-manager" ]] && [ -n "${AWS_ACCESS_KEY_ID}" ] && [ -n "${AWS_SECRET_ACCESS_KEY}" ]; then
@@ -151,10 +169,6 @@ cluster:
   controlPlaneNodes: $CONTROL_PLANE_COUNT
   workerNodes: $WORKER_COUNT
   agePublicKey: $age_public_key
-EOF
-
-if [ -n "$infraID" ] && [ -n "$region" ] && [ -n "$azs" ] && [ -n "$ami" ]; then
-  cat <<EOF >>"${CLUSTER_DIR}/cluster.yaml"
   infraID: $infraID
 aws:
   region: $region
@@ -164,4 +178,3 @@ aws:
   nodeSg: $sg
   vpcId: $vpc_id
 EOF
-fi
