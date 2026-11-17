@@ -80,6 +80,11 @@ acme:
         dnsZones:
           - ${BASE_DOMAIN}
 EOF
+elif [ -n "${ACME_EMAIL:-}" ] && [[ ${ARGO_APPLICATIONS:-} =~ "cert-manager" ]]; then # cert-manager desired, but its long-lived Route53 credentials are missing
+  cert_manager_missing_keys=()
+  [ -n "${AWS_ACCESS_KEY_ID:-}" ] || cert_manager_missing_keys+=(AWS_ACCESS_KEY_ID)
+  [ -n "${AWS_SECRET_ACCESS_KEY:-}" ] || cert_manager_missing_keys+=(AWS_SECRET_ACCESS_KEY)
+  echo "Skipping cert-manager templating: missing ${cert_manager_missing_keys[*]} — the Route53 DNS-01 solver Secret requires long-lived credentials, which SSO/profile sessions cannot provide" >&2
 fi
 
 # Template OAuth if desired, prompting for GitHub org oauth and falling back to generated passwords.
