@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -eu
 
 COMMON_PUBLIC_KEYS=(
 	age1ky5amdnkwzj03gwal0cnk7ue7vsd0n64pxm50nxgycssp7vgpqvq9s7lyw # jharmison@redhat.com
@@ -20,13 +20,13 @@ if ! command -v yq | grep -q '^/'; then
 fi
 
 function pull_secret_validate_and_clean {
-	[ -n "$PULL_SECRET" ] || return 1
+	[ -n "${PULL_SECRET:-}" ] || return 1
 	PULL_SECRET="$(echo "$PULL_SECRET" | tr -d '[:space:]' | tr -d "'")"
 	export PULL_SECRET
 }
 
 function aws_validate {
-	if [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
+	if [ -z "${AWS_ACCESS_KEY_ID:-}" ] || [ -z "${AWS_SECRET_ACCESS_KEY:-}" ]; then
 		return 1
 	fi
 }
@@ -114,7 +114,7 @@ function argo_ssh_validate {
 }
 
 function gh_validate {
-	[ -n "$GH_TOKEN" ] || return 1
+	[ -n "${GH_TOKEN:-}" ] || return 1
 	gh repo deploy-key list >/dev/null 2>&1 || return 2
 }
 
@@ -164,7 +164,7 @@ fi
 
 function instances {
 	local -a filter
-	if [ -n "$infraID" ]; then
+	if [ -n "${infraID:-}" ]; then
 		filter+=(--filters "$aws_cluster_filter")
 	fi
 	aws ec2 describe-instances "${filter[@]}" --query "Reservations[].Instances[]"
@@ -191,7 +191,7 @@ function stopped_instance_ids {
 }
 
 function read_secret {
-	local secret_answer
+	local secret_answer=""
 	if echo "${*}" | grep -q ': $'; then
 		echo -n "${*}" >&2
 	elif echo "${*}" | grep -q ':$'; then
@@ -233,7 +233,7 @@ function ct_needs_update {
 	return 1
 }
 
-public_keys=("${COMMON_PUBLIC_KEYS[@]}" "${age_public_key}")
+public_keys=("${COMMON_PUBLIC_KEYS[@]}" "${age_public_key:-}")
 keystring="$(
 	IFS=,
 	echo "${public_keys[*]}"

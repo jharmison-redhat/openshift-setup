@@ -3,7 +3,7 @@
 cd "$(dirname "$(realpath "$0")")/.." || exit 1
 source hack/common.sh
 
-if cluster_validate || metadata_validate && ! ${RECOVER_INSTALL}; then
+if cluster_validate || metadata_validate && ! ${RECOVER_INSTALL:-}; then
     echo "Skipping install" >&2
     touch "${INSTALL_DIR}/auth/kubeconfig"
     exit 0
@@ -31,7 +31,9 @@ fi
 
 hack/hosted-zone.sh
 
-if ${RECOVER_INSTALL}; then
+# The falsy default preserves the documented false semantics for unset direct invocation:
+# an empty expansion after `if` evaluates TRUE, while line 6's negation makes plain `:-` correct there.
+if ${RECOVER_INSTALL:-false}; then
     set -x
 
     "${INSTALL_DIR}/openshift-install" --dir "${INSTALL_DIR}" wait-for bootstrap-complete || :

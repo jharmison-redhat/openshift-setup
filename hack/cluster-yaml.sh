@@ -31,14 +31,14 @@ fi
 age_public_key="$(awk '/public key:/{print $NF}' "${INSTALL_DIR}/argo.txt" || true)"
 
 missing=()
-[ -n "$infraID" ] || missing+=(infraID)
-[ -n "$region" ] || missing+=(region)
-[ -n "$ami" ] || missing+=(ami)
-[ -n "$sg" ] || missing+=(nodeSg)
-[ -n "$vpc_id" ] || missing+=(vpcId)
-[ -n "$age_public_key" ] || missing+=(agePublicKey)
-[[ -n "$azs" && "$azs" != "[]" ]] || missing+=(azs)
-[[ -n "$subnets" && "$subnets" != "[]" ]] || missing+=(subnets)
+[ -n "${infraID:-}" ] || missing+=(infraID)
+[ -n "${region:-}" ] || missing+=(region)
+[ -n "${ami:-}" ] || missing+=(ami)
+[ -n "${sg:-}" ] || missing+=(nodeSg)
+[ -n "${vpc_id:-}" ] || missing+=(vpcId)
+[ -n "${age_public_key:-}" ] || missing+=(agePublicKey)
+[[ -n "${azs:-}" && "${azs}" != "[]" ]] || missing+=(azs)
+[[ -n "${subnets:-}" && "${subnets}" != "[]" ]] || missing+=(subnets)
 if [ "${#missing[@]}" -gt 0 ]; then
   echo "Unable to resolve required cluster fields: ${missing[*]}" >&2
   exit 1
@@ -47,7 +47,7 @@ fi
 mkdir -p "${CLUSTER_DIR}/applications"
 
 # Template cert-manager if desired and able
-if [ -n "$ACME_EMAIL" ] && [[ $ARGO_APPLICATIONS =~ "cert-manager" ]] && [ -n "${AWS_ACCESS_KEY_ID}" ] && [ -n "${AWS_SECRET_ACCESS_KEY}" ]; then
+if [ -n "${ACME_EMAIL:-}" ] && [[ ${ARGO_APPLICATIONS:-} =~ "cert-manager" ]] && [ -n "${AWS_ACCESS_KEY_ID:-}" ] && [ -n "${AWS_SECRET_ACCESS_KEY:-}" ]; then
   mkdir -p "${CLUSTER_DIR}/values/cert-manager"
   cat <<EOF >"${CLUSTER_DIR}/values/cert-manager/values.yaml"
 certificates:
@@ -83,7 +83,7 @@ EOF
 fi
 
 # Template OAuth if desired, prompting for GitHub org oauth and falling back to generated passwords.
-if [[ $ARGO_APPLICATIONS =~ "oauth" ]]; then
+if [[ ${ARGO_APPLICATIONS:-} =~ "oauth" ]]; then
   mkdir -p "${CLUSTER_DIR}/values/oauth"
   if [ ! -f "${CLUSTER_DIR}/values/oauth/secrets.yaml" ]; then
     read -n1 -rp "Do you want to configure a GitHub OAuth application (y/N)? " make_oauth
@@ -143,10 +143,10 @@ global:
     name: $CLUSTER_NAME
     baseDomain: $BASE_DOMAIN
 desiredUpdate:
-  version: $CLUSTER_VERSION
+  version: ${CLUSTER_VERSION:-}
 cluster:
-  controlPlaneNodes: $CONTROL_PLANE_COUNT
-  workerNodes: $WORKER_COUNT
+  controlPlaneNodes: ${CONTROL_PLANE_COUNT:-}
+  workerNodes: ${WORKER_COUNT:-}
   agePublicKey: $age_public_key
   infraID: $infraID
 aws:

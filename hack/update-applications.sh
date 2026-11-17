@@ -5,7 +5,7 @@ source hack/common.sh
 
 # Start with our Makefile- and env-provided apps
 declare -A applications
-for app in $ARGO_APPLICATIONS; do
+for app in ${ARGO_APPLICATIONS:-}; do
     echo "Found $app in ARGO_APPLICATIONS" >&2
     applications["$app"]=""
 done

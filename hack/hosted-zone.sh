@@ -61,7 +61,7 @@ function public_dns_validation {
 	fi
 }
 
-if [ -n "$ROOT_AWS_ACCESS_KEY_ID" ] && [ -n "$ROOT_AWS_SECRET_ACCESS_KEY" ]; then
+if [ -n "${ROOT_AWS_ACCESS_KEY_ID:-}" ] && [ -n "${ROOT_AWS_SECRET_ACCESS_KEY:-}" ]; then
 	# Check if the record exists to point to BASE_DOMAIN's nameservers
 	function root_aws {
 		AWS_ACCESS_KEY_ID="$ROOT_AWS_ACCESS_KEY_ID" AWS_SECRET_ACCESS_KEY="$ROOT_AWS_SECRET_ACCESS_KEY" aws "${@}"
